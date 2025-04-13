@@ -4,34 +4,29 @@ import Link from "next/link";
 const quickLink = [
   {
     id: 1,
-    label: "home",
+    label: "Home",
     href: "/",
   },
   {
     id: 2,
-    label: "services",
+    label: "Shop Live Fish",
     href: "#",
   },
   {
     id: 3,
-    label: "Contact us",
-    href: "#",
-  },
-  {
-    id: 4,
     label: "Privacy policy",
     href: "#",
   },
   {
-    id: 5,
+    id: 4,
     label: "Terms of use",
     href: "#",
   },
   {
-    id: 6,
-    label: "About us",
-    href: "/about-us",
-  },
+    id: 5,
+    label: "about us",
+    href: "#",
+  }
 ];
 
 const QuickLinks = () => {
@@ -46,7 +41,7 @@ const QuickLinks = () => {
             </Link>
             <span
               className={cn(
-                "absolute left-0  h-[2px] w-full bg-black transform scale-x-0 transition-transform duration-700 ease-in-out group-hover:scale-x-100 origin-left"
+                "absolute left-0 h-[2px] w-full transform scale-x-0 transition-transform duration-700 ease-in-out group-hover:scale-x-100 origin-left bg-white"
               )}
             >
               <Link href={link.href} className="uppercase font-medium">

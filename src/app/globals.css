@@ -4,6 +4,10 @@
 
 @theme {
   --font-montserrat: var(--font-montserrat);
+  --color-primary-blue: #0B1E70;
+  --color-primary-deep-green: #002533;
+  --color-primary-sky: #4396BE;
+  --color-primary-red: #BB2425
 }
 
 @custom-variant dark (&:is(.dark *));
