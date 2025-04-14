@@ -69,7 +69,7 @@ const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
           </Link>
         </motion.li>
         <motion.li variants={childrenVariants}>
-          <Link href={"/#"}>
+          <Link href={"/sign-in"}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="17"

@@ -22,7 +22,7 @@ const TopInfo = () => {
     <header className="bg-linear-to-r from-[#533E69] to-[#3D4B68] text-white py-2">
       <Container className="flex md:justify-between justify-center items-center text-sm ">
         <p className="text-lg ">
-          <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#4DA8DA] to-[#78C0A8]">
+          <span className="text-gradiant">
             Hello!!
           </span>{" "}
           Welcome to AquaMarket.
@@ -35,7 +35,7 @@ const TopInfo = () => {
                 key={index}
                 href={link.href}
                 className={cn(
-                  "uppercase text-transparent bg-clip-text bg-gradient-to-b from-[#4DA8DA] to-[#78C0A8] flex gap-x-1 items-center"
+                  "uppercase text-gradiant flex gap-x-1 items-center"
                 )}
               >
                 <svg

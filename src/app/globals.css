@@ -129,3 +129,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+ .text-gradiant {
+    @apply text-transparent bg-clip-text bg-gradient-to-b from-[#4DA8DA] to-[#78C0A8]
+  }
+  .flex-center{
+    @apply flex justify-center items-center
+  }
+}
