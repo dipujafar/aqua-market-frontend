@@ -66,15 +66,16 @@ const SIgnInForm = () => {
       style={{
         background:
           "linear-gradient(180deg, rgba(77, 168, 218, 0.22) 0%, rgba(120, 192, 168, 0.22) 85.08%)",
+          boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.14)"
       }}
     >
       <CardHeader>
         <div className="flex justify-between">
-          <div className="flex-1 flex justify-center items-center bg-primary-black bg-white rounded-lg px-2.5 py-3 text-black">
+          <div className="flex-1 flex justify-center items-center bg-primary-black bg-white rounded-l-lg px-2.5 py-3 text-black">
             Sign In
           </div>
           <Link
-            href={"/sign-up"}
+            href={"/choose-user-role"}
             className="flex-1 flex justify-center items-center px-2.5 py-3"
           >
             Sign Up
@@ -166,7 +167,7 @@ const SIgnInForm = () => {
 
             <div className="flex justify-center gap-x-2">
               <p className="text-secondary-gray">Don&apos;t have an account?</p>
-              <Link href={"/sign-up"}>
+              <Link  href={"/choose-user-role"}>
                 <span className="text-lg font-medium text-gradiant underline">
                   Sign Up
                 </span>
