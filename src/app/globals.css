@@ -7,7 +7,8 @@
   --color-primary-blue: #0B1E70;
   --color-primary-deep-green: #002533;
   --color-primary-sky: #4396BE;
-  --color-primary-red: #BB2425
+  --color-primary-red: #BB2425;
+  --color-primary-light-glod: #EADAC1
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -137,4 +138,28 @@
   .flex-center{
     @apply flex justify-center items-center
   }
+}
+
+
+.hide-scrollbar::-webkit-scrollbar {
+ scrollbar-width: none !important;
+}
+
+
+/* =========== react pagination styles =================== */
+.rpb-item {
+  border: 1px solid #E6E6E6 !important;
+  border-radius: 20px  !important;
+  background-color: #4da8da3d  !important;
+}
+
+.rpb-item:hover {
+  border: 2px solid #616161 !important;
+  border-radius: 16px !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.rpb-item--active {
+  background-color: #78C0A8 !important;
+
 }

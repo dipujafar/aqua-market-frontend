@@ -96,12 +96,13 @@ const SIgnInForm = () => {
                   <FormLabel>Email Address</FormLabel>
                   <FormControl>
                     <Input
+                    
                       placeholder="Enter Your Email"
                       {...field}
                       className="focus-visible:ring-0 focus-visible:ring-offset-0 border-none rounded md:py-5 bg-transparent"
                       style={{
-                        backgroundColor:
-                          "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%) !important",
+                        background:
+                          "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
                       }}
                     />
                   </FormControl>

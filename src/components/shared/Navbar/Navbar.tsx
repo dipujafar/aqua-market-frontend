@@ -20,14 +20,14 @@ const Navbar = () => {
         {/* ======= Small Screen view ========== */}
         <SmallDeviceView></SmallDeviceView>
         {/* ======= category ========== */}
-        <div className="md:flex lg:gap-x-2 gap-x-2 hidden ">
+        <div className="md:flex lg:gap-x-2 gap-x-1 hidden ">
           {navLinks.map((item) => (
             <div key={item.id} className="relative group">
               {/* Navigation Link */}
               <Link
                 href={item.href}
                 className={cn(
-                  "relative uppercase py-2 px-4 font-medium z-10 transition-colors duration-300"
+                  "relative uppercase py-2 px-4 font-medium z-10 transition-colors duration-300 truncate"
                 )}
               >
                 {item.label}
@@ -45,7 +45,7 @@ const Navbar = () => {
         {/* ======= logo ========== */}
         <div className="flex justify-center items-center flex-1 ">
           <Link href={"/"}>
-            <Image src={logo} alt="logo"></Image>
+            <Image src={logo} alt="logo" className="min-w-[150px]"></Image>
           </Link>
         </div>
         {/* ======= search and nav icon  ========== */}

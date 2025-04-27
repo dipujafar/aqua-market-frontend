@@ -4,6 +4,7 @@ import "./globals.css";
 import TopInfo from "@/components/shared/TopInfo";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import Footer from "@/components/shared/Footer/Footer";
+import 'react-pagination-bar/dist/index.css'
 
 const figtree = Figtree({
   display: "swap",

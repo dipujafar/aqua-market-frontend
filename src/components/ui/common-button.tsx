@@ -14,7 +14,7 @@ const CommonButton = ({
   return (
     <Button
       style={{
-        background: "linear-gradient(180deg, #4DA8DA 0%, #78C0A8 85.08%)"
+        background: "linear-gradient(180deg, rgba(77, 168, 218, 0.60) 0%, rgba(120, 192, 168, 0.60) 85.08%)"
       }}
       disabled={disabled}
       className={cn(

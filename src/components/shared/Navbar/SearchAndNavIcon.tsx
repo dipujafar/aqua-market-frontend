@@ -31,7 +31,7 @@ const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
            "
         >
           <Input
-            className={`border-0 border-b  focus:outline-0 shadow-none rounded-none focus-visible:ring-0 placeholder:text-${color} `}
+            className={`border-0 border-b  focus:outline-0 shadow-none rounded-none focus-visible:ring-0 placeholder:text-${color} min-w-[120px] `}
             placeholder="Search here....."
           ></Input>
           <div className="absolute  right-0 top-2">
