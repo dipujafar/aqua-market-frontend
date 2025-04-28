@@ -55,7 +55,7 @@ const ProductImagesCarousel: React.FC<PropType> = (props) => {
                   height={500}
                   alt="product_image"
                   quality={100}
-                  className="w-full max-h-[700px] object-cover origin-center h-full mx-auto rounded"
+                  className="w-full 2xl:h-[700px] xl:h-[550px] lg:h-[400px] md:h-[620px] h-[350px] object-cover origin-center  mx-auto rounded"
                 ></Image>
               </Zoom>
             </div>
@@ -65,7 +65,7 @@ const ProductImagesCarousel: React.FC<PropType> = (props) => {
 
       <div className="embla-thumbs">
         <div className="embla-thumbs__viewport" ref={emblaThumbsRef}>
-          <div className="embla-thumbs__container  gap-2 grid grid-cols-4 mt-2">
+          <div className="embla-thumbs__container  md:gap-2 grid grid-cols-4 mt-2">
             {slides?.slice(0, 6)?.map((data, index) => (
               <CarouselThumbs
                 key={index}

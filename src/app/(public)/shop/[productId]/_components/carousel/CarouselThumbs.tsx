@@ -28,7 +28,7 @@ export const CarouselThumbs: React.FC<PropType> = (props) => {
           width={500}
           height={500}
           alt="thumbnail"
-          className={cn("h-[180px] object-cover origin-center w-full rounded")}
+          className={cn("2xl:h-[180px] md:h-[110px] h-[70px]  object-cover origin-center w-full rounded")}
         ></Image>
       </button>
     </div>

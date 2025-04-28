@@ -4,11 +4,11 @@
 
 @theme {
   --font-montserrat: var(--font-montserrat);
-  --color-primary-blue: #0B1E70;
+  --color-primary-blue: #0b1e70;
   --color-primary-deep-green: #002533;
-  --color-primary-sky: #4396BE;
-  --color-primary-red: #BB2425;
-  --color-primary-light-glod: #EADAC1
+  --color-primary-sky: #4396be;
+  --color-primary-red: #bb2425;
+  --color-primary-light-glod: #eadac1;
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -132,25 +132,27 @@
 }
 
 @layer components {
- .text-gradiant {
-    @apply text-transparent bg-clip-text bg-gradient-to-b from-[#4DA8DA] to-[#78C0A8]
+  .text-gradiant {
+    @apply text-transparent bg-clip-text bg-gradient-to-b from-[#4DA8DA] to-[#78C0A8];
   }
-  .flex-center{
-    @apply flex justify-center items-center
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+
+  .flex-between {
+    @apply flex justify-between items-center;
   }
 }
-
 
 .hide-scrollbar::-webkit-scrollbar {
- scrollbar-width: none !important;
+  scrollbar-width: none !important;
 }
-
 
 /* =========== react pagination styles =================== */
 .rpb-item {
-  border: 1px solid #E6E6E6 !important;
-  border-radius: 20px  !important;
-  background-color: #4da8da3d  !important;
+  border: 1px solid #e6e6e6 !important;
+  border-radius: 20px !important;
+  background-color: #4da8da3d !important;
 }
 
 .rpb-item:hover {
@@ -160,6 +162,5 @@
 }
 
 .rpb-item--active {
-  background-color: #78C0A8 !important;
-
+  background-color: #78c0a8 !important;
 }

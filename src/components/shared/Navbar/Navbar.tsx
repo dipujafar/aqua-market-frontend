@@ -4,7 +4,6 @@ import Container from "../Container";
 import logo from "@/assets/images/logo.png";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-
 import SearchAndNavIcon from "./SearchAndNavIcon";
 import SmallDeviceView from "./SmallDeviceView";
 import { activeNavLink } from "@/utils/activeNavLinks";

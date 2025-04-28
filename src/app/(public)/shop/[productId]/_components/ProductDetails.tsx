@@ -9,6 +9,7 @@ import { Rating } from "@/components/ui/rating";
 import { envConfig } from "@/config";
 import { productDetails } from "@/lib/dummyData";
 import ActionButtons from "./ActionButtons";
+import SellerDetails from "./SellerDetails";
 // import ActionButtons from "./ActionButtons";
 // import SellerDetails from "./SellerDetails";
 
@@ -23,7 +24,7 @@ const ProductDetails = () => {
   return (
     <div className=" space-y-8">
       {/* --------- product header ---------- */}
-      <div className="xl:space-y-3 space-x-2">
+      <div className="space-y-3">
         <div>
           <div className="flex items-center  gap-x-2 text-white/80">
             <Rating rating={productDetails?.rating}></Rating>
@@ -100,7 +101,7 @@ const ProductDetails = () => {
       {/* ======================= all actions buttons ================ */}
       <ActionButtons></ActionButtons>
       {/* ========================= seller details ========================= */}
-      {/* <SellerDetails></SellerDetails> */}
+      <SellerDetails></SellerDetails>
     </div>
   );
 };

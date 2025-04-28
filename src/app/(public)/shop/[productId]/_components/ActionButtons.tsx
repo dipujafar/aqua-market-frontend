@@ -1,5 +1,5 @@
 "use client";
-import { ArrowIcon } from "@/components/icons/Icons";
+import { ArrowIcon, ShoppingCartIcon } from "@/components/icons/Icons";
 import { Button } from "@/components/ui/button";
 import CommonButton from "@/components/ui/common-button";
 import { Minus, Plus } from "lucide-react";
@@ -32,23 +32,47 @@ const ActionButtons = () => {
       </div>
       {/* =============== action buttons ================ */}
       <div className="lg:space-y-4 space-y-3 ">
-        <div className="flex gap-x-2">
-          <CommonButton className="md:min-w-fit md:w-1/3">Single</CommonButton>
-          <CommonButton className=" md:min-w-fit md:w-2/3">Breeding group of 8(mixed female+male)</CommonButton>
+        <div className="flex flex-col sm:flex-row gap-x-2 gap-y-2">
+          <CommonButton className="md:min-w-fit sm:w-1/3">Single</CommonButton>
+          <CommonButton className=" md:min-w-fit sm:w-2/3">
+            Breeding group of 8(mixed female+male)
+          </CommonButton>
         </div>
         {/* =============== buy now  button ================ */}
-       <div>
-         <Button
-              style={{
-                background: "linear-gradient(180deg, rgba(77, 168, 218, 0.16) 0%, rgba(120, 192, 168, 0.16) 85.08%)"
-              }}
-             
-              className="rounded border-r-3 border-b-3 border-white uppercase md:min-w-40 md:py-5 cursor-pointer w-full group"
-        
-            >
-             Buy now <ArrowIcon ></ArrowIcon>
-            </Button>
-       </div>
+        <div className="flex items-center gap-x-4">
+          <Button
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(77, 168, 218, 0.16) 0%, rgba(120, 192, 168, 0.16) 85.08%)",
+            }}
+            className="rounded border-r-3 border-b-3 border-white uppercase md:min-w-40 md:py-5 cursor-pointer group flex-1"
+          >
+            Buy now{" "}
+            <ArrowIcon className="group-hover:translate-x-2 duration-500"></ArrowIcon>
+          </Button>
+
+          <div
+            style={{
+              background: "rgba(77, 168, 218, 0.40)",
+            }}
+            className="md:size-12 size-10 rounded-full flex justify-center items-center "
+          >
+            <ShoppingCartIcon></ShoppingCartIcon>
+          </div>
+        </div>
+
+        {/* ============================= bit now button ==================== */}
+        <Button
+          disabled
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(77, 168, 218, 0.16) 0%, rgba(120, 192, 168, 0.16) 85.08%)",
+          }}
+          className="rounded border-r-3 border-b-3 border-white uppercase md:min-w-40 md:py-5 cursor-pointer group w-full"
+        >
+          Bid now{" "}
+          <ArrowIcon className="group-hover:translate-x-2 duration-500"></ArrowIcon>
+        </Button>
         {/* <CommonButton className="w-full bg-primary-light-pink text-primary-black hover:bg-primary-black/10">
           add to favourite
         </CommonButton>

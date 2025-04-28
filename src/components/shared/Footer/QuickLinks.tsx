@@ -33,10 +33,10 @@ const QuickLinks = () => {
   return (
     <div className="py-2 border-t border-t-white/80 w-full xl:mt-10 md:mt-6 mt-3 flex flex-col lg:flex-row justify-between text-primary-black/70 text-sm gap-y-1 items-center">
       <p>Copyright © 2024 AquaMarket. All rights reserved.</p>
-      <div className="md:flex grid grid-cols-3 gap-x-4 gap-y-1">
+      <div className="md:flex grid grid-cols-3 md:gap-x-4 gap-x-2 gap-y-1">
         {quickLink.map((link) => (
           <div key={link.id} className="relative group">
-            <Link href={link.href} className="uppercase font-medium">
+            <Link href={link.href} className="uppercase font-medium truncate">
               {link.label}
             </Link>
             <span
@@ -44,7 +44,7 @@ const QuickLinks = () => {
                 "absolute left-0 h-[2px] w-full transform scale-x-0 transition-transform duration-700 ease-in-out group-hover:scale-x-100 origin-left bg-white"
               )}
             >
-              <Link href={link.href} className="uppercase font-medium">
+              <Link href={link.href} className="uppercase font-medium truncate">
                 {link.label}
               </Link>
             </span>

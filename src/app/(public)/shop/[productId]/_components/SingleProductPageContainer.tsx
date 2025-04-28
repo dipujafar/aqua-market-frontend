@@ -1,6 +1,12 @@
 import Container from "@/components/shared/Container";
 import ProductImages from "./ProductImages";
 import ProductDetails from "./ProductDetails";
+import ProductDescription from "./ProductDescription";
+import RelatedProduct from "./RelatedProduct";
+
+import SubmitYourReview from "./SubmitYourReview";
+import CustomerFeedbacks from "./CustomerFeedbacks";
+import AverageRating from "./AverageRating";
 
 const SingleProductPageContainer = () => {
   return (
@@ -15,8 +21,16 @@ const SingleProductPageContainer = () => {
     </div>
     {/* <CharitySupport></CharitySupport> */}
 
-    {/* <ProductDescription></ProductDescription> */}
+    <ProductDescription></ProductDescription>
+    <RelatedProduct></RelatedProduct>
     {/* <RecentlyViewed></RecentlyViewed> */}
+
+    <div className="flex flex-col lg:flex-row gap-x-4  gap-y-4">
+        {/* <AverageRating></AverageRating> */}
+        <SubmitYourReview className="lg:w-3/5"></SubmitYourReview>
+    </div>
+
+    <CustomerFeedbacks></CustomerFeedbacks>
   </Container>
   );
 };
