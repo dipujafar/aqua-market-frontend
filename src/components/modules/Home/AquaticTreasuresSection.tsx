@@ -12,7 +12,7 @@ const AquaticTreasuresSection = () => {
         LastPart="Aquatic Treasures!"
       ></SectionTitle>
       <div className="grid xl:grid-cols-4 lg:grid-cols-2 gap-4 ">
-        {productData?.map(product=><ProductCard data={product}></ProductCard>)}
+        {productData?.map(product=><ProductCard key={product?._id} data={product}></ProductCard>)}
       </div>
     </Container>
   );

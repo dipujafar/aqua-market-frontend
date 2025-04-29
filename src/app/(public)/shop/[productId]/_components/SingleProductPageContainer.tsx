@@ -26,7 +26,7 @@ const SingleProductPageContainer = () => {
     {/* <RecentlyViewed></RecentlyViewed> */}
 
     <div className="flex flex-col lg:flex-row gap-x-4  gap-y-4">
-        {/* <AverageRating></AverageRating> */}
+        <AverageRating className="lg:w-2/5"></AverageRating>
         <SubmitYourReview className="lg:w-3/5"></SubmitYourReview>
     </div>
 

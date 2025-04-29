@@ -13,14 +13,14 @@ const RightArrowIcon=({className}: {className?: string}) => {
         <path
           d="M16.25 7.72607L1.25 7.72607"
           stroke="white"
-          stroke-width="1.5"
+          strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M10.1992 1.70149L16.2492 7.72549L10.1992 13.7505"
           stroke="white"
-          stroke-width="1.5"
+          strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
