@@ -10,22 +10,22 @@ const quickLink = [
   {
     id: 2,
     label: "Shop Live Fish",
-    href: "#",
+    href: "/shop",
   },
   {
     id: 3,
     label: "Privacy policy",
-    href: "#",
+    href: "/privacy-policy",
   },
   {
     id: 4,
     label: "Terms of use",
-    href: "#",
+    href: "/terms-use",
   },
   {
     id: 5,
     label: "about us",
-    href: "#",
+    href: "/about-us",
   }
 ];
 
@@ -35,19 +35,11 @@ const QuickLinks = () => {
       <p>Copyright © 2024 AquaMarket. All rights reserved.</p>
       <div className="md:flex grid grid-cols-3 md:gap-x-4 gap-x-2 gap-y-1">
         {quickLink.map((link) => (
-          <div key={link.id} className="relative group">
+          <div key={link.id} className="relative group hover:border-y duration-300 transition-all">
             <Link href={link.href} className="uppercase font-medium truncate">
               {link.label}
             </Link>
-            <span
-              className={cn(
-                "absolute left-0 h-[2px] w-full transform scale-x-0 transition-transform duration-700 ease-in-out group-hover:scale-x-100 origin-left bg-white"
-              )}
-            >
-              <Link href={link.href} className="uppercase font-medium truncate">
-                {link.label}
-              </Link>
-            </span>
+            
           </div>
         ))}
       </div>

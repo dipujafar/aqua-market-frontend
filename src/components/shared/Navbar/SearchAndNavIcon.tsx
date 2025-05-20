@@ -25,11 +25,7 @@ const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
         viewport={{ once: true }}
         className="flex lg:gap-x-4 gap-x-2 items-center justify-center  "
       >
-        <motion.div
-          variants={childrenVariants}
-          className="relative 
-           "
-        >
+        <motion.div variants={childrenVariants} className="relative">
           <Input
             className={`border-0 border-b  focus:outline-0 shadow-none rounded-none focus-visible:ring-0 placeholder:text-${color} min-w-[120px] `}
             placeholder="Search here....."
@@ -46,6 +42,7 @@ const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
               height="25"
               viewBox="0 0 25 25"
               fill="none"
+              className="hover:bg-white/20 rounded-full"
             >
               <g opacity="0.9">
                 <mask
@@ -76,6 +73,7 @@ const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
               height="21"
               viewBox="0 0 17 21"
               fill="none"
+              className="hover:bg-white/20 rounded-full"
             >
               <path
                 fillRule="evenodd"
