@@ -37,17 +37,18 @@ const ProductCard = ({ data }: { data: any }) => {
             </div>
           )}
 
-         {data?.left && <div className="absolute top-0 left-0 space-y-2">
+         {data?.left && <div className="absolute top-0 left-0 space-y-1">
           {data?.left && (
-            <div className="py-2 px-4 bg-primary-sky text-sm max-w-[130px] rounded-tl ">
+            <div className="py-1 px-4 bg-primary-sky text-sm max-w-[130px] rounded-tl ">
               <h6 className="text-center text-lg font-bold">{data?.left}</h6>
-              <h6>Left</h6>
+              <h6 className="text-white/80 text-xs">Left</h6>
             </div>
           )}
+          <hr className="w-[85%] mx-auto border-gray-400" />
           {data?.totalBid && (
-            <div className="py-2 px-4 bg-primary-sky text-sm max-w-[130px]  ">
+            <div className="py-1 px-4 bg-primary-sky text-sm max-w-[130px]  ">
               <h6 className="text-center text-lg font-bold">{data?.totalBid}</h6>
-              <h6>Bids</h6>
+              <h6  className="text-white/80 text-xs">Bids</h6>
             </div>
           )}
           </div>
@@ -63,8 +64,9 @@ const ProductCard = ({ data }: { data: any }) => {
           {/* =============== add to card button ====================== */}
           { data?.type !== "bid" &&
             <div
-              style={{ background: "rgba(156, 156, 156, 0.40)" }}
-              className="absolute top-1 right-1 size-12 flex justify-center items-center rounded-full hover:bg-white cursor-pointer"
+              // style={{ background: "rgba(156, 156, 156, 0.40)" }}
+              className="absolute top-1 right-1 size-11 flex justify-center items-center rounded-full bg-[rgba(156,_156,_156,_0.40)] hover:bg-white/40 duration-300 cursor-pointer"
+
             >
               <ShoppingCartIcon></ShoppingCartIcon>
             </div>

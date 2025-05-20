@@ -45,10 +45,10 @@ const VerifyOtpForm = () => {
   return (
     <Card
       className="max-w-[742px] w-fit mx-auto shadow-none border-none lg:px-16 lg:py-10 text-white"
-    style={{
+      style={{
         background:
           "linear-gradient(180deg, rgba(77, 168, 218, 0.22) 0%, rgba(120, 192, 168, 0.22) 85.08%)",
-           boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.14)"
+        boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.14)",
       }}
     >
       <CardContent>
@@ -77,10 +77,7 @@ const VerifyOtpForm = () => {
                             <InputOTPSlot
                               key={index}
                               index={index}
-                              className="border lg:size-14 text-white"
-                              style={{
-                                background: "linear-gradient(180deg, rgba(77, 168, 218, 0.50) 0%, rgba(120, 192, 168, 0.50) 85.08%)"
-                              }}
+                              className="border lg:size-14 text-white bg-transparent"
                             />
                           ))}
                       </InputOTPGroup>

@@ -43,7 +43,7 @@ const Rating = React.forwardRef<
               >
                 <Star
                   size={size}
-                  className="text-[#FFD700]"
+                  className="text-[#F7B814]"
                   fill="currentColor"
                   stroke="currentColor"
                 />

@@ -66,7 +66,7 @@ const SIgnInForm = () => {
       style={{
         background:
           "linear-gradient(180deg, rgba(77, 168, 218, 0.22) 0%, rgba(120, 192, 168, 0.22) 85.08%)",
-          boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.14)"
+        boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.14)",
       }}
     >
       <CardHeader>
@@ -96,14 +96,10 @@ const SIgnInForm = () => {
                   <FormLabel>Email Address</FormLabel>
                   <FormControl>
                     <Input
-                    
                       placeholder="Enter Your Email"
                       {...field}
-                      className="focus-visible:ring-0 focus-visible:ring-offset-0 border-none rounded md:py-5 bg-transparent"
-                      style={{
-                        background:
-                          "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                      }}
+                      className=" rounded py-5 bg-transparent"
+                      type="email"
                     />
                   </FormControl>
                   <FormMessage />
@@ -119,14 +115,10 @@ const SIgnInForm = () => {
                   <FormControl>
                     <div className="relative">
                       <Input
-                        style={{
-                          background:
-                            "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                        }}
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter Your Password"
                         {...field}
-                        className="focus-visible:ring-0  focus-visible:ring-offset-0 border-none  rounded bg-[#F5F5F5] md:py-5"
+                         className=" rounded py-5 bg-transparent"
                       />
                       <div className="absolute right-2 top-1/2 -translate-y-1/2">
                         {showPassword ? (
@@ -152,7 +144,7 @@ const SIgnInForm = () => {
               )}
             />
 
-            <div className="flex flex-col justify-between gap-y-3 md:flex-row">
+            <div className="flex flew-wrap justify-between gap-y-3 md:flex-row">
               <div className="flex items-center space-x-2">
                 <Checkbox id="terms" />
                 <label htmlFor="terms" className="text-secondary-gray">
@@ -168,7 +160,7 @@ const SIgnInForm = () => {
 
             <div className="flex justify-center gap-x-2">
               <p className="text-secondary-gray">Don&apos;t have an account?</p>
-              <Link  href={"/choose-user-role"}>
+              <Link href={"/choose-user-role"}>
                 <span className="text-lg font-medium text-gradiant underline">
                   Sign Up
                 </span>
@@ -177,25 +169,6 @@ const SIgnInForm = () => {
           </form>
         </Form>
       </CardContent>
-      {/* <CardFooter className="flex-col gap-y-3">
-        <div className="flex  items-center justify-center w-full gap-x-2 text-primary-gray">
-          <span className="w-16 h-[0.5px] bg-primary-gray"></span>
-          <p className="w-fit">Or, Log in with </p>
-          <span className="w-16   h-[0.5px] bg-primary-gray"></span>
-        </div>
-        <div className="flex items-center justify-center gap-x-3">
-          <Image
-            src={googleIcon}
-            alt="apple_icon"
-            className="size-8 cursor-pointer"
-          ></Image>
-          <Image
-            src={appleIcon}
-            alt="apple_icon"
-            className="size-8 cursor-pointer"
-          ></Image>
-        </div>
-      </CardFooter> */}
     </Card>
   );
 };

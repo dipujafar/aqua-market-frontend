@@ -80,7 +80,7 @@ const SetNewPasswordForm = () => {
       style={{
         background:
           "linear-gradient(180deg, rgba(77, 168, 218, 0.22) 0%, rgba(120, 192, 168, 0.22) 85.08%)",
-          boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.14)"
+        boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.14)",
       }}
     >
       <CardContent>
@@ -98,14 +98,10 @@ const SetNewPasswordForm = () => {
                   <FormControl>
                     <div className="relative">
                       <Input
-                       style={{
-                        background:
-                          "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                      }}
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter Your Password"
                         {...field}
-                        className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded border-none md:py-5"
+                        className=" rounded py-5 bg-transparent"
                       />
                       <div className="absolute right-2 top-1/2 -translate-y-1/2">
                         {showPassword ? (
@@ -139,14 +135,10 @@ const SetNewPasswordForm = () => {
                   <FormControl>
                     <div className="relative">
                       <Input
-                       style={{
-                        background:
-                          "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                      }}
                         type={showConfirmPassword ? "text" : "password"}
                         placeholder="Enter Your Password"
                         {...field}
-                        className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded border-none md:py-5"
+                        className=" rounded py-5 bg-transparent"
                       />
                       <div className="absolute right-2 top-1/2 -translate-y-1/2">
                         {showConfirmPassword ? (
