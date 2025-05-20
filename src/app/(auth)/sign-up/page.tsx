@@ -1,10 +1,4 @@
-import PageTopSection from "@/components/shared/PageTopSection";
 import SignUpForm from "./components/SignUpForm";
-
-
-
-
-
 export const metadata = {
   title: "Sign Up",
   description: "Create your account and enjoy shopping",
@@ -12,8 +6,8 @@ export const metadata = {
 
 const SignInPage = () => {
   return (
-   <div>
-    <SignUpForm></SignUpForm>
+    <div>
+      <SignUpForm></SignUpForm>
     </div>
   );
 };
