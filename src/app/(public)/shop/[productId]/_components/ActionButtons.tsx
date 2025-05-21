@@ -3,10 +3,13 @@ import { ArrowIcon, ShoppingCartIcon } from "@/components/icons/Icons";
 import { Button } from "@/components/ui/button";
 import CommonButton from "@/components/ui/common-button";
 import { Minus, Plus } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 const ActionButtons = () => {
   const [quality, setQuality] = useState<number>(1);
+  const type = useSearchParams().get("type");
+  const router = useRouter();
   return (
     <div className="lg:space-y-6 space-y-3 lg:mt-8 mt-6">
       <div className="flex items-center justify-between border-b pb-2 border-white/50">
@@ -41,6 +44,8 @@ const ActionButtons = () => {
         {/* =============== buy now  button ================ */}
         <div className="flex items-center gap-x-4">
           <Button
+            onClick={() => router.push("/shopping/shopping-cart")}
+            disabled={type === "bid"}
             style={{
               background:
                 "linear-gradient(180deg, rgba(77, 168, 218, 0.16) 0%, rgba(120, 192, 168, 0.16) 85.08%)",
@@ -55,7 +60,7 @@ const ActionButtons = () => {
             style={{
               background: "rgba(77, 168, 218, 0.40)",
             }}
-            className="md:size-12 size-10 rounded-full flex justify-center items-center "
+            className="md:size-12 size-10 rounded-full flex justify-center items-center cursor-pointer "
           >
             <ShoppingCartIcon></ShoppingCartIcon>
           </div>
@@ -63,22 +68,17 @@ const ActionButtons = () => {
 
         {/* ============================= bit now button ==================== */}
         <Button
-          disabled
+          disabled={type !== "bid"}
+             onClick={() => router.push("/shopping-bid")}
           style={{
             background:
               "linear-gradient(180deg, rgba(77, 168, 218, 0.16) 0%, rgba(120, 192, 168, 0.16) 85.08%)",
           }}
           className="rounded border-r-3 border-b-3 border-white uppercase md:min-w-40 md:py-5 cursor-pointer group w-full"
         >
-          Bid now{" "}
+          Bid now
           <ArrowIcon className="group-hover:translate-x-2 duration-500"></ArrowIcon>
         </Button>
-        {/* <CommonButton className="w-full bg-primary-light-pink text-primary-black hover:bg-primary-black/10">
-          add to favourite
-        </CommonButton>
-        <CommonButton className="w-full bg-primary-light-pink text-primary-black hover:bg-primary-black/10">
-          make an offer
-        </CommonButton> */}
       </div>
     </div>
   );

@@ -91,6 +91,7 @@ const ProductCard = ({ data }: { data: any }) => {
         </div>
 
         {/* ================= action button ================= */}
+        <Link href={`/shop/1?type=${data?.type}`}>
         <Button
           className="uppercase w-full rounded  cursor-pointer z-20 border-b-4 border-r-4 border-primary-deep-green group lg:py-5"
           style={{ backgroundColor: productCardButtonColor(data?.type) }}
@@ -100,6 +101,7 @@ const ProductCard = ({ data }: { data: any }) => {
           {data?.type === "directBuy" && "Buy NOW"}
           <RightArrowIcon className="group-hover:translate-x-2 duration-500"></RightArrowIcon>
         </Button>
+        </Link>
       </CardContent>
     </Card>
   );

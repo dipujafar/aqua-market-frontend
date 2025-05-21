@@ -6,14 +6,17 @@ import { TProductImage } from "@/types";
 import { CarouselThumbs } from "./CarouselThumbs";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import { cn } from "@/lib/utils";
 
 type PropType = {
   slides: TProductImage[];
   options?: any;
+  showThumbs?: boolean;
+  className?: string;
 };
 
 const ProductImagesCarousel: React.FC<PropType> = (props) => {
-  const { slides, options } = props;
+  const { slides, options, showThumbs, className } = props;
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [emblaMainRef, emblaMainApi] = useEmblaCarousel(options);
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
@@ -55,7 +58,10 @@ const ProductImagesCarousel: React.FC<PropType> = (props) => {
                   height={500}
                   alt="product_image"
                   quality={100}
-                  className="w-full 2xl:h-[700px] xl:h-[550px] lg:h-[400px] md:h-[620px] h-[350px] object-cover origin-center  mx-auto rounded"
+                  className={cn(
+                    "w-full 2xl:h-[700px] xl:h-[550px] lg:h-[400px] md:h-[620px] h-[350px] object-cover origin-center  mx-auto rounded",
+                    className
+                  )}
                 ></Image>
               </Zoom>
             </div>
@@ -63,7 +69,7 @@ const ProductImagesCarousel: React.FC<PropType> = (props) => {
         </div>
       </div>
 
-      <div className="embla-thumbs">
+      <div className={cn("embla-thumbs", showThumbs && "hidden")}>
         <div className="embla-thumbs__viewport" ref={emblaThumbsRef}>
           <div className="embla-thumbs__container  md:gap-2 grid grid-cols-4 mt-2">
             {slides?.slice(0, 6)?.map((data, index) => (

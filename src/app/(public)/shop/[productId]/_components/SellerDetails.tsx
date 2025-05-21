@@ -10,9 +10,7 @@ const SellerDetails = () => {
         <p className="font-light text-gray-200">VIEW DETAILS</p>
       </div>
 
-      <div
-        className="bg-primary-light-pink/5 mt-4  rounded-lg "
-      >
+      <div className="bg-primary-light-pink/5 mt-4  rounded-lg ">
         <div className="space-y-2 flex justify-between border-b pb-2 ">
           <div className="flex  gap-x-2  flex-1 ">
             <div className="relative size-12 rounded-full">
@@ -37,7 +35,9 @@ const SellerDetails = () => {
           <hr />
         </div>
 
-        <CommonButton className="w-full mt-4 group border-r-3 border-b-3 border-white ">follow seller <ArrowIcon className="group-hover:translate-x-2 duration-500"></ArrowIcon></CommonButton>
+        <CommonButton className="w-full mt-4 group border-r-3 border-b-3 border-white ">
+          follow seller
+        </CommonButton>
       </div>
     </div>
   );

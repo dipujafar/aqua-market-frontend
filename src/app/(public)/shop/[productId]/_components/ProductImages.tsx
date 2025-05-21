@@ -1,7 +1,7 @@
 "use client";
 import { EmblaOptionsType } from "embla-carousel";
 import { productDetails } from "@/lib/dummyData";
-import ProductImagesCarousel from "./carousel/ProductImagesCarousel";
+import ProductImagesCarousel from "@/components/shared/carousel/ProductImagesCarousel";
 
 const OPTIONS: EmblaOptionsType = {};
 
