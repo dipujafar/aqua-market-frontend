@@ -20,6 +20,8 @@ import CommonButton from "@/components/ui/common-button";
 import { PhoneInput } from "@/components/ui/phone-input";
 import PageTopSection from "@/components/shared/PageTopSection";
 import { useSearchParams } from "next/navigation";
+import { Label } from "@/components/ui/label";
+import CountryStateCitySelector from "@/components/ui/country-state-city-selector";
 
 const formSchema = z.object({
   firstName: z
@@ -38,6 +40,21 @@ const formSchema = z.object({
     .string({ required_error: "Email is required" })
     .min(1, { message: "Email is required" })
     .email({ message: "Please enter a valid email address" }),
+  country: z.string({
+    required_error: "Please select a country.",
+  }),
+  streetAddress: z.string().min(5, {
+    message: "Street address must be at least 5 characters.",
+  }),
+  city: z.string({
+    required_error: "Please select a city.",
+  }),
+  state: z.string({
+    required_error: "Please select a state.",
+  }),
+  zipCode: z.string().min(5, {
+    message: "Zip code must be at least 5 characters.",
+  }),
   password: z
     .string({ required_error: "Password is required" })
     .min(1, { message: "Password is required" })
@@ -66,8 +83,14 @@ const SignUpForm = () => {
     defaultValues: {
       email: "",
       password: "",
+      streetAddress: "",
+      zipCode: "",
+      country: "",
+      city: "",
+      state: "",
     },
   });
+  const { register, setValue, control } = form;
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     console.log(data);
@@ -178,6 +201,24 @@ const SignUpForm = () => {
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email Address</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter Your Email"
+                        {...field}
+                        className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="phoneNumber"
@@ -198,23 +239,16 @@ const SignUpForm = () => {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email Address</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter Your Email"
-                        {...field}
-                        className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {/* Country, State, City Selector */}
+              <div className="grid w-full  items-center gap-1.5">
+                <Label>Location</Label>
+                <CountryStateCitySelector
+                  control={control}
+                  setValue={setValue}
+                  register={register}
+                />
+              </div>
+
               <FormField
                 control={form.control}
                 name="password"

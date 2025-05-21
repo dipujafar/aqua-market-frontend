@@ -2,7 +2,6 @@
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
 } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
@@ -22,10 +21,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import CommonButton from "@/components/ui/common-button";
-
-// import appleIcon from "@/assets/icons/apple.png";
-// import googleIcon from "@/assets/icons/google.png";
-// import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z
@@ -48,6 +44,7 @@ const formSchema = z.object({
 
 const SIgnInForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,7 +54,7 @@ const SIgnInForm = () => {
   });
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+   router.push("/user/profile")
   };
 
   return (

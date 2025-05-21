@@ -24,8 +24,16 @@ const productData = [
     style: "Single",
   },
   {
-    name: "Freezer",
+    name: "Pink Polka Dot Hillstream Loach",
     image: "/productImage2.png",
+    price: 24,
+    quantity: 3,
+    seller_info: "AquaPet Seller",
+    style: "Single",
+  },
+  {
+    name: "Pink Polka Dot Hillstream Loach",
+    image: "/productImage4.png",
     price: 24,
     quantity: 3,
     seller_info: "AquaPet Seller",

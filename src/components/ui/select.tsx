@@ -26,6 +26,8 @@ function SelectValue({
 
 function SelectTrigger({
   className,
+  // @ts-ignore
+  iconShow= true,
   size = "default",
   children,
   ...props
@@ -43,9 +45,9 @@ function SelectTrigger({
       {...props}
     >
       {children}
-      <SelectPrimitive.Icon asChild>
+      {iconShow && <SelectPrimitive.Icon asChild>
         <ChevronDownIcon className="size-4 opacity-50" />
-      </SelectPrimitive.Icon>
+      </SelectPrimitive.Icon>}
     </SelectPrimitive.Trigger>
   )
 }
