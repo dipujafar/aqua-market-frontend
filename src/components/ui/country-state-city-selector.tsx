@@ -239,7 +239,7 @@ export default function CountryStateCitySelector({
             type="text"
             id="streetAddress"
             placeholder="Street Address"
-            className="outline-none focus:outline-none py-5 bg-primary-light-gray"
+            className="outline-none focus:outline-none py-5 bg-primary-light-gray bg-transparent"
             {...register("streetAddress")}
           />
         </div>
@@ -250,7 +250,7 @@ export default function CountryStateCitySelector({
             type="number"
             id="zipCode"
             placeholder="Type Zip Code"
-            className="outline-none focus:outline-none py-5 bg-primary-light-gray"
+            className="outline-none focus:outline-none py-5 bg-primary-light-gray bg-transparent"
             {...register("zipCode")}
           />
         </div>

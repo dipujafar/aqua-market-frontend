@@ -1,11 +1,11 @@
-
+import ProfileForm from "./_components/ProfileForm";
 
 const UserProfilePage = () => {
-    return (
-        <div>
-           <h1></h1> 
-        </div>
-    );
+  return (
+    <div>
+      <ProfileForm />
+    </div>
+  );
 };
 
 export default UserProfilePage;

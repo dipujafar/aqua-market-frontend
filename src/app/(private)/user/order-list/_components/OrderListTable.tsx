@@ -21,6 +21,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { ClaimSendDialog } from "./ClaimSendDialog";
 import PaginationSection from "@/components/shared/PaginationSection";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 
 const productData = [
   {
@@ -73,6 +75,22 @@ const OrderListTable = () => {
   const [openClaimForm, setOpenClaimForm] = useState(false);
   return (
     <>
+      <div className="md:mb-5 mb-3 flex justify-between items-center">
+        <h5 className="md:text-2xl font-light truncate">My Order History</h5>
+        <div className="lg:min-w-sm min-w-[200px] relative">
+          <Input
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(77, 168, 218, 0.24) 0%, rgba(120, 192, 168, 0.24) 85.08%)",
+            }}
+            placeholder="Search here....."
+            className="lg:max-w-sm max-w-[200px] md:py-5 pl-8"
+          />
+          <span className="absolute top-1/2  -translate-y-1/2 ml-2">
+            <Search size={18} />
+          </span>
+        </div>
+      </div>
       <div className="col-span-2  rounded-md border md:p-5 px-2 ">
         <Table className="lg:text-lg w-full overflow-x-auto">
           <TableHeader className="  text-white">
@@ -139,7 +157,10 @@ const OrderListTable = () => {
                 <TableCell className="text-center text-sm">
                   {data?.date}
                 </TableCell>
-                <TableCell onClick={() => setOpenClaimForm(true)} className="text-center text-sm ">
+                <TableCell
+                  onClick={() => setOpenClaimForm(true)}
+                  className="text-center text-sm "
+                >
                   <ClaimIcon className="w-fit mx-auto cursor-pointer" />
                 </TableCell>
               </TableRow>
