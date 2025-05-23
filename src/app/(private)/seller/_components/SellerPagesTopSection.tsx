@@ -12,32 +12,32 @@ const navLinks = [
   {
     _id: 1,
     title: "Profile Details",
-    href: "/user/profile",
+    href: "/seller/profile",
   },
   {
     _id: 2,
     title: "Item List for Direct Sale",
-    href: "/user/item-list-direct-sale",
+    href: "/seller/item-list-direct-sale",
   },
   {
     _id: 3,
     title: "Item List for Bid",
-    href: "/user/item-list-bid",
+    href: "/seller/item-list-bid",
   },
   {
     _id: 4,
     title: "Item List for Pre Order",
-    href: "/user/item-list-pre-order",
+    href: "/seller/item-list-pre-order",
   },
   {
     _id: 5,
     title: "Earning",
-    href: "/user/earning",
+    href: "/seller/earning",
   },
   {
     _id: 4,
     title: "Settings",
-    href: "/user/settings",
+    href: "/seller/settings",
   },
 ];
 
