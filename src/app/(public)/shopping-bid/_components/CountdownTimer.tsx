@@ -60,8 +60,8 @@ export function CountdownTimer({ targetDate, title = "Time Left", endText = "End
   }
 
   return (
-    <Card className="bg-[#1e2a47] text-white border-none shadow-lg">
-      <CardHeader className="pb-2">
+    <Card style={{ background: "linear-gradient(180deg, rgba(77, 168, 218, 0.14) 0%, rgba(120, 192, 168, 0.14) 85.08%)" }} className=" text-white border-none shadow-lg">
+      <CardHeader className="md:pb-2">
         <CardTitle className="text-lg font-medium">{title}</CardTitle>
       </CardHeader>
       <CardContent>

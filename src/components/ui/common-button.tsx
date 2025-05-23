@@ -7,15 +7,18 @@ const CommonButton = ({
   children,
   className,
   disabled = false,
-  type
+  type,
+  handlerFunction
 }: {
   children: ReactNode;
   className?: string;
   disabled?: boolean;
   type?: "submit" | "reset" | "button";
+  handlerFunction?: () => void
 }) => {
   return (
     <Button
+      onClick={handlerFunction}
       type={type}
       style={{
         background: "linear-gradient(180deg, rgba(77, 168, 218, 0.60) 0%, rgba(120, 192, 168, 0.60) 85.08%)"

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ArrowUpDown } from "lucide-react"
+import CommonButton from "@/components/ui/common-button"
 
 interface BiddingComponentProps {
   currentBid: number
@@ -46,7 +47,7 @@ export default function BiddingComponent({
   }
 
   return (
-    <div className="w-full max-w-md p-4 rounded-lg bg-[#1a2235] text-white">
+    <div style={{ background: "linear-gradient(180deg, rgba(77, 168, 218, 0.14) 0%, rgba(120, 192, 168, 0.14) 85.08%)"}} className="w-full p-4 rounded-lg  text-white">
       <div className="mb-4">
         <p className="text-sm mb-1">Current Bid: ${currentBid.toFixed(2)}</p>
         <p className="text-sm text-gray-400">From: {bidder}</p>
@@ -59,7 +60,7 @@ export default function BiddingComponent({
             value={bidAmount}
             onChange={handleBidChange}
             placeholder="Enter your bid amount"
-            className="pr-10 bg-[#252d3f] border-[#3a4257] text-white placeholder:text-gray-400"
+            className="pr-10 bg-[#252d3f] border-[#3a4257] text-white placeholder:text-gray-40 md:py-5"
           />
           <div className="absolute right-2 top-0 bottom-0 flex flex-col justify-center">
             <button onClick={handleIncrementBid} className="text-gray-400 hover:text-white" aria-label="Increase bid">
@@ -68,13 +69,13 @@ export default function BiddingComponent({
           </div>
         </div>
 
-        <Button
-          onClick={handleSubmit}
+        <CommonButton
+          handlerFunction={handleSubmit}
           disabled={!agreeTerms || bidAmount <= currentBid}
-          className="ml-2 bg-[#4db6ce] hover:bg-[#3da6be] text-white"
+          className="rounded border-r-3 border-b-3 border-white uppercase md:min-w-20 md:py-[19px] cursor-pointer group ml-2"
         >
           PLACE BID
-        </Button>
+        </CommonButton>
       </div>
 
       <div className="flex items-center space-x-2">
@@ -86,7 +87,7 @@ export default function BiddingComponent({
         />
         <label
           htmlFor="terms"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-white/80"
         >
           I agree to pay if I win this bidding
         </label>

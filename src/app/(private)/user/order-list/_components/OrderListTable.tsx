@@ -168,7 +168,8 @@ const OrderListTable = () => {
           </TableBody>
         </Table>
       </div>
-      <PaginationSection />
+      <PaginationSection className="mt-5" />
+
       {/* claim send form dialog */}
       <ClaimSendDialog
         open={openClaimForm}
