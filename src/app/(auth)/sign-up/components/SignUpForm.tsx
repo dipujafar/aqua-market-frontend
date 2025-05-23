@@ -43,6 +43,7 @@ const formSchema = z.object({
   country: z.string({
     required_error: "Please select a country.",
   }),
+  storeName: z.string().optional(),
   streetAddress: z.string().min(5, {
     message: "Street address must be at least 5 characters.",
   }),
@@ -88,6 +89,7 @@ const SignUpForm = () => {
       country: "",
       city: "",
       state: "",
+      storeName: "",
     },
   });
   const { register, setValue, control } = form;
@@ -219,6 +221,7 @@ const SignUpForm = () => {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="phoneNumber"
@@ -238,6 +241,26 @@ const SignUpForm = () => {
                   </FormItem>
                 )}
               />
+
+              {userRole === "Seller" && (
+                <FormField
+                  control={form.control}
+                  name="storeName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Store Name (Optional)</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter your store name"
+                          {...field}
+                          className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5 "
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
 
               {/* Country, State, City Selector */}
               <div className="grid w-full  items-center gap-1.5">
