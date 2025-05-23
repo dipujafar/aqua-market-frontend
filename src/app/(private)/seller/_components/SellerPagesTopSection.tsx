@@ -16,13 +16,23 @@ const navLinks = [
   },
   {
     _id: 2,
-    title: "Order List",
-    href: "/user/order-list",
+    title: "Item List for Direct Sale",
+    href: "/user/item-list-direct-sale",
   },
   {
     _id: 3,
-    title: "My Bid History",
-    href: "/user/bid-history",
+    title: "Item List for Bid",
+    href: "/user/item-list-bid",
+  },
+  {
+    _id: 4,
+    title: "Item List for Pre Order",
+    href: "/user/item-list-pre-order",
+  },
+  {
+    _id: 5,
+    title: "Earning",
+    href: "/user/earning",
   },
   {
     _id: 4,
@@ -31,7 +41,7 @@ const navLinks = [
   },
 ];
 
-const UserPagesTopSection = () => {
+const SellerPagesTopSection = () => {
   const pathName = usePathname();
   return (
     <div className="max-h-[240px] relative">
@@ -41,7 +51,7 @@ const UserPagesTopSection = () => {
         className="max-h-[240px] min-h-[150px] w-full object-cover"
       ></Image>
       <div
-        className="max-w-3xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:px-16 lg:py-4 px-10 py-5 text-primary-white lg:text-5xl md:text-3xl text-xl font-semibold text-center w-full md:backdrop-blur-[7px] backdrop-blur-[4px] rounded-lg"
+        className="max-w-5xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:px-16 lg:py-4 px-10 py-5 text-primary-white lg:text-5xl md:text-3xl text-xl font-semibold text-center w-full md:backdrop-blur-[7px] backdrop-blur-[4px] rounded-lg"
         style={{
           background: "rgba(217, 217, 217, 0.09)",
         }}
@@ -84,4 +94,4 @@ const UserPagesTopSection = () => {
   );
 };
 
-export default UserPagesTopSection;
+export default SellerPagesTopSection;

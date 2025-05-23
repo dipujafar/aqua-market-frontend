@@ -1,4 +1,4 @@
-"use client";
+"use client";;
 import { Card, CardContent } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -20,7 +20,6 @@ import CountryStateCitySelector from "@/components/ui/country-state-city-selecto
 import { ImageUp, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CustomAvatar from "@/components/shared/CustomAvatar";
-import Image from "next/image";
 
 const formSchema = z.object({
   firstName: z
@@ -267,7 +266,7 @@ const ProfileForm = () => {
                   }}
                 />
               </div>
-              <CommonButton className="w-full">SIGN UP</CommonButton>
+              <CommonButton className="w-full">Update</CommonButton>
             </form>
           </Form>
         </CardContent>
