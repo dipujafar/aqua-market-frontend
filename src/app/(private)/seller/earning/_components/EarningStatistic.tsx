@@ -158,7 +158,7 @@ export default function EarningStatistic() {
                 color="#fff"
                 tick={{ fill: "#fff" }}
               />
-              <Tooltip />
+              <Tooltip content={<CustomTooltip />} />
               <Area
                 activeDot={false}
                 type="monotone"
