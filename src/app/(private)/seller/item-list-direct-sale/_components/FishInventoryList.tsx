@@ -157,41 +157,7 @@ export default function FishInventoryList() {
               <TableHead className="text-white py-5">Item Number</TableHead>
               <TableHead className="text-white py-5">Price</TableHead>
               <TableHead className="text-white py-5">Date</TableHead>
-              <TableHead className="text-white py-5">
-                <div className="flex items-center gap-2">
-                  Status
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-6 w-6 text-white hover:bg-[#5a9a9a]/80"
-                      >
-                        <Filter className="h-4 w-4" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-80 bg-[#1a1a3a] border-[#2a2a4a] text-white  rounded-lg">
-                      <div className="grid gap-4">
-                        <div className="space-y-2 p-4">
-                          <h4 className="font-medium">
-                            Filter by Order Status
-                          </h4>
-                          <div className="grid gap-2">
-                            <div className="flex items-center space-x-2">
-                              <Checkbox id="auction-ongoing" />
-                              <Label htmlFor="auction-ongoing">Ongoing</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <Checkbox id="auction-sold" />
-                              <Label htmlFor="auction-sold">Sold</Label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                </div>
-              </TableHead>
+              <TableHead className="text-white py-5">Status</TableHead>
               <TableHead className="text-white py-5">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -227,7 +193,8 @@ export default function FishInventoryList() {
                     {item?.status === "Sold" ? (
                       <Link
                         href={`/seller/item-list-direct-sale/purchase-order`}
-                        className="underline"                      >
+                        className="underline text-base"
+                      >
                         Sold
                       </Link>
                     ) : (
