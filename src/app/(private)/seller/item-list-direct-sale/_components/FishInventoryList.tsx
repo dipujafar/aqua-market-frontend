@@ -1,7 +1,6 @@
 "use client";
-
 import { useState } from "react";
-import { Search, Calendar, Eye } from "lucide-react";
+import { Search, Calendar, Eye, Trash2, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -14,6 +13,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Image from "next/image";
+import { Popover, PopoverTrigger } from "@/components/ui/popover";
+import { PopoverContent } from "@radix-ui/react-popover";
+import PaginationSection from "@/components/shared/PaginationSection";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import Link from "next/link";
 
 interface FishItem {
   id: string;
@@ -108,14 +113,14 @@ export default function FishInventoryList() {
   // Filter items based on search query and sold status
   const filteredItems = fishItems.filter((item) => {
     const matchesSearch =
-      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.itemNumber.toLowerCase().includes(searchQuery.toLowerCase());
+      item?.name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
+      item?.itemNumber?.toLowerCase()?.includes(searchQuery?.toLowerCase());
     const matchesStatus = showSoldOnly ? item.status === "Sold" : true;
     return matchesSearch && matchesStatus;
   });
 
   return (
-    <div className="w-full p-4 space-y-4  text-white rounded-lg">
+    <div className="w-full  space-y-4  text-white rounded-lg">
       {/* Search and filters */}
       <div className="flex flex-col sm:flex-row gap-3 justify-between">
         <div className="relative">
@@ -129,14 +134,6 @@ export default function FishInventoryList() {
         </div>
 
         <div className="flex gap-3">
-          <Button
-            variant="outline"
-            className="bg-[#1a2c42] border-[#1a2c42] text-white"
-          >
-            <Calendar className="h-4 w-4 mr-2" />
-            Filter by date
-          </Button>
-
           <div className="flex items-center gap-2">
             <span>Sold</span>
             <Switch checked={showSoldOnly} onCheckedChange={setShowSoldOnly} />
@@ -150,9 +147,8 @@ export default function FishInventoryList() {
           <TableHeader
             style={{
               background:
-                "linear-gradient(180deg, rgba(77, 168, 218, 0.80) 0%, rgba(120, 192, 168, 0.80) 85.08%)",
+                "linear-gradient(180deg, rgba(77, 168, 218, 0.50) 0%, rgba(120, 192, 168, 0.50) 85.08%)",
             }}
-            className=""
           >
             <TableRow>
               <TableHead className="text-white py-5">
@@ -161,13 +157,50 @@ export default function FishInventoryList() {
               <TableHead className="text-white py-5">Item Number</TableHead>
               <TableHead className="text-white py-5">Price</TableHead>
               <TableHead className="text-white py-5">Date</TableHead>
-              <TableHead className="text-white py-5">Status</TableHead>
+              <TableHead className="text-white py-5">
+                <div className="flex items-center gap-2">
+                  Status
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6 text-white hover:bg-[#5a9a9a]/80"
+                      >
+                        <Filter className="h-4 w-4" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 bg-[#1a1a3a] border-[#2a2a4a] text-white  rounded-lg">
+                      <div className="grid gap-4">
+                        <div className="space-y-2 p-4">
+                          <h4 className="font-medium">
+                            Filter by Order Status
+                          </h4>
+                          <div className="grid gap-2">
+                            <div className="flex items-center space-x-2">
+                              <Checkbox id="auction-ongoing" />
+                              <Label htmlFor="auction-ongoing">Ongoing</Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Checkbox id="auction-sold" />
+                              <Label htmlFor="auction-sold">Sold</Label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </TableHead>
               <TableHead className="text-white py-5">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredItems.map((item) => (
-              <TableRow key={item.id} className="border-b border-[#1a2c42]">
+              <TableRow
+                key={item.id}
+                className="border-b border-white hover:bg-transparent"
+              >
                 <TableCell className="flex items-center gap-3">
                   <div className=" rounded-md overflow-hidden">
                     <Image
@@ -191,19 +224,46 @@ export default function FishInventoryList() {
                         : "text-green-500"
                     }`}
                   >
-                    {item.status}
+                    {item?.status === "Sold" ? (
+                      <Link
+                        href={`/seller/item-list-direct-sale/purchase-order`}
+                        className="underline"                      >
+                        Sold
+                      </Link>
+                    ) : (
+                      item.status
+                    )}
                   </span>
                 </TableCell>
                 <TableCell>
                   <Button variant="ghost" size="icon">
-                    <Eye className="h-4 w-4" />
+                    <Eye className="size-4" />
                   </Button>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="ghost" size="icon">
+                        <Trash2 className="size-4" color="red" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 bg-gray-600 p-2 rounded">
+                      <p>Are you sure you want to delete this item?</p>
+                      <div className="flex justify-end gap-2 mt-3">
+                        <Button
+                          size={"sm"}
+                          className="bg-transparent border  border-red-500 text-red-500"
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
+      <PaginationSection className="mt-4" />
     </div>
   );
 }

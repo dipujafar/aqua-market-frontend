@@ -51,7 +51,7 @@ const SellerPagesTopSection = () => {
         className="max-h-[240px] min-h-[150px] w-full object-cover"
       ></Image>
       <div
-        className="max-w-5xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:px-16 lg:py-4 px-10 py-5 text-primary-white lg:text-5xl md:text-3xl text-xl font-semibold text-center w-full md:backdrop-blur-[7px] backdrop-blur-[4px] rounded-lg"
+        className="max-w-5xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:px-16 lg:py-4 md:px-10 px-2 py-5 text-primary-white lg:text-5xl md:text-3xl text-xl font-semibold text-center w-full md:backdrop-blur-[7px] backdrop-blur-[4px] rounded-lg"
         style={{
           background: "rgba(217, 217, 217, 0.09)",
         }}
@@ -69,24 +69,25 @@ const SellerPagesTopSection = () => {
                     : {}
                 }
                 className={cn(
-                  "rounded border-r-3 border-b-3  capitalize md:min-w-40 md:py-5 cursor-pointer group bg-white hover:bg-white/30  text-black  sm:m-2 m-1 text-[10px] md:text-sm px-2 md:px-3 py-0 md:h-9 h-7 hover:text-white ",
-                  "border-[#78C0A8]", pathName === navLink.href && "border-[#fff] text-white"
+                  "rounded border-r-3 border-b-3  capitalize md:min-w-40 md:py-5 cursor-pointer group bg-white hover:bg-white/30  text-black  sm:m-2 m-1 text-[10px] md:text-sm px-2 md:px-3 py-0 md:h-9 h-7 hover:text-white",
+                  "border-[#78C0A8]",
+                  pathName === navLink.href && "border-[#fff] text-white"
                 )}
               >
                 {navLink.title}
-                <AnimatedArrow className="md:size-4 size-3"  />
+                <AnimatedArrow className="md:size-4 size-3" />
               </Button>
             </Link>
           ))}
 
           <Button
             className={cn(
-              "rounded border-r-3 border-b-3  uppercase md:min-w-40 md:py-5 cursor-pointer group bg-white text-black  mx-2 hover:bg-white/30 text-[10px] md:text-sm px-2 md:px-3 py-0 hover:text-white",
+              "rounded border-r-3 border-b-3  uppercase md:min-w-40 md:py-5 cursor-pointer group bg-white text-black  sm:m-2 m-1 text-[10px] md:text-sm px-2 md:px-3 py-0 md:h-9 h-7   mx-2 hover:bg-white/30  hover:text-white",
               "border-[#78C0A8]"
             )}
           >
             Logout
-            <AnimatedArrow className="md:size-4 size-3"  />
+            <AnimatedArrow className="md:size-4 size-3" />
           </Button>
         </div>
       </div>
