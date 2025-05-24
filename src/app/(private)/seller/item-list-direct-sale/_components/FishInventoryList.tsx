@@ -203,12 +203,14 @@ export default function FishInventoryList() {
                   </span>
                 </TableCell>
                 <TableCell>
-                  <Button variant="ghost" size="icon">
+                  <Link href={`/seller/item-list-direct-sale/product-details`}>
+                  <Button variant="ghost" size="icon" className="cursor-pointer">
                     <Eye className="size-4" />
                   </Button>
+                  </Link>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button variant="ghost" size="icon">
+                      <Button variant="ghost" size="icon" className="cursor-pointer">
                         <Trash2 className="size-4" color="red" />
                       </Button>
                     </PopoverTrigger>

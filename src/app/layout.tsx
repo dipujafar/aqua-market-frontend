@@ -9,7 +9,7 @@ import 'react-pagination-bar/dist/index.css'
 const figtree = Figtree({
   display: "swap",
   variable: "--font-geist-sans",
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["300","400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
 });
 
