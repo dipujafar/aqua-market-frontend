@@ -73,4 +73,3 @@ const AverageRating = ({className}: {className?: string}) => {
 };
 
 export default AverageRating;
-

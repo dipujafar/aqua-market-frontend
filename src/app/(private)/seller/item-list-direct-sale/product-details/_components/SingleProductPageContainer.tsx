@@ -3,8 +3,9 @@ import ProductImages from "./ProductImages";
 import ProductDetails from "./ProductDetails";
 import ProductDescription from "./ProductDescription";
 import RelatedProduct from "./RelatedProduct";
-import CustomerFeedbacks from "./CustomerFeedbacks";
 import AverageRating from "./AverageRating";
+import CustomerFeedbacks from "./CustomerFeedbacks";
+
 
 const SingleProductPageContainer = () => {
   return (

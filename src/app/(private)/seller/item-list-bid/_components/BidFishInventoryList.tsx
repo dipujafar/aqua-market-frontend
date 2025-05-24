@@ -30,7 +30,7 @@ interface FishItem {
   status: "Ongoing" | "Sold";
 }
 
-export default function FishInventoryList() {
+export default function BidFishInventoryList() {
   const [showSoldOnly, setShowSoldOnly] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
