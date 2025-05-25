@@ -4,6 +4,7 @@ import hero_image from "@/assets/images/hero_image.png";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 
 const Hero = () => {
   return (
@@ -52,27 +53,7 @@ const Hero = () => {
             className="backdrop-blur-md  border-b-2 border-r-2 border-white text-white w-[260px]  flex items-center justify-center gap-2 hover:bg-white/20 transition-all rounded lg:py-6 group cursor-pointer"
           >
             SHOP NOW
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="17"
-              height="14"
-              viewBox="0 0 17 14"
-              fill="none"
-              className="group-hover:translate-x-2 transition-all duration-500"
-            >
-              <path
-                d="M16.25 6.72607L1.25 6.72607"
-                stroke="white"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M10.1992 0.701489L16.2492 6.72549L10.1992 12.7505"
-                stroke="white"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <AnimatedArrow />
           </Button>
         </motion.div>
       </div>

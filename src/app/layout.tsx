@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Figtree, Montserrat } from "next/font/google";
+import { Figtree, Montserrat, Playfair } from "next/font/google";
 import "./globals.css";
 import TopInfo from "@/components/shared/TopInfo";
 import Navbar from "@/components/shared/Navbar/Navbar";
@@ -16,6 +16,12 @@ const figtree = Figtree({
 const montserrat = Montserrat({
   display: "swap",
   variable: "--font-montserrat",
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+});
+const playfair = Playfair({
+  display: "swap",
+  variable: "--font-playfair",
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
@@ -36,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${figtree.className} ${montserrat.variable} antialiased`}
+        className={`${figtree.className} ${montserrat.variable} ${playfair.variable} antialiased`}
       >
         <TopInfo></TopInfo>
         <div className="sticky top-0 z-50 ">

@@ -4,6 +4,7 @@
 
 @theme {
   --font-montserrat: var(--font-montserrat);
+  --font-playfair: var(--font-playfair);
   --color-primary-blue: #0b1e70;
   --color-primary-deep-green: #002533;
   --color-primary-sky: #4396be;

@@ -12,6 +12,6 @@ export const navLinks = [
   {
     id: 3,
     label: "On Sale",
-    href: "/sale",
+    href: "/shop",
   },
 ];

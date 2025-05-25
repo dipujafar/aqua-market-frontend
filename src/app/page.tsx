@@ -1,6 +1,9 @@
 import AquaticTreasuresSection from "@/components/modules/Home/AquaticTreasuresSection";
+import DiscordHelpSection from "@/components/modules/Home/DiscordHelpSection";
+
 import Hero from "@/components/modules/Home/Hero";
-import Image from "next/image";
+import OfferCarousel from "@/components/modules/Home/OfferCarousel";
+
 
 export default function Home() {
   return (
@@ -9,6 +12,9 @@ export default function Home() {
       <hr className="border-t-2 border-t-white/10" />
       <AquaticTreasuresSection></AquaticTreasuresSection>
       <hr className="border-t-2 border-t-white/10" />
+      <OfferCarousel />
+      <hr className="border-t-2 border-t-white/10" />
+      <DiscordHelpSection />
     </div>
   );
 }

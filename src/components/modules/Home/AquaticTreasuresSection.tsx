@@ -11,8 +11,10 @@ const AquaticTreasuresSection = () => {
         title="Check Out Our"
         LastPart="Aquatic Treasures!"
       ></SectionTitle>
-      <div className="grid xl:grid-cols-4 lg:grid-cols-2 gap-4 ">
-        {productData?.map(product=><ProductCard key={product?._id} data={product}></ProductCard>)}
+      <div className="grid xl:grid-cols-4 lg:grid-cols-3  md:grid-cols-2 gap-4 ">
+        {productData?.map((product) => (
+          <ProductCard key={product?._id} data={product}></ProductCard>
+        ))}
       </div>
     </Container>
   );
