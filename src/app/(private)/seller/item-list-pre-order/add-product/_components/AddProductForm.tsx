@@ -73,6 +73,7 @@ const formSchema = z.object({
         quantity: z.string().min(1, "Quantity is required"),
         price: z.string().min(1, "Price is required"),
         discount: z.string().optional(),
+        availability: z.string().optional(),
       })
     )
     .min(1, "At least one style is required"),
@@ -81,7 +82,7 @@ const formSchema = z.object({
 export default function AddProductForm() {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [styles, setStyles] = useState([
-    { style: "", quantity: "", price: "", discount: "" },
+    { style: "", quantity: "", price: "", discount: "", availability: "" },
   ]);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -128,7 +129,7 @@ export default function AddProductForm() {
   };
 
   const addStyle = () => {
-    const newStyle = { style: "", quantity: "", price: "", discount: "" };
+    const newStyle = { style: "", quantity: "", price: "", discount: "", availability: "" };
     setStyles([...styles, newStyle]);
     const currentStyles = form.getValues("styles");
     form.setValue("styles", [...currentStyles, newStyle]);
@@ -527,6 +528,24 @@ export default function AddProductForm() {
               >
                 {styles.map((style, index) => (
                   <div key={index}>
+                    <div className="mb-2">
+                      <label className="text-white text-sm mb-2 block">
+                        Estimate Availability
+                      </label>
+                      <Input
+                      type="date"
+                        placeholder="Enter Availability"
+                        value={style.style}
+                        onChange={(e) =>
+                          updateStyle(index, "availability", e.target.value)
+                        }
+                        style={{
+                          background:
+                            "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
+                        }}
+                        className="border-gray-600 text-white placeholder:text-gray-400 md:py-5"
+                      />
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                       <div>
                         <label className="text-white text-sm mb-2 block">

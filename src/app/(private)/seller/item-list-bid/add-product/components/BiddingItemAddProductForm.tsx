@@ -239,7 +239,10 @@ export default function BiddingItemAddProductForm() {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="w-full md:py-5 border-gray-600">
+                      <SelectTrigger  style={{
+                          background:
+                            "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
+                        }} className="w-full md:py-5 border-gray-600">
                         <SelectValue placeholder="Enter Fish Type" />
                       </SelectTrigger>
                     </FormControl>
