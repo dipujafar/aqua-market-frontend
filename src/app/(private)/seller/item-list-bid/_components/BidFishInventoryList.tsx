@@ -1,6 +1,6 @@
-"use client";
+"use client";;
 import { useState } from "react";
-import { Search, Calendar, Eye, Trash2, Filter } from "lucide-react";
+import { Search, Eye, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -16,8 +16,6 @@ import Image from "next/image";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { PopoverContent } from "@radix-ui/react-popover";
 import PaginationSection from "@/components/shared/PaginationSection";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import Link from "next/link";
 
 interface FishItem {
@@ -28,6 +26,7 @@ interface FishItem {
   price: number;
   date: string;
   status: "Ongoing" | "Sold";
+  currentBid: number;
 }
 
 export default function BidFishInventoryList() {
@@ -44,6 +43,7 @@ export default function BidFishInventoryList() {
       price: 25.0,
       date: "March 24, 2025",
       status: "Ongoing",
+      currentBid: 50.0,
     },
     {
       id: "2",
@@ -52,7 +52,7 @@ export default function BidFishInventoryList() {
       itemNumber: "#A01124",
       price: 25.0,
       date: "March 24, 2025",
-      status: "Sold",
+      status: "Sold", currentBid: 50.0,
     },
     {
       id: "3",
@@ -61,7 +61,7 @@ export default function BidFishInventoryList() {
       itemNumber: "#A01124",
       price: 25.0,
       date: "March 24, 2025",
-      status: "Ongoing",
+      status: "Ongoing", currentBid: 50.0,
     },
     {
       id: "4",
@@ -70,7 +70,7 @@ export default function BidFishInventoryList() {
       itemNumber: "#A01124",
       price: 25.0,
       date: "March 24, 2025",
-      status: "Sold",
+      status: "Sold", currentBid: 50.0,
     },
     {
       id: "5",
@@ -79,7 +79,7 @@ export default function BidFishInventoryList() {
       itemNumber: "#A01124",
       price: 25.0,
       date: "March 24, 2025",
-      status: "Ongoing",
+      status: "Ongoing", currentBid: 50.0,
     },
     {
       id: "6",
@@ -88,7 +88,7 @@ export default function BidFishInventoryList() {
       itemNumber: "#A01124",
       price: 25.0,
       date: "March 24, 2025",
-      status: "Sold",
+      status: "Sold", currentBid: 50.0,
     },
     {
       id: "7",
@@ -97,7 +97,7 @@ export default function BidFishInventoryList() {
       itemNumber: "#A01124",
       price: 25.0,
       date: "March 24, 2025",
-      status: "Ongoing",
+      status: "Ongoing", currentBid: 50.0,
     },
     {
       id: "8",
@@ -106,7 +106,7 @@ export default function BidFishInventoryList() {
       itemNumber: "#A01124",
       price: 25.0,
       date: "March 24, 2025",
-      status: "Sold",
+      status: "Sold", currentBid: 50.0,
     },
   ];
 
@@ -156,6 +156,7 @@ export default function BidFishInventoryList() {
               </TableHead>
               <TableHead className="text-white py-5">Item Number</TableHead>
               <TableHead className="text-white py-5">Price</TableHead>
+              <TableHead className="text-white py-5">Current Bid</TableHead>
               <TableHead className="text-white py-5">Date</TableHead>
               <TableHead className="text-white py-5">Status</TableHead>
               <TableHead className="text-white py-5">Action</TableHead>
@@ -181,6 +182,7 @@ export default function BidFishInventoryList() {
                 </TableCell>
                 <TableCell>{item.itemNumber}</TableCell>
                 <TableCell>${item.price.toFixed(2)}</TableCell>
+                <TableCell>${item.currentBid.toFixed(2)}</TableCell>
                 <TableCell>{item.date}</TableCell>
                 <TableCell>
                   <span
@@ -192,7 +194,7 @@ export default function BidFishInventoryList() {
                   >
                     {item?.status === "Sold" ? (
                       <Link
-                        href={`/seller/item-list-direct-sale/purchase-order`}
+                        href={`/seller/item-list-bid/bid-winner-list`}
                         className="underline text-base"
                       >
                         Sold
@@ -203,7 +205,7 @@ export default function BidFishInventoryList() {
                   </span>
                 </TableCell>
                 <TableCell>
-                  <Link href={`/seller/item-list-direct-sale/product-details`}>
+                  <Link href={`/seller/item-list-bid/bid-current-status`}>
                   <Button variant="ghost" size="icon" className="cursor-pointer">
                     <Eye className="size-4" />
                   </Button>
