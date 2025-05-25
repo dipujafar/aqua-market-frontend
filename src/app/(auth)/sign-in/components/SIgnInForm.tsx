@@ -1,9 +1,5 @@
 "use client";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,6 +18,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import CommonButton from "@/components/ui/common-button";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   email: z
@@ -30,16 +27,7 @@ const formSchema = z.object({
     .email({ message: "Please enter a valid email address" }),
   password: z
     .string({ required_error: "Password is required" })
-    .min(1, { message: "Password is required" })
-    .min(8, { message: " passwords must be at least 8 characters long" })
-    .max(64, { message: " passwords must be at most 64 characters long" })
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      {
-        message:
-          "password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character",
-      }
-    ),
+    .min(1, { message: "Password is required" }),
 });
 
 const SIgnInForm = () => {
@@ -54,7 +42,16 @@ const SIgnInForm = () => {
   });
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-   router.push("/user/profile")
+    if (data.email == "user@gmail.com" && data.password == "112233A@") {
+      router.push("/user/profile");
+      return;
+    }
+    if (data.email == "seller@gmail.com" && data.password == "112233A@") {
+      router.push("/seller/profile");
+      return;
+    } else {
+      toast.error("Invalid email or password");
+    }
   };
 
   return (
@@ -115,7 +112,7 @@ const SIgnInForm = () => {
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter Your Password"
                         {...field}
-                         className=" rounded py-5 bg-transparent"
+                        className=" rounded py-5 bg-transparent"
                       />
                       <div className="absolute right-2 top-1/2 -translate-y-1/2">
                         {showPassword ? (

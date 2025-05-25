@@ -84,7 +84,7 @@ export default function CountdownTimer({
         background:
           "linear-gradient(180deg, rgba(77, 168, 218, 0.20) 0%, rgba(120, 192, 168, 0.20) 85.08%)",
       }}
-      className="relative overflow-hidden xl:px-20 md:px-10 px-4 xl:py-12  md:py-8 py-4 text-white"
+      className="relative overflow-hidden xl:px-20 md:px-10 px-4 xl:py-12  md:py-8 py-4 text-white rounded-lg"
     >
       {/* Background pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)]" />

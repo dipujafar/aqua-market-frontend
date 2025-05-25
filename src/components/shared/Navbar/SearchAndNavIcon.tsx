@@ -1,5 +1,5 @@
 "use client";
-import { Search } from "lucide-react";
+import { Bell, Search } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -63,6 +63,11 @@ const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
                 </g>
               </g>
             </svg>
+          </Link>
+        </motion.li>
+        <motion.li variants={childrenVariants}>
+          <Link href={"/notification"}>
+           <Bell size={20} color={color} />
           </Link>
         </motion.li>
         <motion.li variants={childrenVariants}>

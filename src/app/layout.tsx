@@ -4,7 +4,8 @@ import "./globals.css";
 import TopInfo from "@/components/shared/TopInfo";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import Footer from "@/components/shared/Footer/Footer";
-import 'react-pagination-bar/dist/index.css'
+import 'react-pagination-bar/dist/index.css';
+import { Toaster} from 'sonner';
 
 const figtree = Figtree({
   display: "swap",
@@ -54,6 +55,7 @@ export default function RootLayout({
         <div className=" lg:py-6 py-5 bg-linear-to-r from-[#533E69] to-[#3D4B68] text-white ">
           <Footer></Footer>
         </div>
+        <Toaster />
       </body>
     </html>
   );

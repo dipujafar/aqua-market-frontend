@@ -369,7 +369,7 @@ export default function BidHistory() {
                   index % 2 === 0 ? "bg-[#78c0a838]" : ""
                 )}
               >
-                <TableCell className="text-white py-5">{item.fish}</TableCell>
+                <TableCell className="text-white py-5"><Link href={`/shop/1`}> {item.fish} </Link></TableCell>
                 <TableCell className="text-white">{item.auction}</TableCell>
                 <TableCell className={getBidStatusColor(item.bidStatus)}>
                   {item.bidStatus}

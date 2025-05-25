@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import CountdownTimer from "./CountdownTimerCard";
+import Container from "@/components/shared/Container";
 
 const bannerImage = [
   "/bannerImage1.png",
@@ -50,7 +51,7 @@ const OfferCarousel = () => {
   }, [api]);
 
   return (
-    <div>
+    <Container>
       <div className="relative">
         <Carousel
           opts={{
@@ -90,7 +91,7 @@ const OfferCarousel = () => {
           ))}
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

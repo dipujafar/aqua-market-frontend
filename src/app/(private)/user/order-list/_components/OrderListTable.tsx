@@ -23,6 +23,7 @@ import { ClaimSendDialog } from "./ClaimSendDialog";
 import PaginationSection from "@/components/shared/PaginationSection";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import Link from "next/link";
 
 const productData = [
   {
@@ -118,17 +119,21 @@ const OrderListTable = () => {
               <TableRow key={idx} className="hover:bg-transparent ">
                 <TableCell className="font-medium min-w-fit">
                   <div className=" flex flex-col lg:flex-row items-center md:gap-2 gap-1  min-w-fit">
-                    <Image
-                      src={data?.image}
-                      alt="product_image"
-                      width={950}
-                      height={700}
-                      className="md:size-28 size-20 rounded object-cover origin-center"
-                    />
+                    <Link href="/shop/1">
+                      <Image
+                        src={data?.image}
+                        alt="product_image"
+                        width={950}
+                        height={700}
+                        className="md:size-28 size-20 rounded object-cover origin-center"
+                      />
+                    </Link>
                     <div className="flex flex-col lg:gap-y-2">
-                      <p className="truncate font-medium lg:text-lg text-sm">
-                        {data?.name}
-                      </p>
+                      <Link href="/shop/1">
+                        <p className="truncate font-medium lg:text-lg text-sm">
+                          {data?.name}
+                        </p>
+                      </Link>
                       <div className="truncate text-sm font-light flex items-center gap-x-2 text-white/60">
                         <p>Seller info:</p>
                         <p>{data?.seller_info}</p>
