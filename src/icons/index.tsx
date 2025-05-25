@@ -62,3 +62,37 @@ export function UploadIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
+export function LockIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="25"
+      height="24"
+      viewBox="0 0 25 24"
+      fill="none"
+      className={className}
+    >
+      <path
+        opacity="0.4"
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M12.5 22C18.0228 22 22.5 17.5228 22.5 12C22.5 6.47715 18.0228 2 12.5 2C6.97715 2 2.5 6.47715 2.5 12C2.5 17.5228 6.97715 22 12.5 22ZM12.5 10.1855C10.567 10.1855 9 11.7111 9 13.593C9 15.4749 10.567 17.0004 12.5 17.0004C14.433 17.0004 16 15.4749 16 13.593C16 11.7111 14.433 10.1855 12.5 10.1855Z"
+        fill="white"
+      />
+      <path
+        d="M20.5 11H22.5C21.997 5.94668 17.7229 2 12.5247 2C6.98823 2 2.5 6.47715 2.5 12C2.5 17.5228 6.98823 22 12.5247 22C16.6355 22 20.1684 19.5318 21.7154 16"
+        stroke="white"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M14.75 10.9824V9.1905C14.75 7.98072 13.7426 7 12.5 7C11.2574 7 10.25 7.98072 10.25 9.1905V10.9824M12.5 17C10.567 17 9 15.4744 9 13.5926C9 11.7107 10.567 10.1851 12.5 10.1851C14.433 10.1851 16 11.7107 16 13.5926C16 15.4744 14.433 17 12.5 17Z"
+        stroke="white"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+    </svg>
+  );
+}

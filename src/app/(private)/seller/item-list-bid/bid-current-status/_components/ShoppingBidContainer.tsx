@@ -6,6 +6,7 @@ import React from "react";
 import { CountdownTimer } from "./CountdownTimer";
 import BiddingComponent from "./BiddingComponent";
 import BidHistory from "./BidHistory";
+import TimelineExtensionModal from "./TimelineExtensionModalProps";
 
 const OPTIONS: EmblaOptionsType = {};
 const ShoppingBidContainer = () => {
@@ -16,9 +17,9 @@ const ShoppingBidContainer = () => {
           slides={productDetails?.image}
           options={OPTIONS}
           showThumbs={true}
-          className="2xl:max-h-[470px] xl:h-[550px] lg:h-[400px] md:h-[620px] h-[350px]"
+          className="2xl:max-h-[550px] xl:h-[550px] lg:h-[400px] md:h-[620px] h-[350px]"
         ></ProductImagesCarousel>
-        <div className="xl:space-y-6 space-y-4">
+        <div className="xl:space-y-4 space-y-3">
           <h1 className=" text-lg md:text-2xl font-light">
             Blueberry Snail – A Unique Tank Cleaner!
           </h1>
@@ -27,11 +28,8 @@ const ShoppingBidContainer = () => {
               "Sat May 31 2025 06:00:00 GMT+0600 (Bangladesh Standard Time)"
             }
           />
-          <BiddingComponent
-            currentBid={225.0}
-            bidder="Poke1234"
-           
-          />
+          <BiddingComponent currentBid={225.0} bidder="Poke1234" />
+          <TimelineExtensionModal />
         </div>
       </div>
       <BidHistory></BidHistory>
