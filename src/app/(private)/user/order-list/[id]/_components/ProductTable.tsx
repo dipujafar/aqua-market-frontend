@@ -1,4 +1,4 @@
-"use client";
+"use client";;
 import {
   Select,
   SelectContent,
@@ -15,14 +15,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ClaimIcon, FilterIcon } from "@/icons";
-import { findStatusColor } from "@/utils/findStatusColor";
+import { FilterIcon } from "@/icons";
 import Image from "next/image";
-import { useState } from "react";
-import { ClaimSendDialog } from "./ClaimSendDialog";
 import PaginationSection from "@/components/shared/PaginationSection";
-import { Input } from "@/components/ui/input";
-import { Eye, Search } from "lucide-react";
 import Link from "next/link";
 
 const productData = [
@@ -72,48 +67,16 @@ const productData = [
   },
 ];
 
-const OrderListTable = () => {
-  const [openClaimForm, setOpenClaimForm] = useState(false);
+const ProductTable = () => {
   return (
     <>
-      <div className="md:mb-5 mb-3 flex justify-between items-center">
-        <h5 className="md:text-2xl font-light truncate">My Order History</h5>
-        <div className="lg:min-w-sm min-w-[200px] relative">
-          <Input
-            style={{
-              background:
-                "linear-gradient(180deg, rgba(77, 168, 218, 0.24) 0%, rgba(120, 192, 168, 0.24) 85.08%)",
-            }}
-            placeholder="Search here....."
-            className="lg:max-w-sm max-w-[200px] md:py-5 pl-8"
-          />
-          <span className="absolute top-1/2  -translate-y-1/2 ml-2">
-            <Search size={18} />
-          </span>
-        </div>
-      </div>
       <div className="col-span-2  rounded-md border md:p-5 px-2 ">
         <Table className="lg:text-lg w-full overflow-x-auto">
           <TableHeader className="  text-white">
             <TableRow className="border-none !text-white hover:bg-transparent">
-              <TableHead className="text-white ">Fishes</TableHead>
+              <TableHead className="text-white">Fishes</TableHead>
               <TableHead className="text-white  text-center ">
                 Subtotal
-              </TableHead>
-              <TableHead className="text-white   text-center">
-                Quantity
-              </TableHead>
-              <TableHead className="text-white    text-center">
-                Discount
-              </TableHead>
-              <TableHead className="text-white ">Total</TableHead>
-              <StatusHeader />
-              <TableHead className="text-white text-center ">Date</TableHead>
-              <TableHead className="text-white text-center ">
-                DOA Claim
-              </TableHead>
-              <TableHead className="text-white text-center ">
-                Details
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -149,50 +112,18 @@ const OrderListTable = () => {
                   </div>
                 </TableCell>
                 <TableCell className="text-center ">${data?.price}</TableCell>
-                <TableCell className="text-center ">{data?.quantity}</TableCell>
-                <TableCell className="text-center ">
-                  {data?.discount}%
-                </TableCell>
-                <TableCell>
-                  $ {data?.price * data?.quantity * (1 - data?.discount / 100)}
-                </TableCell>
-                <TableCell
-                  style={{ color: findStatusColor(data?.status) }}
-                  className={`capitalize`}
-                >
-                  {data?.status}
-                </TableCell>
-                <TableCell className="text-center text-sm">
-                  {data?.date}
-                </TableCell>
-                <TableCell
-                  onClick={() => setOpenClaimForm(true)}
-                  className="text-center text-sm "
-                >
-                  <ClaimIcon className="w-fit mx-auto cursor-pointer" />
-                </TableCell>
-                <TableCell className="text-center text-sm ">
-                  <Link href={`/user/order-list/1`} className="flex items-center justify-center">
-                  <Eye size={20}/>
-                  </Link>
-                </TableCell>
+                
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
       <PaginationSection className="mt-5" />
-
-      {/* claim send form dialog */}
-      <ClaimSendDialog
-        open={openClaimForm}
-        setOpen={setOpenClaimForm}
-      ></ClaimSendDialog>
     </>
   );
 };
 
-export default OrderListTable;
+export default ProductTable;
 
 const statuses = [
   {

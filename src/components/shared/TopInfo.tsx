@@ -5,21 +5,21 @@ import Container from "./Container";
 const quickLink = [
   {
     label: "Login",
-    href: "#",
+    href: "/sign-in",
   },
   {
     label: "Sign Up",
-    href: "#",
+    href: "/choose-user-role",
   },
   {
     label: "CONTACT US",
-    href: "#",
+    href: "/contact-us",
   },
 ];
 
 const TopInfo = () => {
   return (
-    <header className="bg-linear-to-r from-[#533E69] to-[#3D4B68] text-white py-2">
+    <header className="bg-linear-to-r from-[#533E69] to-[#3D4B68] text-white py-1">
       <Container className="flex md:justify-between justify-center items-center text-sm ">
         <p className="text-lg ">
           <span className="text-gradiant">
@@ -28,7 +28,7 @@ const TopInfo = () => {
           Welcome to AquaMarket.
         </p>
 
-        <div className="xl:space-x-4 space-x-2 hidden  text-lg md:flex">
+        <div className="xl:space-x-4 space-x-2 hidden   md:flex">
           {quickLink.map((link, index) =>
             link?.label === "Sign Up" ? (
               <Link
@@ -41,7 +41,7 @@ const TopInfo = () => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
-                  height="21"
+                  height="16"
                   viewBox="0 0 16 21"
                   fill="none"
                 >

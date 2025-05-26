@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import CommonButton from "@/components/ui/common-button";
 import { Minus, Plus } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 const ActionButtons = () => {
   const [quality, setQuality] = useState<number>(1);
@@ -69,7 +69,7 @@ const ActionButtons = () => {
         {/* ============================= bit now button ==================== */}
         <Button
           disabled={type !== "bid"}
-             onClick={() => router.push("/shopping-bid")}
+          onClick={() => router.push("/shopping-bid")}
           style={{
             background:
               "linear-gradient(180deg, rgba(77, 168, 218, 0.16) 0%, rgba(120, 192, 168, 0.16) 85.08%)",

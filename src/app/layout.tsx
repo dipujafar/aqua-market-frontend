@@ -6,6 +6,7 @@ import Navbar from "@/components/shared/Navbar/Navbar";
 import Footer from "@/components/shared/Footer/Footer";
 import 'react-pagination-bar/dist/index.css';
 import { Toaster} from 'sonner';
+import NextTopLoader from "nextjs-toploader";
 
 const figtree = Figtree({
   display: "swap",
@@ -56,6 +57,19 @@ export default function RootLayout({
           <Footer></Footer>
         </div>
         <Toaster />
+          <NextTopLoader
+          color="#1EC1E2"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={3}
+          crawl={true}
+          showSpinner={true}
+          easing="ease"
+          speed={200}
+          shadow="0 0 10px #232323,0 0 5px #EA5326"
+          zIndex={1600}
+          showAtBottom={false}
+        />
       </body>
     </html>
   );

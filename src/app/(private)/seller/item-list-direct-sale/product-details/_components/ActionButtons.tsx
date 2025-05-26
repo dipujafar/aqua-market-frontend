@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import CommonButton from "@/components/ui/common-button";
 import { Minus, Plus } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 const ActionButtons = () => {
   const [quality, setQuality] = useState<number>(1);
@@ -11,7 +11,6 @@ const ActionButtons = () => {
   const router = useRouter();
   const pathName = usePathname();
   const currentPath = pathName.split("/")[2];
-  console.log(currentPath);
   return (
     <div className="lg:space-y-4 space-y-3 lg:mt-6 mt-4">
       <div className="flex items-center justify-between border-b pb-1 border-white/50">
@@ -54,7 +53,9 @@ const ActionButtons = () => {
           }}
           className=" w-full rounded border-r-3 border-b-3 border-white uppercase md:min-w-40 md:py-5 cursor-pointer group flex-1"
         >
-        { currentPath === "item-list-direct-sale" ?" Direct Fixed sale": " Direct Auction" }
+          {currentPath === "item-list-direct-sale"
+            ? " Direct Fixed sale"
+            : " Direct Auction"}
         </Button>
       </div>
     </div>

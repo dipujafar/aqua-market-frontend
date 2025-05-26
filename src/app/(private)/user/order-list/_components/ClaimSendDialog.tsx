@@ -1,18 +1,10 @@
-"use client";
-
+"use client";;
 import type React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Upload } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -34,7 +26,7 @@ const formSchema = z.object({
   reason: z.string().min(10, {
     message: "Please provide at least 10 characters for the reason",
   }),
-  photos: z.instanceof(FileList).optional(),
+  photos: z.array(z.any()).min(1, { message: "Please upload at least one photo" }),
 });
 
 // Define the type for our form values
@@ -73,6 +65,7 @@ export function ClaimSendDialog({
     if (e.target.files && e.target.files.length > 0) {
       const newPhotos = Array.from(e.target.files);
       setPhotos((prev) => [...prev, ...newPhotos]);
+      // @ts-ignore
       form.setValue("photos", e.target.files);
     }
   };

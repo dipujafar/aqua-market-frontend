@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
+import { TextAnimation2 } from "@/animation/TextAnimation2";
 
 const Hero = () => {
   return (
@@ -17,16 +18,16 @@ const Hero = () => {
 
       <div className="text-white absolute inset-0 flex flex-col md:gap-y-2 justify-center items-center gap-y-1">
         <motion.h6
-          initial={{ opacity: 0, y: "10%" }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: "10%", filter: "blur(5px)" }}
+          whileInView={{ opacity: 1, y: 0 , filter: "blur(0px)"}}
           exit={{ opacity: 0, y: "10%" }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
           viewport={{ once: true }}
-          className="md:text-2xl text-xl font-semibold max-w-[400px] text-center"
+          className="md:text-2xl text font-semibold max-w-[400px] text-center"
         >
           Buy, Bid, and Sell Rare Fish and More with Confidence.
         </motion.h6>
-        <motion.h2
+        {/* <motion.h2
           initial={{ opacity: 0, y: "10%" }}
           whileInView={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: "10%" }}
@@ -37,12 +38,18 @@ const Hero = () => {
           <TextAnimation delay={0.1} duration={0.3}>
             AquaMarket
           </TextAnimation>
-        </motion.h2>
+        </motion.h2> */}
+
+        <TextAnimation2
+          text="AquaMarket"
+          className="text-transparent bg-clip-text bg-gradient-to-b from-[#4DA8DA] to-[#78C0A8] xl:text-[140px] md:text-7xl text-[40px] font-extrabold"
+          initialDelay={0.7}
+        />
         <motion.div
-          initial={{ opacity: 0, y: "10%" }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: "10%", filter: "blur(5px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           exit={{ opacity: 0, y: "10%" }}
-          transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
+          transition={{ duration: 0.6, ease: "easeInOut", delay: 1 }}
           viewport={{ once: true }}
         >
           <Button

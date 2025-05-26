@@ -44,10 +44,7 @@ const navLinks = [
 const SellerPagesTopSection = () => {
   const pathName = usePathname();
   const currentPath = pathName?.split("/")[2];
-  console.log(pathName?.includes(currentPath));
 
-  console.log(currentPath);
-  
   return (
     <div className="max-h-[240px] relative">
       <Image
@@ -76,7 +73,8 @@ const SellerPagesTopSection = () => {
                 className={cn(
                   "rounded border-r-3 border-b-3  capitalize md:min-w-40 md:py-5 cursor-pointer group bg-white hover:bg-white/30  text-black  sm:m-2 m-1 text-[10px] md:text-sm px-2 md:px-3 py-0 md:h-9 h-7 hover:text-white",
                   "border-[#78C0A8]",
-                  currentPath === navLink?.href?.split("/")[2] && "border-[#fff] text-white"
+                  currentPath === navLink?.href?.split("/")[2] &&
+                    "border-[#fff] text-white"
                 )}
               >
                 {navLink.title}

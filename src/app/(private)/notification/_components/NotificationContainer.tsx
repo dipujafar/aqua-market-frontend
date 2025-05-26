@@ -5,37 +5,37 @@ const notifications = [
   {
     id: 1,
     message: "Dear Aria, Track your fish from AquaMarket. Link:",
-    link: "https://www.usps.com/",
+    link: "https://#/",
     timestamp: "Fri, 12:30pm",
   },
   {
     id: 2,
     message: "Dear Aria, Track your fish from AquaMarket. Link:",
-    link: "https://www.usps.com/",
+    link: "https://#/",
     timestamp: "Fri, 12:30pm",
   },
   {
     id: 3,
     message: "Dear Aria, Track your fish from AquaMarket. Link:",
-    link: "https://www.usps.com/",
+    link: "https://#/",
     timestamp: "Fri, 12:30pm",
   },
   {
     id: 4,
     message: "Dear Aria, Track your fish from AquaMarket. Link:",
-    link: "https://www.usps.com/",
+    link: "https://#/",
     timestamp: "Fri, 12:30pm",
   },
   {
     id: 5,
     message: "Dear Aria, Track your fish from AquaMarket. Link:",
-    link: "https://www.usps.com/",
+    link: "https://#/",
     timestamp: "Fri, 12:30pm",
   },
   {
     id: 6,
     message: "Dear Aria, Track your fish from AquaMarket. Link:",
-    link: "https://www.usps.com/",
+    link: "https://#/",
     timestamp: "Fri, 12:30pm",
   },
 ];

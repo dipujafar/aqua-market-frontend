@@ -32,7 +32,8 @@ const navLinks = [
 ];
 
 const UserPagesTopSection = () => {
-  const pathName = usePathname();
+   const pathName = usePathname();
+  const currentPath = pathName?.split("/")[2];
   return (
     <div className="max-h-[240px] relative">
       <Image
@@ -51,7 +52,7 @@ const UserPagesTopSection = () => {
             <Link href={navLink.href} key={navLink._id}>
               <Button
                 style={
-                  pathName === navLink.href
+                   currentPath === navLink?.href?.split("/")[2]
                     ? {
                         background:
                           "linear-gradient(180deg, #4DA8DA 0%, #78C0A8 85.08%)",
@@ -60,7 +61,7 @@ const UserPagesTopSection = () => {
                 }
                 className={cn(
                   "rounded border-r-3 border-b-3  capitalize md:min-w-40 md:py-5 cursor-pointer group bg-white hover:bg-white/30  text-black  sm:m-2 m-1 text-[10px] md:text-sm px-2 md:px-3 py-0 md:h-9 h-7 hover:text-white ",
-                  "border-[#78C0A8]", pathName === navLink.href && "border-[#fff] text-white"
+                  "border-[#78C0A8]",  currentPath === navLink?.href?.split("/")[2] && "border-[#fff] text-white"
                 )}
               >
                 {navLink.title}

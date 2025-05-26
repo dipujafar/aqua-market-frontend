@@ -67,7 +67,7 @@ const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
         </motion.li>
         <motion.li variants={childrenVariants}>
           <Link href={"/notification"}>
-           <Bell size={20} color={color} />
+           <Bell size={20} color={color}  className="hover:bg-white/20 rounded-full" />
           </Link>
         </motion.li>
         <motion.li variants={childrenVariants}>

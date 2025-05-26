@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import SignUpForm from "./components/SignUpForm";
 export const metadata = {
   title: "Sign Up",
@@ -6,9 +7,11 @@ export const metadata = {
 
 const SignInPage = () => {
   return (
-    <div>
-      <SignUpForm></SignUpForm>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <div>
+        <SignUpForm></SignUpForm>
+      </div>
+    </Suspense>
   );
 };
 

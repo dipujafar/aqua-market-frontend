@@ -87,7 +87,7 @@ const ProfileContainerForm = () => {
   });
   const { register, setValue, control } = form;
 
-  const handleImageChange = (files: FileList | null) => {
+  const handleImageChange = (files: any) => {
     if (files && files.length > 0) {
       const file = files[0];
       const url = URL.createObjectURL(file);
@@ -97,7 +97,7 @@ const ProfileContainerForm = () => {
     }
   };
 
-  const handleCoverImageChange = (files: FileList | null) => {
+  const handleCoverImageChange = (files: any) => {
     if (files && files.length > 0) {
       const file = files[0];
       const url = URL.createObjectURL(file);

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { Suspense } from "react";
 import SingleProductPageContainer from "./_components/SingleProductPageContainer";
 
 const ProductDetailsPage = () => {
-  return <SingleProductPageContainer />;
+  return   <Suspense fallback={<div>Loading...</div>}>  <SingleProductPageContainer /> </Suspense>;
 };
 
 export default ProductDetailsPage;
