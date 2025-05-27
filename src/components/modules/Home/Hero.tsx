@@ -1,11 +1,11 @@
-"use client";
-import TextAnimation from "@/animation/TextAnimation";
+"use client";;
 import hero_image from "@/assets/images/hero_image.png";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import { TextAnimation2 } from "@/animation/TextAnimation2";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -52,6 +52,7 @@ const Hero = () => {
           transition={{ duration: 0.6, ease: "easeInOut", delay: 0.7 }}
           viewport={{ once: true }}
         >
+          <Link href={"/shop"}>
           <Button
             style={{
               background:
@@ -62,6 +63,7 @@ const Hero = () => {
             SHOP NOW
             <AnimatedArrow />
           </Button>
+          </Link>
         </motion.div>
       </div>
     </div>

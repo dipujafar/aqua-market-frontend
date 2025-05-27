@@ -29,22 +29,17 @@ const RelatedProduct = () => {
   return (
     <div>
       {/* ======================================= section header ========================================== */}
-      <div className="flex-between border-b lg:mb-6 mb-4 pb-2">
-        <div className="flex items-center gap-x-1.5">
-          <h4 className="lg:text-3xl sm:text-xl text-lg font-medium uppercase">
-            You may also like
-          </h4>
-        </div>
-        <div className="flex gap-x-3 items-center group">
-          <h4 className=" font-bold">VIEW ALL</h4>
-          <ArrowIcon className="group-hover:translate-x-2 transition-all duration-500"></ArrowIcon>
-        </div>
+
+      <div className="flex items-center gap-x-1.5">
+        <h4 className="lg:text-3xl sm:text-xl text-lg font-medium uppercase">
+          You may also like
+        </h4>
       </div>
 
       {/* ========================================= preview images and data ==================================== */}
       <div className="grid lg:grid-cols-4 grid-cols-2 md:gap-5 gap-2">
         {charitySupportData?.map((charitySupport) => (
-          <Link href={"/shop/1"}  key={charitySupport?._id}>
+          <Link href={"/shop/1"} key={charitySupport?._id}>
             <div className="relative group">
               <Image
                 src={charitySupport?.image}

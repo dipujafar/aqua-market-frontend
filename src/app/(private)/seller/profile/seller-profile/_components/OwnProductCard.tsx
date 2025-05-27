@@ -1,3 +1,4 @@
+import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -32,25 +33,45 @@ const OwnProductCard = ({ data }: { data: any }) => {
             className="rounded"
           ></Image>
           {data?.type && (
-            <div className={cn("p-2  absolute top-0 left-0 text-sm min-w-1/3 rounded-tl rounded-br flex justify-center items-center",data?.type === "preOrder" && "bg-primary-blue",data?.type === "directBuy" && "bg-[#78C0A8]",data?.type === "bid" && "bg-primary-sky")}>
-             { data?.type === "preOrder" && <h6>Pre Order Now</h6> }
-             { data?.type === "directBuy" && <h6>Direct Sale</h6> }
-             { data?.type === "bid" && <h6>Bid</h6> }
+            <div
+              className={cn(
+                "p-2  absolute top-0 left-0 text-sm min-w-1/3 rounded-tl rounded-br flex justify-center items-center",
+                data?.type === "preOrder" && "bg-primary-blue",
+                data?.type === "directBuy" && "bg-[#78C0A8]",
+                data?.type === "bid" && "bg-primary-sky"
+              )}
+            >
+              {data?.type === "preOrder" && <h6>Pre Order Now</h6>}
+              {data?.type === "directBuy" && <h6>Direct Sale</h6>}
+              {data?.type === "bid" && <h6>Bid</h6>}
             </div>
           )}
 
-        
-
           <div className="absolute top-1 right-2 size-11 flex justify-center items-center gap-x-1">
-           { data?.type === "directBuy" && <Link href={`/seller/item-list-direct-sale/add-product`} className="p-1 bg-green-500 flex justify-center items-center rounded-full cursor-pointer">
-              <Edit size={18} />
-            </Link>}
-           { data?.type === "bid" && <Link href={`/seller/item-list-bid/add-product`} className="p-1 bg-green-500 flex justify-center items-center rounded-full cursor-pointer">
-              <Edit size={18} />
-            </Link>}
-           { data?.type === "preOrder" && <Link href={`/seller/item-list-pre-order/add-product`} className="p-1 bg-green-500 flex justify-center items-center rounded-full cursor-pointer">
-              <Edit size={18} />
-            </Link>}
+            {data?.type === "directBuy" && (
+              <Link
+                href={`/seller/item-list-direct-sale/add-product`}
+                className="p-1 bg-green-500 flex justify-center items-center rounded-full cursor-pointer"
+              >
+                <Edit size={18} />
+              </Link>
+            )}
+            {data?.type === "bid" && (
+              <Link
+                href={`/seller/item-list-bid/add-product`}
+                className="p-1 bg-green-500 flex justify-center items-center rounded-full cursor-pointer"
+              >
+                <Edit size={18} />
+              </Link>
+            )}
+            {data?.type === "preOrder" && (
+              <Link
+                href={`/seller/item-list-pre-order/add-product`}
+                className="p-1 bg-green-500 flex justify-center items-center rounded-full cursor-pointer"
+              >
+                <Edit size={18} />
+              </Link>
+            )}
             <Popover>
               <PopoverTrigger asChild>
                 <div className="p-1 bg-red-500 flex justify-center items-center rounded-full cursor-pointer">
@@ -79,8 +100,24 @@ const OwnProductCard = ({ data }: { data: any }) => {
           </div>
         </div>
 
-        {/* ====================== product price ======================== */}
-        <h3 className="text-xl font-bold">{data.price}</h3>
+        <div className="flex justify-between">
+          {/* ====================== product price ======================== */}
+          <h3 className="text-xl font-bold">{data.price}</h3>
+          {/* ====================== Add Advertise ======================== */}
+          <Link href={`/seller/profile/advertise`}>
+            <Button
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(77, 168, 218, 0.30) 0%, rgba(120, 192, 168, 0.30) 85.08%)",
+              }}
+              size={"sm"}
+              className="bg-transparent border cursor-pointer group "
+            >
+              Add Advertise
+              <AnimatedArrow />
+            </Button>
+          </Link>
+        </div>
       </CardContent>
     </Card>
   );
