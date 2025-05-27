@@ -11,17 +11,17 @@ const charitySupportData = [
   {
     _id: 2,
     image: "/related_product_image2.png",
-    title: "Betta Fish",
+    title: "Jelly Fish",
   },
   {
     _id: 3,
     image: "/related_product_image3.png",
-    title: "Betta Fish",
+    title: "Guppy Fish",
   },
   {
     _id: 4,
     image: "/related_product_image4.png",
-    title: "Betta Fish",
+    title: "Tetra Fish",
   },
 ];
 

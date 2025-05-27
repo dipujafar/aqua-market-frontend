@@ -6,7 +6,7 @@ export const productData = [
      sellerName: "Mr. Robert",
      price: "$25.00",
      availability: "May 15, 2025",
-     name: "Neon Tetras",
+     name: "Jelly Fish",
      type: "preOrder"
     },
     {
@@ -15,7 +15,7 @@ export const productData = [
      sellerProfile: "/sellerProfile.png",
      sellerName: "Mr. Robert",
      price: "$15.00",
-     name: "Neon Tetras",
+     name: "Gold Fish",
      type: "bid",
      left:"3h",
      totalBid: "12"
@@ -31,13 +31,13 @@ export const productData = [
      offer: "20% Off"
     },
     {
-     _id:41,
+     _id:4,
      image: "/productImage4.png",
      sellerProfile: "/sellerProfile.png",
      sellerName: "Mr. Robert",
      price: "$25.00",
      availability: "May 15, 2025",
-     name: "Neon Tetras",
+     name: "Fish Tank",
      type: "preOrder"
     },
     {
@@ -46,7 +46,7 @@ export const productData = [
      sellerProfile: "/sellerProfile.png",
      sellerName: "Mr. Robert",
      price: "$15.00",
-     name: "Neon Tetras",
+     name: "Ultra Neon Tetras",
      type: "bid",
      left:"3h",
      totalBid: "12"
@@ -77,7 +77,7 @@ export const productData = [
      sellerProfile: "/sellerProfile.png",
      sellerName: "Mr. Robert",
      price: "$15.00",
-     name: "Neon Tetras",
+     name: "Electric Tetras",
      type: "bid",
      left:"3h",
      totalBid: "12"

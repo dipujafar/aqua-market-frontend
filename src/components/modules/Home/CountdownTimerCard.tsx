@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import CommonButton from "@/components/ui/common-button";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import Image from "next/image";
+import Link from "next/link";
 
 interface CountdownTimerProps {
   targetDate: string | Date;
@@ -121,7 +122,9 @@ export default function CountdownTimer({
               </div>
 
               <div className="flex items-center">
-                <span className="md:text-2xl text-lg font-bold opacity-60">:</span>
+                <span className="md:text-2xl text-lg font-bold opacity-60">
+                  :
+                </span>
               </div>
 
               <div className="flex flex-col items-center">
@@ -136,7 +139,9 @@ export default function CountdownTimer({
               </div>
 
               <div className="flex items-center">
-                <span className="md:text-2xl text-lg font-bold opacity-60">:</span>
+                <span className="md:text-2xl text-lg font-bold opacity-60">
+                  :
+                </span>
               </div>
 
               <div className="flex flex-col items-center">
@@ -151,7 +156,9 @@ export default function CountdownTimer({
               </div>
 
               <div className="flex items-center">
-                <span className="md:text-2xl text-lg font-bold opacity-60">:</span>
+                <span className="md:text-2xl text-lg font-bold opacity-60">
+                  :
+                </span>
               </div>
 
               <div className="flex flex-col items-center">
@@ -171,17 +178,19 @@ export default function CountdownTimer({
             </div>
           )}
 
-          {/* CTA Button */}
-          <Button
-            style={{
-              background:
-                " linear-gradient(180deg, rgba(77, 168, 218, 0.30) 0%, rgba(120, 192, 168, 0.30) 85.08%)",
-            }}
-            className="backdrop-blur-md  border-b-2 border-r-2 border-white text-white w-[260px]  flex items-center justify-center gap-2 hover:bg-white/20 transition-all rounded lg:py-6 group cursor-pointer"
-          >
-            {isExpired ? "Offer Ended" : "SHOP NOW"}
-            {!isExpired && <AnimatedArrow />}
-          </Button>
+          {/* +++++++++++++++++++++ action button ++++++++++++++++++++ */}
+          <Link href={"/shop/1"}>
+            <Button
+              style={{
+                background:
+                  " linear-gradient(180deg, rgba(77, 168, 218, 0.30) 0%, rgba(120, 192, 168, 0.30) 85.08%)",
+              }}
+              className="backdrop-blur-md  border-b-2 border-r-2 border-white text-white w-[260px]  flex items-center justify-center gap-2 hover:bg-white/20 transition-all rounded lg:py-6 group cursor-pointer"
+            >
+              {isExpired ? "Offer Ended" : "SHOP NOW"}
+              {!isExpired && <AnimatedArrow />}
+            </Button>
+          </Link>
         </div>
         <div className="xl:w-1/3">
           <Image
