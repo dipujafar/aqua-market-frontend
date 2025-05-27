@@ -75,7 +75,7 @@ const ProductCard = ({ data }: { data: any }) => {
         {/* seller profile and product price */}
         <div className="flex justify-between gap-x-2">
           {/* =============== seller profile ================== */}
-          <Link className="flex justify-between items-center gap-x-2" href="#">
+          <Link className="flex justify-between items-center gap-x-2" href="/seller-profile">
             <Image
               src={data?.sellerProfile}
               alt="seller-profile-image"

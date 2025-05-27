@@ -7,7 +7,7 @@ import OfferCarousel from "@/components/modules/Home/OfferCarousel";
 
 export default function Home() {
   return (
-    <div className="xl:space-y-12 space-y-6">
+    <div className="xl:space-y-12 space-y-6  md:pb-16  pb-8">
       <Hero></Hero>
       <hr className="border-t-2 border-t-white/10" />
       <AquaticTreasuresSection></AquaticTreasuresSection>

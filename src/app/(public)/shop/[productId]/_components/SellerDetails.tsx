@@ -1,6 +1,7 @@
-import { ArrowIcon, MapIcon } from "@/components/icons/Icons";
+import { MapIcon } from "@/components/icons/Icons";
 import CommonButton from "@/components/ui/common-button";
 import Image from "next/image";
+import Link from "next/link";
 
 const SellerDetails = () => {
   return (
@@ -14,17 +15,21 @@ const SellerDetails = () => {
         <div className="space-y-2 flex justify-between border-b pb-2 ">
           <div className="flex  gap-x-2  flex-1 ">
             <div className="relative size-12 rounded-full">
-              <Image
-                src={"/sellerImage.png"}
-                alt="user_image"
-                width={1200}
-                height={1200}
-                className="size-12 rounded-full  "
-              ></Image>
+              <Link href="/seller-profile">
+                <Image
+                  src={"/sellerImage.png"}
+                  alt="user_image"
+                  width={1200}
+                  height={1200}
+                  className="size-12 rounded-full  "
+                ></Image>
+              </Link>
             </div>
             <div>
-              <h5 className="font-medium">AquaPet Seller</h5>
-              <p>AquaFishBomp.com</p>
+              <Link href="/seller-profile">
+                <h5 className="font-medium">AquaPet Seller</h5>{" "}
+              </Link>
+              <p className="text-sm text-white/80">AquaFishBomp.com</p>
             </div>
           </div>
 

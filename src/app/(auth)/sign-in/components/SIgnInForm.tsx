@@ -47,7 +47,7 @@ const SIgnInForm = () => {
       return;
     }
     if (data.email == "seller@gmail.com" && data.password == "112233A@") {
-      router.push("/seller/profile");
+      router.push("/seller/profile/seller-profile");
       return;
     } else {
       toast.error("Invalid email or password");

@@ -13,7 +13,7 @@ const Hero = () => {
       <Image
         src={hero_image}
         alt="hero_image"
-        className="w-full brightness-100 object-cover origin-center"
+        className="w-full brightness-100 object-cover origin-center max-h-[calc(100vh-80px)]"
       ></Image>
 
       <div className="text-white absolute inset-0 flex flex-col md:gap-y-2 justify-center items-center gap-y-1">
@@ -43,13 +43,13 @@ const Hero = () => {
         <TextAnimation2
           text="AquaMarket"
           className="text-transparent bg-clip-text bg-gradient-to-b from-[#4DA8DA] to-[#78C0A8] xl:text-[140px] md:text-7xl text-[40px] font-extrabold"
-          initialDelay={0.7}
+          initialDelay={0.3}
         />
         <motion.div
           initial={{ opacity: 0, y: "10%", filter: "blur(5px)" }}
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           exit={{ opacity: 0, y: "10%" }}
-          transition={{ duration: 0.6, ease: "easeInOut", delay: 1 }}
+          transition={{ duration: 0.6, ease: "easeInOut", delay: 0.7 }}
           viewport={{ once: true }}
         >
           <Button

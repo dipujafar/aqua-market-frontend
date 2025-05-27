@@ -7,12 +7,25 @@ import PriceCategory from "@/components/categories/PriceCategory";
 import { Button } from "@/components/ui/button";
 import { DiscoundIcon, OrderIcon } from "@/components/icons/Icons";
 import PaginationSection from "@/components/shared/PaginationSection";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 
 const ShopPageContainer = () => {
   return (
     <div>
       <div className=" grid grid-cols-1  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5	lg:gap-8 gap-4 xl:mt-8 mt-4">
         <div className="2xl:space-y-7 space-y-5 hidden lg:block">
+          <div className="relative xl:mt-9 mt-5">
+            <Search size={18} className="absolute top-3 left-2"/>
+            <Input
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(77, 168, 218, 0.42) 0%, rgba(120, 192, 168, 0.42) 85.08%)",
+              }}
+              placeholder="Search here ..."
+              className="placeholder:text-white/75 md:py-5 pl-7"
+            />
+          </div>
           <Categories title="COLLECTION" data={collectionTypes}></Categories>
           {/* <Categories title="BRANDS" data={brandsData}></Categories> */}
           <PriceCategory></PriceCategory>
@@ -40,8 +53,8 @@ const ShopPageContainer = () => {
           <AllProducts></AllProducts>
         </div>
       </div>
-        {/* Pagination */}
-        <PaginationSection></PaginationSection>
+      {/* Pagination */}
+      <PaginationSection></PaginationSection>
     </div>
   );
 };

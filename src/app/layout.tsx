@@ -50,7 +50,7 @@ export default function RootLayout({
         <div className="sticky top-0 z-50 ">
           <Navbar></Navbar>
         </div>
-        <div className="min-h-[calc(100vh-140px)] md:pt-10 md:pb-16 pt-5 pb-8 bg-linear-to-r from-[#2E1345] to-[#0A2943] text-white ">
+        <div className="min-h-[calc(100vh-140px)]  bg-linear-to-r from-[#2E1345] to-[#0A2943] text-white ">
           {children}
         </div>
         <div className=" lg:py-6 py-5 bg-linear-to-r from-[#533E69] to-[#3D4B68] text-white ">
