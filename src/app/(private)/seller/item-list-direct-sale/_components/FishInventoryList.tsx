@@ -214,7 +214,7 @@ export default function FishInventoryList() {
                         <Trash2 className="size-4" color="red" />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-80 bg-gray-600 p-2 rounded">
+                    <PopoverContent className="w-80  p-2 rounded bg-linear-to-r from-[#2E1345] to-[#0A2943]">
                       <p>Are you sure you want to delete this item?</p>
                       <div className="flex justify-end gap-2 mt-3">
                         <Button

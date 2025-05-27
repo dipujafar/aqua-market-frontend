@@ -12,7 +12,7 @@ const navLinks = [
   {
     _id: 1,
     title: "Profile Details",
-    href: "/seller/profile",
+    href: "/seller/profile/seller-profile",
   },
   {
     _id: 2,

@@ -2,7 +2,6 @@ import Container from "@/components/shared/Container";
 import ProductImages from "./ProductImages";
 import ProductDetails from "./ProductDetails";
 import ProductDescription from "./ProductDescription";
-import RelatedProduct from "./RelatedProduct";
 import AverageRating from "./AverageRating";
 import CustomerFeedbacks from "./CustomerFeedbacks";
 
@@ -21,7 +20,7 @@ const SingleProductPageContainer = () => {
       {/* <CharitySupport></CharitySupport> */}
 
       <ProductDescription></ProductDescription>
-      <RelatedProduct></RelatedProduct>
+      {/* <RelatedProduct></RelatedProduct> */}
       {/* <RecentlyViewed></RecentlyViewed> */}
 
       <AverageRating className="lg:w-2/5 mx-auto"></AverageRating>

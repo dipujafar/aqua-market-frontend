@@ -18,8 +18,8 @@ export function SmallDeviceFilter() {
       <SheetContent side={"left"} className="h-screen overflow-y-auto hide-scrollbar  ">
         <div className="2xl:space-y-10 space-y-6 mt-10 px-2 mb-10 ">
           <Categories title="COLLECTION" data={collectionTypes}></Categories>
-          <PriceCategory></PriceCategory>
-          <Categories title="Discount" data={discountData}></Categories>
+          {/* <PriceCategory></PriceCategory> */}
+          {/* <Categories title="Discount" data={discountData}></Categories> */}
           <div className="space-y-3">
           <Button className="w-full bg-primary-blue py-6 hover:bg-gray-800 cursor-pointer">
             <OrderIcon></OrderIcon> Pre Order Now

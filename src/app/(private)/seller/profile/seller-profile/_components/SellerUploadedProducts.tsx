@@ -28,9 +28,9 @@ const SellerUploadedProducts = () => {
           </div>
           <Categories title="COLLECTION" data={collectionTypes}></Categories>
           {/* <Categories title="BRANDS" data={brandsData}></Categories> */}
-          <PriceCategory></PriceCategory>
+          {/* <PriceCategory></PriceCategory> */}
           {/* <ColorCategory></ColorCategory> */}
-          <Categories title="Discount" data={discountData}></Categories>
+          {/* <Categories title="Discount" data={discountData}></Categories> */}
           <div className="space-y-4">
             <Button className="w-full bg-primary-blue py-6 hover:bg-gray-800 cursor-pointer">
               <OrderIcon></OrderIcon> Pre Order Now

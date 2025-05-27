@@ -106,6 +106,10 @@ const ProductDetails = () => {
             <AppleIcon></AppleIcon>
           </p>
         </div>
+         <div className="flex md:gap-x-8 gap-x-4 items-center justify-between p-3  border-b">
+          <h2>Estimate Availability</h2>
+          <p className="max-w-[300px]">20 June 2025</p>
+        </div>
       </div>
 
       {/* ======================= all actions buttons ================ */}

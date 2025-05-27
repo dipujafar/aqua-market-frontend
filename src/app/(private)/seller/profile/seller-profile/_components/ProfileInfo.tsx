@@ -2,6 +2,8 @@ import CustomAvatar from "@/components/shared/CustomAvatar";
 import Image from "next/image";
 import React from "react";
 import SellerInfo from "./SellerInfo";
+import CommonButton from "@/components/ui/common-button";
+import Link from "next/link";
 
 const ProfileInfo = () => {
   return (
@@ -28,6 +30,11 @@ const ProfileInfo = () => {
             className=" xl:size-48 md:size-36 size-28 md:top-[-100px] top-[-80px] mx-auto"
           ></CustomAvatar>
           <div className="relative md:top-[-90px] top-[-80px]">
+            <Link href={"/seller/profile"}>
+              <CommonButton className="w-full border-white mb-2">
+                Edit Profile
+              </CommonButton>
+            </Link>
             <div className="flex justify-between bg-[#ffffff33] px-2 py-3 border-b border-white">
               <h1>Name</h1>
               <p className=" font-semibold">Anita Alice</p>
@@ -47,7 +54,7 @@ const ProfileInfo = () => {
           </div>
         </div>
         <div className="lg:w-2/3">
-            <SellerInfo/>
+          <SellerInfo />
         </div>
       </div>
     </div>

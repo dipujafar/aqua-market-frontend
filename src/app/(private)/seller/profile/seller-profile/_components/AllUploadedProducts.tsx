@@ -1,7 +1,7 @@
 "use client";
-import ProductCard from "@/components/shared/cards/ProductCard";
 import { productData } from "@/lib/dummyData";
 import { motion } from "framer-motion";
+import OwnProductCard from "./OwnProductCard";
 
 const fadeUpVariants = {
   initial: {
@@ -32,7 +32,7 @@ const AllUploadedProducts = () => {
     >
       {productData?.map((product) => (
         <motion.div variants={fadeUpVariants} key={product?._id}>
-          <ProductCard data={product}></ProductCard>
+          <OwnProductCard data={product}></OwnProductCard>
         </motion.div>
       ))}
     </motion.div>
