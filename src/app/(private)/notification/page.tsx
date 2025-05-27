@@ -4,7 +4,7 @@ import NotificationContainer from './_components/NotificationContainer';
 
 const NotificationPage = () => {
     return (
-        <Container>
+        <Container className='md:pt-10 md:pb-16 pt-5 pb-8'>
             <NotificationContainer/>
         </Container>
     );

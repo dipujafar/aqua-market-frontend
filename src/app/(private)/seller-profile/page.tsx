@@ -5,7 +5,7 @@ import SellerUploadedProducts from './_components/SellerUploadedProducts';
 
 const SellerProfilePage = () => {
     return (
-        <Container>
+        <Container className='md:pt-10 md:pb-16 pt-5 pb-8'>
             <ProfileInfo/>
             <SellerUploadedProducts/>
         </Container>

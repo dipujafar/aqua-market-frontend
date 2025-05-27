@@ -8,7 +8,7 @@ export const metadata = {
 const SignInPage = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <div>
+      <div className="md:pb-16 pb-8">
         <SignUpForm></SignUpForm>
       </div>
     </Suspense>

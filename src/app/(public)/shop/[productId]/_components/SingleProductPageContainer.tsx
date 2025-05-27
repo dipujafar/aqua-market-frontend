@@ -10,7 +10,7 @@ import AverageRating from "./AverageRating";
 
 const SingleProductPageContainer = () => {
   return (
-    <Container className="xl:space-y-8 lg:space-y-6 space-y-8">
+    <Container className="xl:space-y-8 lg:space-y-6 space-y-8 md:pt-10 md:pb-16 pt-5 pb-8">
     <div className="flex flex-col lg:flex-row xl:gap-x-8 gap-x-5 gap-y-5">
       <div className="flex-1">
         <ProductImages></ProductImages>

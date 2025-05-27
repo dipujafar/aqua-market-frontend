@@ -7,12 +7,12 @@ import Link from "next/link";
 
 const ContactPageContainer = () => {
   return (
-    <Container className=" space-y-8">
+    <Container className=" space-y-8 md:pt-10 md:pb-16 pt-5 pb-8">
       <div>
         <h2 className="xl:text-4xl md:text-3xl text-2xl font-bold text-center">
           Get in touch
         </h2>
-        <div className="text-[#1372C4] flex justify-between xl:px-16 md:px-8 px-2 mt-3 flex-wrap">
+        <div className="text-white/80 flex justify-between xl:px-16 md:px-8 px-2 mt-4 flex-wrap">
           <div className="flex items-center gap-x-1">
             <MapPin size={20} />
             <p>123/A, Washington, UK</p>

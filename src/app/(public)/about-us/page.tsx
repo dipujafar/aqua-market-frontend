@@ -4,7 +4,7 @@ import AboutUsContainer from "./_components/AboutUsContainer";
 
 const AboutUsPag = () => {
   return (
-    <Container>
+    <Container className="md:pt-10 md:pb-16 pt-5 pb-8">
       <AboutUsContainer />
     </Container>
   );

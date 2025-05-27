@@ -4,7 +4,7 @@ import Container from "@/components/shared/Container";
 
 const ShoppingBidPage = () => {
   return (
-    <Container>
+    <Container className="md:pt-10 md:pb-16 pt-5 pb-8">
       <ShoppingBidContainer />
     </Container>
   );

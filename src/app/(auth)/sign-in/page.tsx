@@ -10,7 +10,9 @@ const SignInPage = () => {
   return (
     <div className="lg:space-y-12 space-y-7">
       <PageTopSection title="Welcome back! Sign in to continue "></PageTopSection>
-      <SIgnInForm></SIgnInForm>
+      <div className="md:pb-16 pb-8">
+        <SIgnInForm></SIgnInForm>
+      </div>
     </div>
   );
 };

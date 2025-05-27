@@ -1,4 +1,3 @@
-
 import PageTopSection from "@/components/shared/PageTopSection";
 import VerifyOtpForm from "./components/VerifyOtpForm";
 
@@ -11,7 +10,9 @@ const VerifyOtpPage = () => {
   return (
     <div className="lg:space-y-12 space-y-7">
       <PageTopSection title="Verify Your Password"></PageTopSection>
-      <VerifyOtpForm></VerifyOtpForm>
+      <div className="md:pb-16 pb-8">
+        <VerifyOtpForm></VerifyOtpForm>
+      </div>
     </div>
   );
 };

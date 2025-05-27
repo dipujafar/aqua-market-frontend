@@ -5,7 +5,9 @@ const SetNewPasswordPage = () => {
   return (
     <div className="lg:space-y-12 space-y-7">
       <PageTopSection title="Set New Password"></PageTopSection>
-      <SetNewPasswordForm></SetNewPasswordForm>
+      <div className="md:pb-16 pb-8">
+        <SetNewPasswordForm></SetNewPasswordForm>
+      </div>
     </div>
   );
 };

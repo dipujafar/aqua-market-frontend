@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const navLinks = [
   {
@@ -44,6 +44,7 @@ const navLinks = [
 const SellerPagesTopSection = () => {
   const pathName = usePathname();
   const currentPath = pathName?.split("/")[2];
+  const router = useRouter();
 
   return (
     <div className="max-h-[240px] relative">
@@ -88,6 +89,7 @@ const SellerPagesTopSection = () => {
               "rounded border-r-3 border-b-3  uppercase md:min-w-40 md:py-5 cursor-pointer group bg-white text-black  sm:m-2 m-1 text-[10px] md:text-sm px-2 md:px-3 py-0 md:h-9 h-7   mx-2 hover:bg-white/30  hover:text-white",
               "border-[#78C0A8]"
             )}
+            onClick={() => router.push("/sign-in")}
           >
             Logout
             <AnimatedArrow className="md:size-4 size-3" />
