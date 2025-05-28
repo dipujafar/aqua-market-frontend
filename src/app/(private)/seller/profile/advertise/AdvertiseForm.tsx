@@ -68,7 +68,7 @@ export default function AdvertiseForm() {
                     style={{ background:"linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)" }}
                       placeholder="Enter Offer Title"
                       {...field}
-                      className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 rounded-lg md:h-12 focus:border-cyan-400 focus:ring-cyan-400"
+                      className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 rounded-lg md:h-12 h-10 focus:border-cyan-400 focus:ring-cyan-400"
                     />
                   </FormControl>
                   <FormMessage />
@@ -88,7 +88,7 @@ export default function AdvertiseForm() {
                        style={{ background:"linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)" }}
                       placeholder="Any Discount Percentage %"
                       {...field}
-                      className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 rounded-lg  md:h-12 focus:border-cyan-400 focus:ring-cyan-400"
+                      className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 rounded-lg  md:h-12 h-10 focus:border-cyan-400 focus:ring-cyan-400"
                     />
                   </FormControl>
                   <FormMessage />
@@ -110,7 +110,7 @@ export default function AdvertiseForm() {
                          style={{ background:"linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)" }}
                         placeholder="Enter Date"
                         {...field}
-                        className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 rounded-lg md:h-12   focus:border-cyan-400 focus:ring-cyan-400"
+                        className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 rounded-lg md:h-12 h-10   focus:border-cyan-400 focus:ring-cyan-400"
                         type="date"
                       />
                     </FormControl>
@@ -132,7 +132,7 @@ export default function AdvertiseForm() {
                          style={{ background:"linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)" }}
                         placeholder="Enter Time"
                         {...field}
-                        className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 rounded-lg md:h-12 pr-10 focus:border-cyan-400 focus:ring-cyan-400"
+                        className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 rounded-lg md:h-12 h-10 pr-10 focus:border-cyan-400 focus:ring-cyan-400"
                         type="time"
                       />
                     </FormControl>

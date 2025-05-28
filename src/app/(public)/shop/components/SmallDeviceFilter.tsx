@@ -15,7 +15,7 @@ export function SmallDeviceFilter() {
       <SheetTrigger asChild>
         <SlidersHorizontal />
       </SheetTrigger>
-      <SheetContent side={"left"} className="h-screen overflow-y-auto hide-scrollbar  ">
+      <SheetContent side={"left"} className="h-screen overflow-y-auto hide-scrollbar  bg-linear-to-r from-[#2E1345] to-[#0A2943] text-white border-none ">
         <div className="2xl:space-y-10 space-y-6 mt-10 px-2 mb-10 ">
           <Categories title="COLLECTION" data={collectionTypes}></Categories>
           <PriceCategory></PriceCategory>

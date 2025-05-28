@@ -62,7 +62,7 @@ export default function ContactForm() {
     <div>
      
       <Form {...form}>
-        <form style={{ background: "linear-gradient(180deg, rgba(77, 168, 218, 0.24) 0%, rgba(120, 192, 168, 0.24) 85.08%)", boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.10))" }} onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:p-6 rounded-lg">
+        <form style={{ background: "linear-gradient(180deg, rgba(77, 168, 218, 0.24) 0%, rgba(120, 192, 168, 0.24) 85.08%)", boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.10))" }} onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:p-6 p-3 rounded-lg">
           <div className="grid grid-cols-2 gap-3">
             <FormField
               control={form.control}

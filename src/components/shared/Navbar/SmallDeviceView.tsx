@@ -23,7 +23,7 @@ const SmallDeviceView = () => {
         <SheetTrigger asChild>
           <TableOfContents size={24} />
         </SheetTrigger>
-        <SheetContent className="pt-10">
+        <SheetContent className="pt-10 px-3  bg-linear-to-r from-[#2E1345] to-[#0A2943] text-white border-none">
           <Image src={logo} alt="logo" className="mx-auto"></Image>
 
           <motion.div
@@ -71,7 +71,7 @@ const SmallDeviceView = () => {
           </motion.div>
 
           {/* ============== icons links ===================  */}
-          <SearchAndNavIcon color="black"></SearchAndNavIcon>
+          <SearchAndNavIcon></SearchAndNavIcon>
         </SheetContent>
       </Sheet>
     </div>

@@ -52,23 +52,15 @@ const ProductDetails = () => {
 
       {/* --------- edit button ---------- */}
       <Link href={`/seller/item-list-direct-sale/add-product`}>
-      <CommonButton className="w-full border-white">
-        Edit your product
-      </CommonButton>
+        <CommonButton className="w-full border-white">
+          Edit your product
+        </CommonButton>
       </Link>
 
       {/* --------- product details data ---------- */}
       <div className="mt-4">
         <div className="flex justify-between items-center gap-x-3 xl:mb-4 mb-2 border-b pb-1 border-b-white/80">
           <h5 className="uppercase  text-primary-gray">Fish Details</h5>
-
-          <button
-            className="size-11 rounded-full flex justify-center items-center cursor-pointer hover:bg-primary-gray/10  transition-all duration-300"
-            style={{ boxShadow: "0px 4px 5px 0px rgba(0, 0, 0, 0.07)" }}
-            onClick={handleShare}
-          >
-            <ShareIcon></ShareIcon>
-          </button>
         </div>
         {/* --------- product details data ---------- */}
         <div className="flex md:gap-x-8 gap-x-4 items-center justify-between p-3 bg-[#2D4259] border-b">
@@ -110,7 +102,6 @@ const ProductDetails = () => {
 
       {/* ======================= all actions buttons ================ */}
       <ActionButtons></ActionButtons>
-   
     </div>
   );
 };

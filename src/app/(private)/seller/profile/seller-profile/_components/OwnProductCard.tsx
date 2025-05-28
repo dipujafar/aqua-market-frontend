@@ -6,10 +6,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import RightArrowIcon from "@/components/ui/right-arrow-icon";
-import ShoppingCartIcon from "@/components/ui/shopping-cart-icon";
 import { cn } from "@/lib/utils";
-import { productCardButtonColor } from "@/utils/productCardButtonColor";
 import { Edit, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -104,6 +101,7 @@ const OwnProductCard = ({ data }: { data: any }) => {
           {/* ====================== product price ======================== */}
           <h3 className="text-xl font-bold">{data.price}</h3>
           {/* ====================== Add Advertise ======================== */}
+          { data?.type !== "bid" &&
           <Link href={`/seller/profile/advertise`}>
             <Button
               style={{
@@ -117,6 +115,7 @@ const OwnProductCard = ({ data }: { data: any }) => {
               <AnimatedArrow />
             </Button>
           </Link>
+}
         </div>
       </CardContent>
     </Card>
