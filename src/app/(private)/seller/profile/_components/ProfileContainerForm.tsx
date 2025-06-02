@@ -17,11 +17,10 @@ import CommonButton from "@/components/ui/common-button";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { Label } from "@/components/ui/label";
 import CountryStateCitySelector from "@/components/ui/country-state-city-selector";
-import { ImageUp, Trash2, Upload } from "lucide-react";
+import { ImageUp, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CustomAvatar from "@/components/shared/CustomAvatar";
 import { Textarea } from "@/components/ui/textarea";
-import { UploadIcon } from "@/icons";
 import Image from "next/image";
 
 const formSchema = z.object({
