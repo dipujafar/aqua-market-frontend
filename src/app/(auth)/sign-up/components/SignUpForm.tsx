@@ -92,7 +92,7 @@ const SignUpForm = () => {
       storeName: "",
     },
   });
-  const { register, setValue, control } = form;
+  const { register, setValue, control  } = form;
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     console.log(data);
@@ -270,6 +270,7 @@ const SignUpForm = () => {
                   setValue={setValue}
                   register={register}
                 />
+                
               </div>
 
               <FormField
