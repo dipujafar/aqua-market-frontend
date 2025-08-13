@@ -1,10 +1,10 @@
-export const productCardButtonColor = (type: string) => {
-    switch (type) {
+export const productCardButtonColor = (pricingType: string) => {
+    switch (pricingType) {
       case "preOrder":
         return "#0B1E70";
-      case "bid":
+      case "forBids":
         return "#4DA8DA";
-      case "directBuy":
+      case "directSale":
         return "#78C0A8";
       default:
         return "#000";

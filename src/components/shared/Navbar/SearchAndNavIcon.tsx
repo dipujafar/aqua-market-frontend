@@ -7,8 +7,20 @@ import {
   parentVariants,
 } from "@/animation/FramerMotionValiantsFadeUp";
 import { Input } from "@/components/ui/input";
+import { useGetUserProfileQuery } from "@/redux/api/userProfileApi";
+import { useAppSelector } from "@/redux/hooks";
+import Cookies from "js-cookie";
 
 const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
+  const user: any = useAppSelector((state) => state.auth.user);
+  const isLoggedIn = Cookies.get("aqua-access-token");
+  // console.log("isLoggedIn", isLoggedIn);
+
+  const { data: userData } = useGetUserProfileQuery(undefined, {
+    skip: !isLoggedIn || !user,
+  });
+  // console.log("userData", userData?.data);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: "-10%" }}
@@ -67,11 +79,23 @@ const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
         </motion.li>
         <motion.li variants={childrenVariants}>
           <Link href={"/notification"}>
-           <Bell size={20} color={color}  className="hover:bg-white/20 rounded-full" />
+            <Bell
+              size={20}
+              color={color}
+              className="hover:bg-white/20 rounded-full"
+            />
           </Link>
         </motion.li>
         <motion.li variants={childrenVariants}>
-          <Link href={"/sign-in"}>
+          <Link
+            href={
+              userData?.data && userData?.data?.role === "user"
+                ? "/user/profile"
+                : userData?.data?.role === "seller"
+                ? "/seller/profile"
+                : "/sign-in"
+            }
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="17"

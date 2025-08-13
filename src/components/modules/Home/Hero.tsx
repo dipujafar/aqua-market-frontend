@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import hero_image from "@/assets/images/hero_image.png";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -19,7 +19,7 @@ const Hero = () => {
       <div className="text-white absolute inset-0 flex flex-col md:gap-y-2 justify-center items-center gap-y-1">
         <motion.h6
           initial={{ opacity: 0, y: "10%", filter: "blur(5px)" }}
-          whileInView={{ opacity: 1, y: 0 , filter: "blur(0px)"}}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           exit={{ opacity: 0, y: "10%" }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
           viewport={{ once: true }}
@@ -53,16 +53,16 @@ const Hero = () => {
           viewport={{ once: true }}
         >
           <Link href={"/shop"}>
-          <Button
-            style={{
-              background:
-                " linear-gradient(180deg, rgba(77, 168, 218, 0.30) 0%, rgba(120, 192, 168, 0.30) 85.08%)",
-            }}
-            className="backdrop-blur-md  border-b-2 border-r-2 border-white text-white w-[260px]  flex items-center justify-center gap-2 hover:bg-white/20 transition-all rounded lg:py-6 group cursor-pointer"
-          >
-            SHOP NOW
-            <AnimatedArrow />
-          </Button>
+            <Button
+              style={{
+                background:
+                  " linear-gradient(180deg, rgba(77, 168, 218, 0.30) 0%, rgba(120, 192, 168, 0.30) 85.08%)",
+              }}
+              className="backdrop-blur-md  border-b-2 border-r-2 border-white text-white w-[260px]  flex items-center justify-center gap-2 hover:bg-white/20 transition-all rounded lg:py-6 group cursor-pointer"
+            >
+              SHOP NOW
+              <AnimatedArrow />
+            </Button>
           </Link>
         </motion.div>
       </div>

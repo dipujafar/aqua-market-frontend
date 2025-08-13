@@ -1,8 +1,10 @@
 "use client";
+
 import ProductCard from "@/components/shared/cards/ProductCard";
 import Container from "@/components/shared/Container";
 import SectionTitle from "@/components/shared/SectionTitle";
-import { productData } from "@/lib/dummyData";
+import { useGetAllFishQuery } from "@/redux/api/fishApi";
+import { IFish } from "@/types/fish.type";
 import { motion } from "framer-motion";
 
 const fadeUpVariants = {
@@ -23,6 +25,9 @@ const fadeUpVariants = {
 };
 
 const AquaticTreasuresSection = () => {
+  const { data: fishData } = useGetAllFishQuery(undefined);
+  // console.log("fishData", fishData);
+
   return (
     <Container className="lg:space-y-8 space-y-5">
       <SectionTitle
@@ -37,7 +42,7 @@ const AquaticTreasuresSection = () => {
         viewport={{ once: true }}
         className="grid xl:grid-cols-4 lg:grid-cols-3  md:grid-cols-2 gap-4 "
       >
-        {productData?.map((product) => (
+        {fishData?.data?.map((product: IFish) => (
           <motion.div variants={fadeUpVariants} key={product?._id}>
             <ProductCard data={product}></ProductCard>
           </motion.div>

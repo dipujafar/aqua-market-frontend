@@ -28,7 +28,7 @@ const quickLink = [
     href: "/about-us",
   },
   {
-    id: 5,
+    id: 6,
     label: "contact us",
     href: "/contact-us",
   }

@@ -69,11 +69,11 @@ const SIgnInForm = () => {
 
     try {
       const res = await login(formattedData).unwrap();
-      console.log("res______", res);
+      // console.log("res______", res);
       const decodedUser = jwtDecode(res?.data?.accessToken) as {
         role?: string;
       };
-      console.log("decodedUser", decodedUser);
+      // console.log("decodedUser", decodedUser);
 
       if (res.success) {
         dispatch(

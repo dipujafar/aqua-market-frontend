@@ -4,6 +4,7 @@ export const tagTypes = {
   user: "user",
   getUser: "getUser",
   orders: "orders",
+  fish: "fish",
 } as const;
 
 export const tagTypesList = [
@@ -12,4 +13,5 @@ export const tagTypesList = [
   tagTypes.user,
   tagTypes.getUser,
   tagTypes.orders,
+  tagTypes.fish,
 ];

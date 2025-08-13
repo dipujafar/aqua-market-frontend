@@ -1,13 +1,23 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import RightArrowIcon from "@/components/ui/right-arrow-icon";
 import ShoppingCartIcon from "@/components/ui/shopping-cart-icon";
 import { productCardButtonColor } from "@/utils/productCardButtonColor";
+import moment from "moment";
 
 import Image from "next/image";
 import Link from "next/link";
 
 const ProductCard = ({ data }: { data: any }) => {
+  console.log("data", data);
+  const image = data?.image[0];
+  const sellerProfileImage = data?.sellerId?.profile_image;
+  const AvailabilityDate = data?.pricingInfo?.estimateAvailability
+    ? moment(data.pricingInfo.estimateAvailability).format("MMM Do YY")
+    : "";
+
   return (
     <Card
       style={{
@@ -19,88 +29,100 @@ const ProductCard = ({ data }: { data: any }) => {
       <CardContent className="px-4 space-y-4 text-white">
         <div className="relative group">
           <Image
-            src={data?.image}
+            src={image ? image : "/images/placeholder.png"}
             alt="product-data"
             width={1200}
-            height={12000}
-            className="rounded"
+            height={1200}
+            className="rounded "
           ></Image>
-          {data?.availability && (
+          {data.pricingInfo?.estimateAvailability && (
             <div className="p-2 bg-primary-blue absolute top-0 left-0 text-sm max-w-[130px] rounded-tl">
-              <h6>Availability : {data?.availability} </h6>
+              <div className=" flex flex-col">
+                <p>Availability :</p>
+                <p>{AvailabilityDate}</p>
+              </div>
             </div>
           )}
 
-          {data?.offer && (
+          {data?.pricingInfo?.discount && (
             <div className="p-2 bg-primary-red absolute top-0 left-0 text-sm max-w-[130px] rounded-tl">
-              <h6> {data?.offer} </h6>
+              <h6> {data?.pricingInfo?.discount} % off</h6>
             </div>
           )}
 
-         {data?.left && <div className="absolute top-0 left-0 space-y-1">
           {data?.left && (
-            <div className="py-1 px-4 bg-primary-sky text-sm max-w-[130px] rounded-tl ">
-              <h6 className="text-center text-lg font-bold">{data?.left}</h6>
-              <h6 className="text-white/80 text-xs">Left</h6>
+            <div className="absolute top-0 left-0 space-y-1">
+              {data?.left && (
+                <div className="py-1 px-4 bg-primary-sky text-sm max-w-[130px] rounded-tl ">
+                  <h6 className="text-center text-lg font-bold">
+                    {data?.left}
+                  </h6>
+                  <h6 className="text-white/80 text-xs">Left</h6>
+                </div>
+              )}
+              <hr className="w-[85%] mx-auto border-gray-400" />
+              {data?.bids && (
+                <div className="py-1 px-4 bg-primary-sky text-sm max-w-[130px]  ">
+                  <h6 className="text-center text-lg font-bold">
+                    {data?.bids?.length}
+                  </h6>
+                  <h6 className="text-white/80 text-xs">Bids</h6>
+                </div>
+              )}
             </div>
           )}
-          <hr className="w-[85%] mx-auto border-gray-400" />
-          {data?.totalBid && (
-            <div className="py-1 px-4 bg-primary-sky text-sm max-w-[130px]  ">
-              <h6 className="text-center text-lg font-bold">{data?.totalBid}</h6>
-              <h6  className="text-white/80 text-xs">Bids</h6>
-            </div>
-          )}
-          </div>
-}
-         
+
           <div
             className="absolute bottom-0 w-full p-2.5 group-hover:p-3  duration-500 flex justify-center items-center text-xl"
             style={{ background: "rgba(255, 255, 255, 0.20)" }}
           >
-            {data?.name}
+            {data?.fishName}
           </div>
 
           {/* =============== add to card button ====================== */}
-          { data?.type !== "bid" &&
+          {data?.type !== "bid" && (
             <div
               // style={{ background: "rgba(156, 156, 156, 0.40)" }}
               className="absolute top-1 right-1 size-11 flex justify-center items-center rounded-full bg-[rgba(156,_156,_156,_0.40)] hover:bg-white/40 duration-300 cursor-pointer"
-
             >
-              <ShoppingCartIcon></ShoppingCartIcon>
+              <ShoppingCartIcon />
             </div>
-          }
+          )}
         </div>
         {/* seller profile and product price */}
         <div className="flex justify-between gap-x-2">
           {/* =============== seller profile ================== */}
-          <Link className="flex justify-between items-center gap-x-2" href="/seller-profile">
+          <Link
+            className="flex justify-between items-center gap-x-2"
+            href="/seller-profile"
+          >
             <Image
-              src={data?.sellerProfile}
+              src={sellerProfileImage ? sellerProfileImage : "/sellerImage.png"}
               alt="seller-profile-image"
               width={1200}
               height={1200}
               className="size-7"
-            ></Image>
+            />
             <p>{data?.sellerName}</p>
           </Link>
 
           {/* ====================== product price ======================== */}
-          <h3 className="text-xl font-bold">{data.price}</h3>
+          <h3 className="text-xl font-bold">${data?.pricingInfo?.price}</h3>
         </div>
 
         {/* ================= action button ================= */}
-        <Link href={`/shop/1?type=${data?.type}`}>
-        <Button
-          className="uppercase w-full rounded  cursor-pointer z-20 border-b-4 border-r-4 border-primary-deep-green group lg:py-5"
-          style={{ backgroundColor: productCardButtonColor(data?.type) }}
-        >
-          {data?.type === "preOrder" && "Pre Order Now"}
-          {data?.type === "bid" && "BID NOW"}
-          {data?.type === "directBuy" && "Buy NOW"}
-          <RightArrowIcon className="group-hover:translate-x-2 duration-500"></RightArrowIcon>
-        </Button>
+        <Link href={`/shop/1?type=${data?.pricingType}`}>
+          <Button
+            className="uppercase w-full rounded  cursor-pointer z-20 border-b-4 border-r-4 border-primary-deep-green group lg:py-5"
+            style={{
+              backgroundColor: productCardButtonColor(data?.pricingType),
+            }}
+          >
+            {data?.pricingType === "preOrder" && "Pre Order Now"}
+            {data?.pricingType === "forBids" && "BID NOW"}
+            {data?.pricingType === "directSale" && "Buy NOW"}
+            <RightArrowIcon className="group-hover:translate-x-2 duration-500"></RightArrowIcon>
+          </Button>
         </Link>
       </CardContent>
     </Card>

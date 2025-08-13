@@ -1,5 +1,6 @@
 import { RootState } from "@/redux/store";
 import { createSlice } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
 
 export type TUser = {
   email: string;
@@ -26,6 +27,12 @@ const authSlice = createSlice({
       const { user, token } = action.payload;
       state.user = user;
       state.token = token;
+
+      // Store token in Cookies for middleware authentication
+      Cookies.set("aqua-access-token", token, {
+        path: "/",
+        expires: 7,
+      });
     },
 
     logout: (state) => {
