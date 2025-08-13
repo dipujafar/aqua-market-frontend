@@ -1,4 +1,5 @@
 "use client";
+
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -17,8 +18,12 @@ import { Eye, EyeOff } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import CommonButton from "@/components/ui/common-button";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
+import { useLoginMutation } from "@/redux/api/authApi";
+import { setUser } from "@/redux/features/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { jwtDecode } from "jwt-decode";
 
 const formSchema = z.object({
   email: z
@@ -33,6 +38,10 @@ const formSchema = z.object({
 const SIgnInForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const redirectUrl = useSearchParams()?.get("redirect");
+  const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useAppDispatch();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,16 +50,56 @@ const SIgnInForm = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    if (data.email == "user@gmail.com" && data.password == "112233A@") {
-      router.push("/user/profile");
-      return;
-    }
-    if (data.email == "seller@gmail.com" && data.password == "112233A@") {
-      router.push("/seller/profile/seller-profile");
-      return;
-    } else {
-      toast.error("Invalid email or password");
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    // if (data.email == "user@gmail.com" && data.password == "112233A@") {
+    //   router.push("/user/profile");
+    //   return;
+    // }
+    // if (data.email == "seller@gmail.com" && data.password == "112233A@") {
+    //   router.push("/seller/profile/seller-profile");
+    //   return;
+    // } else {
+    //   toast.error("Invalid email or password");
+    // }
+
+    const formattedData = {
+      email: data.email,
+      password: data.password,
+    };
+
+    try {
+      const res = await login(formattedData).unwrap();
+      console.log("res______", res);
+      const decodedUser = jwtDecode(res?.data?.accessToken) as {
+        role?: string;
+      };
+      console.log("decodedUser", decodedUser);
+
+      if (res.success) {
+        dispatch(
+          setUser({
+            user: decodedUser,
+            token: res?.data?.accessToken,
+          })
+        );
+        toast.success(res?.message);
+      }
+
+      if (redirectUrl) {
+        router.push(decodeURIComponent(redirectUrl));
+        return;
+      }
+      if (decodedUser?.role === "user") {
+        router.push("/user/profile");
+        return;
+      }
+      if (decodedUser?.role === "seller") {
+        router.push("/seller/profile");
+        return;
+      }
+    } catch (error: any) {
+      // Error_Modal({ title: error?.data?.message });
+      toast.error(error?.data?.message);
     }
   };
 
@@ -139,9 +188,12 @@ const SIgnInForm = () => {
             />
 
             <div className="flex flew-wrap justify-between gap-y-3 md:flex-row">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="terms" />
-                <label htmlFor="terms" className="text-secondary-gray">
+              <div className="flex items-center space-x-2 ">
+                <Checkbox id="terms" className="cursor-pointer" />
+                <label
+                  htmlFor="terms"
+                  className="text-secondary-gray cursor-pointer"
+                >
                   Remember me
                 </label>
               </div>
@@ -150,7 +202,9 @@ const SIgnInForm = () => {
               </Link>
             </div>
 
-            <CommonButton className="w-full">SIGN IN</CommonButton>
+            <CommonButton className="w-full">
+              {isLoading ? "Loading..." : "SIGN IN"}
+            </CommonButton>
 
             <div className="flex justify-center gap-x-2">
               <p className="text-secondary-gray">Don&apos;t have an account?</p>

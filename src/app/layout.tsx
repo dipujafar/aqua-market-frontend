@@ -58,7 +58,7 @@ export default function RootLayout({
           <div className=" lg:py-6 py-5 bg-linear-to-r from-[#533E69] to-[#3D4B68] text-white ">
             <Footer></Footer>
           </div>
-          <Toaster />
+          <Toaster position="top-right" richColors duration={3000} />
           <NextTopLoader
             color="#1EC1E2"
             initialPosition={0.08}

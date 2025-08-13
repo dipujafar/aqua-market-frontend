@@ -12,28 +12,32 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import CommonButton from "@/components/ui/common-button";
 import { PhoneInput } from "@/components/ui/phone-input";
 import PageTopSection from "@/components/shared/PageTopSection";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Label } from "@/components/ui/label";
 import CountryStateCitySelector from "@/components/ui/country-state-city-selector";
+import { useCreateUserMutation } from "@/redux/api/authApi";
+import { useAppDispatch } from "@/redux/hooks";
+import { setUser } from "@/redux/features/authSlice";
+import { toast } from "sonner";
 
 const formSchema = z.object({
-  firstName: z
+  first_name: z
     .string({ required_error: "First Name is required" })
     .min(1, { message: "First Name is required" }),
-  lastName: z
+  last_name: z
     .string({ required_error: "Last Name is required" })
     .min(1, { message: "Last Name is required" }),
-  userName: z
+  user_name: z
     .string({ required_error: "User Name is required" })
     .min(1, { message: "User Name is required" }),
-  phoneNumber: z
+  contact_number: z
     .string({ required_error: "Phone Number is required" })
     .min(1, { message: "Phone Number is required" }),
   email: z
@@ -79,6 +83,10 @@ const SignUpForm = () => {
   const [agree, setAgree] = useState(false);
   const userRole = useSearchParams().get("role");
 
+  const [createUser, { isLoading }] = useCreateUserMutation();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -92,10 +100,29 @@ const SignUpForm = () => {
       storeName: "",
     },
   });
-  const { register, setValue, control  } = form;
+  const { register, setValue, control } = form;
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    // console.log(data);
+
+    try {
+      const res = await createUser(data).unwrap();
+      console.log("res______", res);
+      if (res?.data?.otpToken?.token) {
+        dispatch(
+          setUser({
+            token: res?.data?.otpToken?.token,
+          })
+        );
+        toast.success("User Created Successfully");
+        toast.success(
+          "Please verify your email with OTP, which has been sent to your email."
+        );
+        router.push("/verify-otp");
+      }
+    } catch (error) {
+      console.log("error______", error);
+    }
   };
 
   useEffect(() => {
@@ -149,7 +176,7 @@ const SignUpForm = () => {
                 <div className="flex-1">
                   <FormField
                     control={form.control}
-                    name="firstName"
+                    name="first_name"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>First Name</FormLabel>
@@ -168,7 +195,7 @@ const SignUpForm = () => {
                 <div className="flex-1">
                   <FormField
                     control={form.control}
-                    name="lastName"
+                    name="last_name"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Last Name</FormLabel>
@@ -188,7 +215,7 @@ const SignUpForm = () => {
 
               <FormField
                 control={form.control}
-                name="userName"
+                name="user_name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>User Name</FormLabel>
@@ -224,7 +251,7 @@ const SignUpForm = () => {
 
               <FormField
                 control={form.control}
-                name="phoneNumber"
+                name="contact_number"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Contact Number</FormLabel>
@@ -270,7 +297,6 @@ const SignUpForm = () => {
                   setValue={setValue}
                   register={register}
                 />
-                
               </div>
 
               <FormField
@@ -372,7 +398,7 @@ const SignUpForm = () => {
                 </label>
               </div>
 
-              <CommonButton disabled={!agree} className="w-full">
+              <CommonButton type="submit" disabled={!agree} className="w-full">
                 SIGN UP
               </CommonButton>
 

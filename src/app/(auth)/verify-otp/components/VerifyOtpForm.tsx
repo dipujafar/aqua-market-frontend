@@ -18,6 +18,10 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { useVerifyOtpMutation } from "@/redux/api/authApi";
+import { toast } from "sonner";
+import { setUser } from "@/redux/features/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
 
 // ✅ Define form validation schema using Zod
 const formSchema = z.object({
@@ -30,6 +34,9 @@ const formSchema = z.object({
 
 const VerifyOtpForm = () => {
   const router = useRouter();
+  const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
+  const dispatch = useAppDispatch();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,9 +44,26 @@ const VerifyOtpForm = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     console.log("Submitted Data:", data);
-    router.push("/set-new-password");
+
+    try {
+      const res = await verifyOtp(data).unwrap();
+      console.log("res______", res);
+
+      if (res.data.accessToken) {
+        toast.success("OTP verified successfully! Please login.");
+        dispatch(
+          setUser({
+            token: res?.data?.accessToken,
+          })
+        );
+        // router.push("/set-new-password");
+        router.push("/sign-in");
+      }
+    } catch (error) {
+      console.log("error______", error);
+    }
   };
 
   return (

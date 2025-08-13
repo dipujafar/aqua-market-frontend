@@ -1,31 +1,33 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import Container from "./Container";
-const quickLink = [
-  {
-    label: "Login",
-    href: "/sign-in",
-  },
-  {
-    label: "Sign Up",
-    href: "/choose-user-role",
-  },
-  {
-    label: "CONTACT US",
-    href: "/contact-us",
-  },
-];
+import { useGetUserProfileQuery } from "@/redux/api/userProfileApi";
 
 const TopInfo = () => {
+  const { data: userData } = useGetUserProfileQuery(undefined);
+  // console.log("userData", userData);
+
+  const isUserLoggedIn = userData?.success === true;
+
+  const quickLink = isUserLoggedIn
+    ? [
+        { label: "LOGIN", href: "/sign-in" },
+        { label: "CONTACT US", href: "/contact-us" },
+      ]
+    : [
+        { label: "Sign In", href: "/sign-in" },
+        { label: "Sign Up", href: "/sign-up" },
+        { label: "CONTACT US", href: "/contact-us" },
+      ];
+
   return (
     <header className="bg-linear-to-r from-[#533E69] to-[#3D4B68] text-white py-1">
       <Container className="flex md:justify-between justify-center items-center text-sm ">
         <p className="text-lg ">
-          <span className="text-gradiant">
-            Hello!!
-          </span>{" "}
-          Welcome to AquaMarket.
+          <span className="text-gradiant">Hello!!</span> Welcome to AquaMarket.
         </p>
 
         <div className="xl:space-x-4 space-x-2 hidden   md:flex">
