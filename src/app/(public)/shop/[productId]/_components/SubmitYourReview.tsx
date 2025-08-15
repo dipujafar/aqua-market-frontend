@@ -14,16 +14,25 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
+import { usePostFishReviewMutation } from "@/redux/api/userApi";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const formSchema = z.object({
-  userName: z
-    .string({ required_error: "User Name is required" })
-    .min(1, { message: "User Name is required" }),
+  comment: z
+    .string({ required_error: "Feedback is required" })
+    .min(10, { message: "Feedback must be at least 10 characters long" }),
 });
 
-
-const SubmitYourReview = ({ className }: { className?: string }) => {
+interface ISubmitYourReviewProps {
+  className?: string;
+  fishId: string;
+}
+const SubmitYourReview = ({ className, fishId }: ISubmitYourReviewProps) => {
+  console.log("fishId", fishId);
   const [selectRating, setSelectRating] = useState(0);
+
+  const [postFishReview] = usePostFishReviewMutation();
 
   const handleRatingChange = (newRating: number) => {
     setSelectRating(newRating);
@@ -32,12 +41,34 @@ const SubmitYourReview = ({ className }: { className?: string }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      userName: "",
+      comment: "",
     },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const feedbackData = {
+      rating: selectRating,
+      comment: data.comment,
+    };
+
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(feedbackData));
+
+    try {
+      const res = await postFishReview({
+        id: fishId,
+        data: formData,
+      });
+
+      if (res?.data?.success) {
+        form.reset();
+        setSelectRating(0);
+        toast.success(res?.data?.message);
+      }
+    } catch (error) {
+      console.log("error__________", error);
+      toast.error("Something went wrong");
+    }
   };
 
   return (
@@ -64,17 +95,16 @@ const SubmitYourReview = ({ className }: { className?: string }) => {
           >
             <FormField
               control={form.control}
-              name="userName"
+              name="comment"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Write your review</FormLabel>
                   <FormControl>
                     <Textarea
-                     style={{
+                      style={{
                         background:
                           "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
                       }}
-                      
                       placeholder="Enter Your User Name"
                       {...field}
                       className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded h-[100px] "
@@ -84,6 +114,11 @@ const SubmitYourReview = ({ className }: { className?: string }) => {
                 </FormItem>
               )}
             />
+            <div>
+              <Button onClick={() => postFishReview(selectRating)}>
+                Submit
+              </Button>
+            </div>
           </form>
         </Form>
       </div>

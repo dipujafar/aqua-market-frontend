@@ -19,6 +19,7 @@ import { IFish, IFishAverageRating, IFishReview } from "@/types/fish.type";
 const SingleProductPageContainer = ({ productId }: { productId: string }) => {
   const id = productId?.split("-").pop() || "";
 
+  // fish details
   const { data: details } = useGetFishDetailsQuery(id);
   const fishDetails = (details?.data as IFish) || {};
   // console.log("fishDetails", fishDetails);
@@ -47,16 +48,19 @@ const SingleProductPageContainer = ({ productId }: { productId: string }) => {
       </div>
       {/* <CharitySupport></CharitySupport> */}
 
-      <ProductDescription></ProductDescription>
-      <RelatedProduct></RelatedProduct>
+      <ProductDescription fishDetails={fishDetails} />
+      <RelatedProduct />
       {/* <RecentlyViewed></RecentlyViewed> */}
 
       <div className="flex flex-col lg:flex-row gap-x-4  gap-y-4">
-        <AverageRating className="lg:w-2/5"></AverageRating>
-        <SubmitYourReview className="lg:w-3/5"></SubmitYourReview>
+        <AverageRating
+          fishAverageRating={fishAverageRating}
+          className="lg:w-2/5"
+        ></AverageRating>
+        <SubmitYourReview fishId={id} className="lg:w-3/5"></SubmitYourReview>
       </div>
 
-      <CustomerFeedbacks></CustomerFeedbacks>
+      <CustomerFeedbacks fishReviews={fishReviews}></CustomerFeedbacks>
     </Container>
   );
 };

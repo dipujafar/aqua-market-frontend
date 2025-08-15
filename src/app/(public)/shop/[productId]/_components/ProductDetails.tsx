@@ -47,7 +47,7 @@ const fishDetails = ({ fishDetails, fishAverageRating }: fishDetailsProps) => {
               ${fishDetails?.pricingInfo?.price}
             </p>
             <div className="bg-primary-red text-primary-white px-4 py-1 rounded-tl-lg rounded-br-lg">
-              {fishDetails?.pricingInfo?.discount} Off
+              {fishDetails?.pricingInfo?.discount}% Off
             </div>
           </div>
         )}

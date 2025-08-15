@@ -33,6 +33,68 @@ export interface IPBids {
   status: TBidStatus;
 }
 
+export enum Role {
+  USER = "user",
+  ADMIN = "admin",
+  BUYER = "buyer",
+  SELLER = "seller",
+}
+export type TUserGender = "male" | "female" | "other";
+
+export interface IShippingAddress {
+  firstName: string;
+  lastName: string;
+  companyName?: string;
+  country: string;
+  streetAddress: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  phoneNumber: string;
+  email: string;
+  shippingMethod: string;
+  isDefault?: boolean;
+  isActive?: boolean;
+}
+export interface IUser {
+  _id?: string;
+  first_name: string;
+  last_name?: string;
+  user_name?: string;
+  gender?: TUserGender;
+  location?: {
+    type: "Point";
+    coordinates: [number, number]; // [lng, lat]
+    address: string;
+  };
+  country?: string;
+  streetAddress?: string;
+  zipCode?: string;
+  city?: string;
+  state?: string;
+
+  contact_number?: string;
+  email: string;
+  password: string;
+  role: Role;
+  createdAt?: Date;
+  updatedAt?: Date;
+  profile_image?: string;
+  banner?: string;
+  isActive?: boolean;
+  isDeleted?: boolean;
+  isVerified?: boolean;
+  verification?: {
+    otp: string | number;
+    expiresAt: Date;
+    status: boolean;
+  };
+  about?: string;
+  store_name?: string;
+  isNotificationOn?: boolean;
+  shippingAddress?: IShippingAddress;
+}
+
 export interface IFish {
   _id?: string;
   id?: string;
@@ -60,11 +122,15 @@ export interface IFish {
 }
 
 export interface IFishReview {
-  userId?: string;
-  fishId: string;
+  [x: string]: any;
+  _id?: string;
+  data: any;
+  userId?: IUser;
+  fishId: IFish;
   rating: number;
   comment: string;
   image?: string[];
+  createdAt?: Date;
 }
 
 interface RatingDistribution {
