@@ -2,20 +2,21 @@ import React, { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import "./carousel.css";
 import Image from "next/image";
-import { TProductImage } from "@/types";
 import { CarouselThumbs } from "./CarouselThumbs";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { cn } from "@/lib/utils";
 
 type PropType = {
-  slides: TProductImage[];
+  slides: string[];
   options?: any;
   showThumbs?: boolean;
   className?: string;
 };
 
 const ProductImagesCarousel: React.FC<PropType> = (props) => {
+  // console.log("props", props);
+
   const { slides, options, showThumbs, className } = props;
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [emblaMainRef, emblaMainApi] = useEmblaCarousel(options);
@@ -49,11 +50,11 @@ const ProductImagesCarousel: React.FC<PropType> = (props) => {
     <div className="embla">
       <div className="embla__viewport h-fit" ref={emblaMainRef}>
         <div className="embla__container  ">
-          {slides?.slice(0, 6)?.map((data, index) => (
+          {slides?.slice(0, 6)?.map((itm, index) => (
             <div className="embla__slide rounded" key={index}>
               <Zoom>
                 <Image
-                  src={data?.url}
+                  src={itm}
                   width={500}
                   height={500}
                   alt="product_image"

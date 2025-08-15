@@ -7,44 +7,53 @@ import {
 } from "@/components/icons/Icons";
 import { Rating } from "@/components/ui/rating";
 import { envConfig } from "@/config";
-import { productDetails } from "@/lib/dummyData";
 import ActionButtons from "./ActionButtons";
 import SellerDetails from "./SellerDetails";
-// import ActionButtons from "./ActionButtons";
-// import SellerDetails from "./SellerDetails";
+import { IFish, IFishAverageRating } from "@/types/fish.type";
 
-const handleShare = () => {
+interface handleShareProps {
+  fishName: string;
+  _id: string;
+}
+const handleShare = ({ fishName, _id }: handleShareProps) => {
   navigator.share({
-    title: productDetails?.title,
-    url: `${envConfig?.client_url}/shop/${productDetails?._id}`,
+    title: fishName,
+    url: `${envConfig?.client_url}/shop/${_id}`,
   });
 };
 
-const ProductDetails = () => {
+interface fishDetailsProps {
+  fishDetails: IFish;
+  fishAverageRating: IFishAverageRating;
+}
+const fishDetails = ({ fishDetails, fishAverageRating }: fishDetailsProps) => {
   return (
     <div className=" space-y-5">
       {/* --------- product header ---------- */}
       <div className="space-y-2">
         <div>
           <div className="flex items-center  gap-x-2 text-white/80">
-            <Rating rating={productDetails?.rating}></Rating>
+            <Rating rating={fishAverageRating?.averageRating}></Rating>
             <p>
-              {productDetails?.rating} ({productDetails?.reviews} Reviews)
+              {fishAverageRating?.averageRating} (
+              {fishAverageRating?.totalReviews} Reviews)
             </p>
           </div>
-          <h4 className="md:text-3xl text-xl">{productDetails?.title}</h4>
+          <h4 className="md:text-3xl text-xl">{}</h4>
         </div>
-        {productDetails?.discount && (
+        {fishDetails?.pricingInfo?.discount && (
           <div className="flex gap-x-6 items-center">
             <p className="line-through text-primary-gray text-lg ">
-              ${productDetails?.originalPrice}
+              ${fishDetails?.pricingInfo?.price}
             </p>
             <div className="bg-primary-red text-primary-white px-4 py-1 rounded-tl-lg rounded-br-lg">
-              {productDetails?.discount} Off
+              {fishDetails?.pricingInfo?.discount} Off
             </div>
           </div>
         )}
-        <h4 className="md:text-3xl text-xl">${productDetails?.price}</h4>
+        <h4 className="md:text-3xl text-xl">
+          ${fishDetails?.pricingInfo?.price}
+        </h4>
       </div>
 
       {/* --------- product details data ---------- */}
@@ -55,7 +64,12 @@ const ProductDetails = () => {
           <button
             className="size-11 rounded-full flex justify-center items-center cursor-pointer hover:bg-primary-gray/10  transition-all duration-300"
             style={{ boxShadow: "0px 4px 5px 0px rgba(0, 0, 0, 0.07)" }}
-            onClick={handleShare}
+            onClick={() =>
+              handleShare({
+                fishName: fishDetails.fishName as string,
+                _id: fishDetails._id as string,
+              })
+            }
           >
             <ShareIcon></ShareIcon>
           </button>
@@ -63,29 +77,29 @@ const ProductDetails = () => {
         {/* --------- product details data ---------- */}
         <div className="flex md:gap-x-8 gap-x-4 items-center justify-between p-2 bg-[#2D4259] border-b">
           <h2>Common Name</h2>
-          <p className="max-w-[300px]">{productDetails?.commonName}%</p>
+          <p className="max-w-[300px]">{fishDetails?.fishName}%</p>
         </div>
 
         <div className="flex md:gap-x-8 gap-x-4 items-center justify-between p-2  border-b">
           <h2>Size</h2>
-          <p className="max-w-[300px]">{productDetails?.size}</p>
+          <p className="max-w-[300px]">{fishDetails?.size}</p>
         </div>
         <div className="flex md:gap-x-8 gap-x-4 items-center justify-between p-2 bg-[#2D4259] border-b">
           <h2>Care Level</h2>
-          <p className="max-w-[300px]">{productDetails?.careLevel}</p>
+          <p className="max-w-[300px]">{fishDetails?.careLevel}</p>
         </div>
         <div className="flex md:gap-x-8 gap-x-4 items-center justify-between p-2  border-b">
           <h2>Tank Requirements</h2>
-          <p className="max-w-[300px]">{productDetails?.tankRequirements}</p>
+          <p className="max-w-[300px]">{fishDetails?.tankRequirements}</p>
         </div>
         <div className="flex md:gap-x-8 gap-x-4 items-center justify-between p-2 bg-[#2D4259] border-b">
           <h2>Food Requirements</h2>
-          <p className="max-w-[300px]">{productDetails?.foodRequirements}</p>
+          <p className="max-w-[300px]">{fishDetails?.foodRequirements}</p>
         </div>
 
         <div className="flex md:gap-x-8 gap-x-4 items-center justify-between p-2  border-b">
           <h2>Behavior</h2>
-          <p className="max-w-[300px]">{productDetails?.behavior}</p>
+          <p className="max-w-[300px]">{fishDetails?.behavior}</p>
         </div>
 
         <div className="flex md:gap-x-8 gap-x-4 items-center justify-between p-2 bg-[#2D4259] border-b">
@@ -101,9 +115,9 @@ const ProductDetails = () => {
       {/* ======================= all actions buttons ================ */}
       <ActionButtons></ActionButtons>
       {/* ========================= seller details ========================= */}
-      <SellerDetails></SellerDetails>
+      <SellerDetails sellerDetails={fishDetails?.sellerId} />
     </div>
   );
 };
 
-export default ProductDetails;
+export default fishDetails;

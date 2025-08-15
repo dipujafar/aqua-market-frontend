@@ -1,12 +1,20 @@
 import { Suspense } from "react";
 import SingleProductPageContainer from "./_components/SingleProductPageContainer";
 
-const SingleProdcutPage = () => {
+interface SingleProductPageProps {
+  params: { productId: string };
+}
+
+const SingleProductPage = async ({ params }: SingleProductPageProps) => {
+  const { productId } = await params;
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <SingleProductPageContainer></SingleProductPageContainer>
+      <SingleProductPageContainer
+        productId={productId}
+      ></SingleProductPageContainer>
     </Suspense>
   );
 };
 
-export default SingleProdcutPage;
+export default SingleProductPage;

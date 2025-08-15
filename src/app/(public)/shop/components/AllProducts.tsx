@@ -1,6 +1,8 @@
 "use client";
 import ProductCard from "@/components/shared/cards/ProductCard";
 import { productData } from "@/lib/dummyData";
+import { useGetAllFishQuery } from "@/redux/api/fishApi";
+import { IFish } from "@/types/fish.type";
 import { motion } from "framer-motion";
 
 const fadeUpVariants = {
@@ -21,6 +23,8 @@ const fadeUpVariants = {
 };
 
 const AllProducts = () => {
+  const { data: fishData } = useGetAllFishQuery(undefined);
+  // console.log("fishData", fishData);
   return (
     <motion.div
       variants={fadeUpVariants}
@@ -30,11 +34,12 @@ const AllProducts = () => {
       viewport={{ once: true }}
       className="grid grid-cols-1 md:grid-cols-2   2xl:grid-cols-3  gap-4 xl:gap-6 "
     >
-      {productData?.map((product) => (
-        <motion.div variants={fadeUpVariants} key={product?._id}>
-          <ProductCard data={product}></ProductCard>
-        </motion.div>
-      ))}
+      {fishData?.data.length > 0 &&
+        fishData?.data?.map((product: IFish) => (
+          <motion.div variants={fadeUpVariants} key={product?._id}>
+            <ProductCard data={product}></ProductCard>
+          </motion.div>
+        ))}
     </motion.div>
   );
 };

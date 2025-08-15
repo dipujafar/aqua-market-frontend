@@ -34,7 +34,8 @@ export interface IPBids {
 }
 
 export interface IFish {
-  id: string;
+  _id?: string;
+  id?: string;
   fishName: string;
   commonName: string;
   image: string[];
@@ -56,4 +57,26 @@ export interface IFish {
   status: "sold" | "ongoing" | "processing" | "delivered";
   advertise?: IAdvertise;
   bids: IPBids[];
+}
+
+export interface IFishReview {
+  userId?: string;
+  fishId: string;
+  rating: number;
+  comment: string;
+  image?: string[];
+}
+
+interface RatingDistribution {
+  1: number;
+  2: number;
+  3: number;
+  4: number;
+  5: number;
+  [key: number]: number;
+}
+export interface IFishAverageRating {
+  averageRating: number;
+  totalReviews: number;
+  ratingDistribution: RatingDistribution;
 }

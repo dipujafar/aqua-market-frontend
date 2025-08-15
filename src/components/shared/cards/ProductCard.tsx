@@ -12,6 +12,7 @@ import Link from "next/link";
 
 const ProductCard = ({ data }: { data: any }) => {
   console.log("data", data);
+
   const image = data?.image[0];
   const sellerProfileImage = data?.sellerId?.profile_image;
   const AvailabilityDate = data?.pricingInfo?.estimateAvailability
@@ -111,7 +112,11 @@ const ProductCard = ({ data }: { data: any }) => {
         </div>
 
         {/* ================= action button ================= */}
-        <Link href={`/shop/1?type=${data?.pricingType}`}>
+        <Link
+          href={`/shop/${String(
+            data?.pricingType ?? ""
+          ).toLowerCase()}-${String(data?._id ?? "")}`}
+        >
           <Button
             className="uppercase w-full rounded  cursor-pointer z-20 border-b-4 border-r-4 border-primary-deep-green group lg:py-5"
             style={{

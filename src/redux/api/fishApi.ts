@@ -11,7 +11,33 @@ export const fishApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.fish],
     }),
+
+    getFishDetails: builder.query({
+      query: (id: string) => ({
+        url: `/fish/details/${id}`,
+        method: "GET",
+      }),
+    }),
+
+    getFishBaseReview: builder.query({
+      query: (id: string) => ({
+        url: `/fish/reviews/${id}`,
+        method: "GET",
+      }),
+    }),
+
+    getFishBaseAverageReview: builder.query({
+      query: (id: string) => ({
+        url: `/fish/average-rating/${id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetAllFishQuery } = fishApi;
+export const {
+  useGetAllFishQuery,
+  useGetFishDetailsQuery,
+  useGetFishBaseReviewQuery,
+  useGetFishBaseAverageReviewQuery,
+} = fishApi;

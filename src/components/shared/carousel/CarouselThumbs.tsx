@@ -24,7 +24,7 @@ export const CarouselThumbs: React.FC<PropType> = (props) => {
       >
         {/* {index + 1} */}
         <Image
-          src={data.url}
+          src={data}
           width={500}
           height={500}
           alt="thumbnail"

@@ -3,7 +3,9 @@ import CommonButton from "@/components/ui/common-button";
 import Image from "next/image";
 import Link from "next/link";
 
-const SellerDetails = () => {
+const SellerDetails = ({ sellerDetails }: { sellerDetails: any }) => {
+  // console.log("sellerDetails", sellerDetails);
+
   return (
     <div>
       <div className=" flex justify-between gap-x-2 items-center border-b border-white/50 pb-2 ">
@@ -27,15 +29,17 @@ const SellerDetails = () => {
             </div>
             <div>
               <Link href="/seller-profile">
-                <h5 className="font-medium">AquaPet Seller</h5>{" "}
+                <h5 className="font-medium">
+                  {sellerDetails?.first_name} {sellerDetails?.last_name}
+                </h5>{" "}
               </Link>
-              <p className="text-sm text-white/80">AquaFishBomp.com</p>
+              <p className="text-sm text-white/80">{sellerDetails?.email}</p>
             </div>
           </div>
 
           <div className="flex gap-x-2  items-center h-fit  ">
             <MapIcon></MapIcon>
-            <h6>Dublin, Ireland</h6>
+            <h6>{sellerDetails?.location}</h6>
           </div>
           <hr />
         </div>
