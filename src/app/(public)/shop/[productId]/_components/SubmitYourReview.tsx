@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { usePostFishReviewMutation } from "@/redux/api/userApi";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import CommonButton from "@/components/ui/common-button";
 
 const formSchema = z.object({
   comment: z
@@ -115,9 +116,11 @@ const SubmitYourReview = ({ className, fishId }: ISubmitYourReviewProps) => {
               )}
             />
             <div>
-              <Button onClick={() => postFishReview(selectRating)}>
+              <CommonButton
+                handlerFunction={() => postFishReview(selectRating)}
+              >
                 Submit
-              </Button>
+              </CommonButton>
             </div>
           </form>
         </Form>
