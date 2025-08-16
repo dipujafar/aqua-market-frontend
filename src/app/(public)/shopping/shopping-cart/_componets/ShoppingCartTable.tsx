@@ -9,6 +9,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useGetMyAllFishQuery } from "@/redux/api/userApi";
+import { IBuyFish } from "@/types/fish.type";
 import { X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -42,7 +44,9 @@ const productData = [
 ];
 
 const ShoppingCartTable = () => {
-  // Initialize state with quantities from productData
+  const { data: myOrders } = useGetMyAllFishQuery(undefined);
+  console.log("myOrders", myOrders?.data);
+
   const [quantities, setQuantities] = useState(
     productData.map((product) => product.quantity)
   );
@@ -75,8 +79,8 @@ const ShoppingCartTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {productData?.map((data, idx) => (
-            <TableRow key={idx} className="hover:bg-transparent">
+          {myOrders?.data?.data?.map((data: IBuyFish, idx: number) => (
+            <TableRow key={data?._id} className="hover:bg-transparent">
               <TableCell className="font-medium min-w-fit">
                 <div className="flex gap-x-2">
                   <div className="border lg:size-8 size-6  rounded-full flex justify-center items-center cursor-pointer hover:bg-gray-300 group duration-300">
@@ -87,7 +91,7 @@ const ShoppingCartTable = () => {
                   </div>
                   <div className=" flex flex-col lg:flex-row items-center md:gap-3 gap-1  min-w-fit">
                     <Image
-                      src={data?.image}
+                      src={data?.fishId?.image[0]}
                       alt="product_image"
                       width={950}
                       height={700}
@@ -95,28 +99,28 @@ const ShoppingCartTable = () => {
                     />
                     <div className="flex flex-col lg:gap-y-2">
                       <p className="truncate font-medium lg:text-lg text-sm">
-                        {data?.name}
+                        {data?.fishId?.fishName}
                       </p>
                       <div className="truncate text-sm font-light flex items-center gap-x-2 text-gray-300">
                         <p>Seller info:</p>
-                        <p>{data?.seller_info}</p>
+                        <p>{data?.sellerId.first_name}</p>
                       </div>
                       <div className="truncate text-sm font-light flex items-center gap-x-2 text-gray-300">
                         <p>Style:</p>
-                        <p>{data?.style}</p>
+                        <p>{data?.fishId?.pricingInfo?.style}</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </TableCell>
-              <TableCell>${data?.price}</TableCell>
+              <TableCell>${data?.fishId?.pricingInfo?.price}</TableCell>
               <TableCell className=" ">
                 {/* quantity */}
                 <div className="border-2  rounded-full flex items-center gap-x-3 max-w-fit mx-auto  ">
                   <button
                     onClick={() => handleQuantityChange(idx, -1)}
                     className={`size-10 border flex justify-center items-center rounded-full hover:bg-primary-color hover:text-primary-white hover:shadow-2xl ease-in duration-300 cursor-pointer hover:bg-black/50`}
-                    disabled={quantities[idx] === 1}
+                    disabled={data?.quantity === 0}
                   >
                     -
                   </button>
@@ -130,7 +134,11 @@ const ShoppingCartTable = () => {
                 </div>
               </TableCell>
               <TableCell>
-                ${(Number(quantities[idx]) * Number(data?.price)).toFixed(2)}
+                $
+                {(
+                  Number(quantities[idx]) *
+                  Number(data?.fishId?.pricingInfo?.price)
+                ).toFixed(2)}
               </TableCell>
             </TableRow>
           ))}

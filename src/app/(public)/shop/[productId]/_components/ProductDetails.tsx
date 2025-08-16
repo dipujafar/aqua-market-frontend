@@ -113,7 +113,7 @@ const fishDetails = ({ fishDetails, fishAverageRating }: fishDetailsProps) => {
       </div>
 
       {/* ======================= all actions buttons ================ */}
-      <ActionButtons></ActionButtons>
+      <ActionButtons fishDetails={fishDetails}></ActionButtons>
       {/* ========================= seller details ========================= */}
       <SellerDetails sellerDetails={fishDetails?.sellerId} />
     </div>

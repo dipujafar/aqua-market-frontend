@@ -146,3 +146,16 @@ export interface IFishAverageRating {
   totalReviews: number;
   ratingDistribution: RatingDistribution;
 }
+
+export interface IBuyFish {
+  _id?: string;
+  userId: IUser;
+  fishId: IFish;
+  sellerId: IUser;
+  quantity: number;
+  status?: string;
+  isActive?: boolean;
+  isDeleted?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+}

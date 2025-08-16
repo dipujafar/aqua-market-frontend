@@ -1,10 +1,37 @@
+"use client";
+
 import { MapIcon } from "@/components/icons/Icons";
 import CommonButton from "@/components/ui/common-button";
+import {
+  useFollowSellerMutation,
+  useGetSellerBaseFollowingQuery,
+} from "@/redux/api/userApi";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "sonner";
 
 const SellerDetails = ({ sellerDetails }: { sellerDetails: any }) => {
   // console.log("sellerDetails", sellerDetails);
+
+  const [followUnfollow] = useFollowSellerMutation();
+  const { data: followingData } = useGetSellerBaseFollowingQuery(
+    sellerDetails?._id
+  );
+  const status =
+    followingData?.data?.isActive === true ? "Following" : "Follow Seller";
+
+  const handleFollowSeller = async (sellerId: string) => {
+    try {
+      const res = await followUnfollow({ id: sellerId }).unwrap();
+      if (res?.success) {
+        toast.success(res?.message);
+      }
+    } catch (error) {
+      console.log("error", error);
+      toast.error(getErrorMessage(error));
+    }
+  };
 
   return (
     <div>
@@ -44,8 +71,11 @@ const SellerDetails = ({ sellerDetails }: { sellerDetails: any }) => {
           <hr />
         </div>
 
-        <CommonButton className="w-full mt-4 group border-r-3 border-b-3 border-white ">
-          follow seller
+        <CommonButton
+          handlerFunction={() => handleFollowSeller(sellerDetails?._id)}
+          className="w-full mt-4 group border-r-3 border-b-3 border-white "
+        >
+          {status}
         </CommonButton>
       </div>
     </div>

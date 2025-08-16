@@ -15,7 +15,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
 import { usePostFishReviewMutation } from "@/redux/api/userApi";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import CommonButton from "@/components/ui/common-button";
 
@@ -30,7 +29,6 @@ interface ISubmitYourReviewProps {
   fishId: string;
 }
 const SubmitYourReview = ({ className, fishId }: ISubmitYourReviewProps) => {
-  console.log("fishId", fishId);
   const [selectRating, setSelectRating] = useState(0);
 
   const [postFishReview] = usePostFishReviewMutation();

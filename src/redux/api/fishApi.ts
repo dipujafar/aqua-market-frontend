@@ -17,6 +17,7 @@ export const fishApi = baseApi.injectEndpoints({
         url: `/fish/details/${id}`,
         method: "GET",
       }),
+      providesTags: [tagTypes.fish],
     }),
 
     getFishBaseReview: builder.query({
@@ -32,6 +33,7 @@ export const fishApi = baseApi.injectEndpoints({
         url: `/fish/average-rating/${id}`,
         method: "GET",
       }),
+      providesTags: [tagTypes.fish],
     }),
   }),
 });
