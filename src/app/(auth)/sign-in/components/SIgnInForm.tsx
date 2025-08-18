@@ -51,17 +51,6 @@ const SIgnInForm = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    // if (data.email == "user@gmail.com" && data.password == "112233A@") {
-    //   router.push("/user/profile");
-    //   return;
-    // }
-    // if (data.email == "seller@gmail.com" && data.password == "112233A@") {
-    //   router.push("/seller/profile/seller-profile");
-    //   return;
-    // } else {
-    //   toast.error("Invalid email or password");
-    // }
-
     const formattedData = {
       email: data.email,
       password: data.password,

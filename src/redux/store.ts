@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
   FLUSH,
   PAUSE,
@@ -10,7 +10,8 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
-import authSlice from "./features/authSlice";
+import authReducer from "./features/authSlice";
+import cartReducer from "./features/cartSlice";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import { baseApi } from "./api/baseApi";
 
@@ -44,13 +45,16 @@ const persistConfig = {
   storage,
 };
 
-const persistedAuthReducer = persistReducer(persistConfig, authSlice);
+export const rootReducer = combineReducers({
+  [baseApi.reducerPath]: baseApi.reducer,
+  auth: authReducer,
+  cart: cartReducer,
+});
+
+const persistedAuthReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    [baseApi.reducerPath]: baseApi.reducer,
-    auth: persistedAuthReducer,
-  },
+  reducer: persistedAuthReducer,
   middleware: (getDefaultMiddlewares) =>
     getDefaultMiddlewares({
       serializableCheck: {

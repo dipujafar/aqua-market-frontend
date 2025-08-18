@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Card,
   CardContent,
@@ -7,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import CommonButton from "@/components/ui/common-button";
+import { useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -14,11 +16,17 @@ const OrderSummaryCard = () => {
   const router = useRouter();
   const pathName = usePathname();
 
-  console.log(pathName);
+  const cartData = useAppSelector((state) => state.cart);
+  const cartProducts = cartData?.items || [];
+  // console.log("cartProducts", cartProducts);
 
-  const handleProceed = () => {
-    router.push("/billing-info");
-  };
+  //  Calculate total items and subtotal
+  const totalItems = cartProducts.reduce((acc, item) => acc + item.quantity, 0);
+  const subTotal = cartProducts.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+
   return (
     <Card
       className="shadow-md hover:border hover:border-primary-color/50 duration-300 text-white h-fit"
@@ -38,12 +46,12 @@ const OrderSummaryCard = () => {
         <div className="space-y-3 mt-4">
           <div className="flex justify-between ">
             <p>Items:</p>
-            <p className="font-medium">2</p>
+            <p className="font-medium">{totalItems}</p>
           </div>
 
           <div className="flex justify-between ">
             <p>Subtotal:</p>
-            <p className="font-medium">$708.00</p>
+            <p className="font-medium">${subTotal.toFixed(2)}</p>
           </div>
 
           <div className="flex justify-between ">
@@ -53,17 +61,11 @@ const OrderSummaryCard = () => {
           <hr />
           <div className="flex justify-between ">
             <p>Total:</p>
-            <p className="font-medium">$633.00</p>
+            <p className="font-medium">${subTotal.toFixed(2)}</p>
           </div>
         </div>
       </CardContent>
       <CardFooter>
-        {/* <Button
-          onClick={handleProceed}
-          className="bg-primary-color w-full rounded-full hover:bg-primary-black/80"
-        >
-          Proceed to checkout
-        </Button> */}
         {pathName !== "/shopping/shopping-address" && (
           <Link href={"/shopping/shopping-address"} className="w-full">
             <CommonButton className="w-full border-white">

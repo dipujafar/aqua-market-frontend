@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,6 +16,11 @@ import CountryStateCitySelector from "@/components/ui/country-state-city-selecto
 import { Label } from "@radix-ui/react-label";
 import { PhoneInput } from "@/components/ui/phone-input";
 import CommonButton from "@/components/ui/common-button";
+import { useGetUserProfileQuery } from "@/redux/api/userProfileApi";
+import { useEffect, useState } from "react";
+import { useUpdateShipingAddressMutation } from "@/redux/api/userApi";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -53,6 +58,16 @@ const formSchema = z.object({
 });
 
 export default function ShippingAddressForm() {
+  const [value, setValue] = useState<string>("");
+  // console.log("value", value);
+
+  const [updateShippingAddress, { isLoading }] =
+    useUpdateShipingAddressMutation();
+
+  const { data: userData } = useGetUserProfileQuery(undefined);
+  // console.log("userData", userData?.data?.shippingAddress);
+
+  const existingShippingAddress = userData?.data?.shippingAddress;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -71,11 +86,37 @@ export default function ShippingAddressForm() {
       rememberMe: false,
     },
   });
+  const { register, control, reset } = form;
 
-  const { register, setValue, control } = form;
+  // ✅ When userData loads, update form values
+  useEffect(() => {
+    if (existingShippingAddress) {
+      reset({
+        firstName: existingShippingAddress.firstName || "",
+        lastName: existingShippingAddress.lastName || "",
+        companyName: existingShippingAddress.companyName || "",
+        streetAddress: existingShippingAddress.streetAddress || "",
+        zipCode: existingShippingAddress.zipCode || "",
+        phoneNumber: existingShippingAddress.phoneNumber || "",
+        email: existingShippingAddress.email || "",
+        country: existingShippingAddress.country || "",
+        city: existingShippingAddress.city || "",
+        state: existingShippingAddress.state || "",
+        shippingMethod: existingShippingAddress.shippingMethod || "",
+        rememberMe: false,
+      });
+    }
+  }, [existingShippingAddress, reset]);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const res = await updateShippingAddress(values).unwrap();
+      if (res.success) {
+        toast.success(res.message);
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
   }
 
   return (
@@ -231,7 +272,7 @@ export default function ShippingAddressForm() {
             )}
           />
 
-          <CommonButton className="w-full border-white">
+          <CommonButton type="submit" className="w-full border-white">
             Continue to payment
           </CommonButton>
         </form>

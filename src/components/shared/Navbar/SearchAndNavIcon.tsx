@@ -47,7 +47,13 @@ const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
           </div>
         </motion.div>
         <motion.li variants={childrenVariants}>
-          <Link href={"/shopping/shopping-cart"}>
+          <Link
+            href={
+              userData?.data?.role === "user"
+                ? "/shopping/shopping-cart"
+                : "/sign-in"
+            }
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="25"

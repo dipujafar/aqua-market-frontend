@@ -22,14 +22,6 @@ const userApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.orders],
     }),
 
-    getMyAllFish: builder.query({
-      query: () => ({
-        url: `/user/my-buy-fish`,
-        method: "GET",
-      }),
-      providesTags: [tagTypes.orders],
-    }),
-
     // Follow Seller & Unfollow
     followSeller: builder.mutation({
       query: ({ data, id }) => ({
@@ -55,6 +47,15 @@ const userApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.profile],
     }),
+
+    updateShipingAddress: builder.mutation({
+      query: (data) => ({
+        url: `/user/added-shipping-address`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: [tagTypes.profile],
+    }),
   }),
 });
 
@@ -64,5 +65,5 @@ export const {
   useFollowSellerMutation,
   useMyFollowingQuery,
   useGetSellerBaseFollowingQuery,
-  useGetMyAllFishQuery,
+  useUpdateShipingAddressMutation,
 } = userApi;

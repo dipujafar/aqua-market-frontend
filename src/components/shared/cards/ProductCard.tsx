@@ -4,20 +4,52 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import RightArrowIcon from "@/components/ui/right-arrow-icon";
 import ShoppingCartIcon from "@/components/ui/shopping-cart-icon";
+import { useGetUserProfileQuery } from "@/redux/api/userProfileApi";
+import { addToCart } from "@/redux/features/cartSlice";
+import { useAppDispatch } from "@/redux/hooks";
 import { productCardButtonColor } from "@/utils/productCardButtonColor";
 import moment from "moment";
-
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const ProductCard = ({ data }: { data: any }) => {
   console.log("data", data);
+
+  const dispatch = useAppDispatch();
+  const { data: userData } = useGetUserProfileQuery(undefined);
+  const router = useRouter();
 
   const image = data?.image[0];
   const sellerProfileImage = data?.sellerId?.profile_image;
   const AvailabilityDate = data?.pricingInfo?.estimateAvailability
     ? moment(data.pricingInfo.estimateAvailability).format("MMM Do YY")
     : "";
+
+  const buyFishHandler = async () => {
+    try {
+      dispatch(
+        addToCart({
+          userId: userData?.data?._id as string,
+          userEmail: userData?.data?.email as string,
+          fishId: data?._id as string,
+          sellerId: data?.sellerId._id as string,
+          quantity: 1,
+          price: data?.pricingInfo?.price as number,
+          stock: data?.pricingInfo?.quantity as number,
+          image: data?.image[0],
+          sellerName:
+            `${data.sellerId.first_name} ${data.sellerId.last_name}` as string,
+          style: data?.pricingInfo?.style as string,
+        })
+      );
+      toast.success("Item added to cart successfully");
+      router.push("/shopping/shopping-cart");
+    } catch (error) {
+      console.log("error______", error);
+    }
+  };
 
   return (
     <Card
@@ -83,6 +115,7 @@ const ProductCard = ({ data }: { data: any }) => {
           {/* =============== add to card button ====================== */}
           {data?.type !== "bid" && (
             <div
+              onClick={buyFishHandler}
               // style={{ background: "rgba(156, 156, 156, 0.40)" }}
               className="absolute top-1 right-1 size-11 flex justify-center items-center rounded-full bg-[rgba(156,_156,_156,_0.40)] hover:bg-white/40 duration-300 cursor-pointer"
             >

@@ -2,13 +2,14 @@
 import { ArrowIcon, ShoppingCartIcon } from "@/components/icons/Icons";
 import { Button } from "@/components/ui/button";
 import CommonButton from "@/components/ui/common-button";
-import { getErrorMessage } from "@/utils/getErrorMessage";
-import { useBuyFishMutation } from "@/redux/api/userApi";
 import { Minus, Plus } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { IFish } from "@/types/fish.type";
+import { useAppDispatch } from "@/redux/hooks";
+import { addToCart } from "@/redux/features/cartSlice";
+import { useGetUserProfileQuery } from "@/redux/api/userProfileApi";
 
 interface IActionButtonsProps {
   fishDetails: IFish;
@@ -20,21 +21,30 @@ const ActionButtons = ({ fishDetails }: IActionButtonsProps) => {
   const type = useSearchParams().get("type");
   const router = useRouter();
 
-  const [buyFish] = useBuyFishMutation();
+  const dispatch = useAppDispatch();
+  const { data: userData } = useGetUserProfileQuery(undefined);
 
   const buyFishHandler = async () => {
-    const fishData = {
-      quantity: quantity,
-      fishId: fishDetails?._id,
-    };
-
     try {
-      const res = await buyFish(fishData).unwrap();
-      if (res?.success) {
-        toast.success(res?.message);
-      }
+      dispatch(
+        addToCart({
+          userId: userData?.data?._id as string,
+          userEmail: userData?.data?.email as string,
+          fishId: fishDetails?._id as string,
+          sellerId: fishDetails?.sellerId._id as string,
+          quantity: 1,
+          price: fishDetails?.pricingInfo?.price as number,
+          stock: fishDetails?.pricingInfo?.quantity as number,
+          image: fishDetails?.image[0],
+          sellerName:
+            `${fishDetails.sellerId.first_name} ${fishDetails.sellerId.last_name}` as string,
+          style: fishDetails?.pricingInfo?.style as string,
+        })
+      );
+      toast.success("Item added to cart successfully");
+      router.push("/shopping/shopping-cart");
     } catch (error) {
-      toast.error(getErrorMessage(error));
+      console.log("error______", error);
     }
   };
 
@@ -95,6 +105,7 @@ const ActionButtons = ({ fishDetails }: IActionButtonsProps) => {
           </Button>
 
           <div
+            onClick={buyFishHandler}
             style={{
               background: "rgba(77, 168, 218, 0.40)",
             }}

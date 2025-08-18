@@ -35,6 +35,8 @@ export default function CountryStateCitySelector({
       });
   }, []);
 
+  // console.log('userAddress', userAddress);
+
   // -------- Keep data memoized to load once ------------ //
   const memoizedAllCountries = useMemo<any>(() => allData, [allData]);
 
@@ -80,7 +82,7 @@ export default function CountryStateCitySelector({
           <Controller
             name="country"
             control={control}
-            defaultValue={selectedCountry}
+            defaultValue={userAddress?.country || ""}
             render={({ field }) => (
               <Select
                 onValueChange={(countryName) => {
@@ -111,7 +113,7 @@ export default function CountryStateCitySelector({
                 <Controller
                   name="state"
                   control={control}
-                  defaultValue={selectedState}
+                  defaultValue={userAddress?.state || ""}
                   render={({ field }) => (
                     <Select
                       onValueChange={(stateName) => {
@@ -148,7 +150,10 @@ export default function CountryStateCitySelector({
             </>
           ) : (
             <Select>
-              <SelectTrigger disabled className="py-5 bg-primary-light-gray w-full">
+              <SelectTrigger
+                disabled
+                className="py-5 bg-primary-light-gray w-full"
+              >
                 <SelectValue placeholder="Select a country first" />
               </SelectTrigger>
               <SelectContent></SelectContent>
@@ -162,7 +167,7 @@ export default function CountryStateCitySelector({
               <Controller
                 name="city"
                 control={control}
-                defaultValue={selectedCity}
+                defaultValue={userAddress?.city || ""}
                 render={({ field }) => (
                   <>
                     {citiesOfState?.length ? (
@@ -202,7 +207,10 @@ export default function CountryStateCitySelector({
             </>
           ) : (
             <Select>
-              <SelectTrigger disabled className="py-5 bg-primary-light-gray w-full">
+              <SelectTrigger
+                disabled
+                className="py-5 bg-primary-light-gray w-full"
+              >
                 <SelectValue placeholder="Select a state first" />
               </SelectTrigger>
               <SelectContent></SelectContent>

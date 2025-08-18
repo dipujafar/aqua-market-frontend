@@ -22,4 +22,4 @@ const userProfileApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetUserProfileQuery } = userProfileApi;
+export const { useGetUserProfileQuery, useUpdateProfileMutation } = userProfileApi;

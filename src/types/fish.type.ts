@@ -113,7 +113,7 @@ export interface IFish {
   pricingInfo: IPricingInfo;
   shippingAddress: string;
   doaPolicy: string;
-  sellerId: string;
+  sellerId: ISeller;
   isActive?: boolean;
   isDeleted?: boolean;
   status: "sold" | "ongoing" | "processing" | "delivered";
@@ -158,4 +158,25 @@ export interface IBuyFish {
   isDeleted?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+export interface ISeller {
+  _id?: string;
+  about: string;
+  banner: string;
+  contact_number: string;
+  createdAt: string;
+  email: string;
+  first_name: string;
+  gender: "male" | "female" | "other";
+  isActive: boolean;
+  isDeleted: boolean;
+  isNotificationOn: boolean;
+  isVerified: boolean;
+  last_name: string;
+  location: string;
+  profile_image: string;
+  role: "seller" | "buyer" | "admin";
+  updatedAt: string; //
+  user_name: string;
 }

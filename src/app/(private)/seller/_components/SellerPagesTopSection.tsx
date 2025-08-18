@@ -1,12 +1,14 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { use } from "react";
 import topSectionBg from "@/assets/images/top_section_bg.png";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
+import { useAppDispatch } from "@/redux/hooks";
+import { logout } from "@/redux/features/authSlice";
 
 const navLinks = [
   {
@@ -42,9 +44,15 @@ const navLinks = [
 ];
 
 const SellerPagesTopSection = () => {
+  const dispatch = useAppDispatch();
   const pathName = usePathname();
   const currentPath = pathName?.split("/")[2];
   const router = useRouter();
+
+  const handleLogout = () => {
+    const res = dispatch(logout());
+    console.log("res_______", res);
+  };
 
   return (
     <div className="max-h-[240px] relative">
@@ -89,7 +97,7 @@ const SellerPagesTopSection = () => {
               "rounded border-r-3 border-b-3  uppercase md:min-w-40 md:py-5 cursor-pointer group bg-white text-black  sm:m-2 m-1 text-[10px] md:text-sm px-2 md:px-3 py-0 md:h-9 h-7   mx-2 hover:bg-white/30  hover:text-white",
               "border-[#78C0A8]"
             )}
-            onClick={() => router.push("/sign-in")}
+            onClick={handleLogout}
           >
             Logout
             <AnimatedArrow className="md:size-4 size-3" />
