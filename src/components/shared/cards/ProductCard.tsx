@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 const ProductCard = ({ data }: { data: any }) => {
-  console.log("data", data);
+  // console.log("data", data);
 
   const dispatch = useAppDispatch();
   const { data: userData } = useGetUserProfileQuery(undefined);
@@ -62,7 +62,7 @@ const ProductCard = ({ data }: { data: any }) => {
       <CardContent className="px-4 space-y-4 text-white">
         <div className="relative group">
           <Image
-            src={image ? image : "/images/placeholder.png"}
+            src={image ? image : "/no-image.jpg"}
             alt="product-data"
             width={1200}
             height={1200}

@@ -66,7 +66,7 @@ const ShoppingCartTable = () => {
                   </div>
                   <div className=" flex flex-col lg:flex-row items-center md:gap-3 gap-1  min-w-fit">
                     <Image
-                      src={data?.image}
+                      src={data?.image ? data?.image : "/no-image.jpg"}
                       alt="product_image"
                       width={950}
                       height={700}

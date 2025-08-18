@@ -2,7 +2,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -13,9 +12,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import { PhoneInput } from "@/components/ui/phone-input";
 import CommonButton from "@/components/ui/common-button";
+import { useGetInTouchMutation } from "@/redux/api/userApi";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -33,14 +34,13 @@ const formSchema = z.object({
   message: z.string().min(5, {
     message: "Message must be at least 5 characters.",
   }),
-  termsAccepted: z.literal(true, {
-    errorMap: () => ({ message: "You must accept the terms and conditions." }),
-  }),
 });
 
 type ContactFormValues = z.infer<typeof formSchema>;
 
 export default function ContactForm() {
+  const [sendMail, { isLoading }] = useGetInTouchMutation();
+
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -52,17 +52,30 @@ export default function ContactForm() {
     },
   });
 
-  function onSubmit(values: ContactFormValues) {
-    // This is where you would typically send the form data to your backend
-    console.log(values);
-    alert("Form submitted successfully!");
-  }
+  const onSubmit = async (data: ContactFormValues) => {
+    try {
+      const res = await sendMail(data).unwrap();
+
+      if (res.success) {
+        toast.success(res.message);
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
 
   return (
     <div>
-     
       <Form {...form}>
-        <form style={{ background: "linear-gradient(180deg, rgba(77, 168, 218, 0.24) 0%, rgba(120, 192, 168, 0.24) 85.08%)", boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.10))" }} onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:p-6 p-3 rounded-lg">
+        <form
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(77, 168, 218, 0.24) 0%, rgba(120, 192, 168, 0.24) 85.08%)",
+            boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.10))",
+          }}
+          onSubmit={form.handleSubmit(onSubmit)} // <-- use your onSubmit function
+          className="space-y-4 md:p-6 p-3 rounded-lg"
+        >
           <div className="grid grid-cols-2 gap-3">
             <FormField
               control={form.control}
@@ -156,12 +169,8 @@ export default function ContactForm() {
             )}
           />
 
-          <CommonButton
-            type="submit"
-            className="border-white w-full"
-          >
-            Send message
-           
+          <CommonButton type="submit" className="border-white w-full">
+            {isLoading ? "Sending..." : "Send message"}
           </CommonButton>
         </form>
       </Form>

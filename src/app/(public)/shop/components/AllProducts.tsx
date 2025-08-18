@@ -1,6 +1,7 @@
 "use client";
+
+
 import ProductCard from "@/components/shared/cards/ProductCard";
-import { productData } from "@/lib/dummyData";
 import { useGetAllFishQuery } from "@/redux/api/fishApi";
 import { IFish } from "@/types/fish.type";
 import { motion } from "framer-motion";
@@ -25,6 +26,7 @@ const fadeUpVariants = {
 const AllProducts = () => {
   const { data: fishData } = useGetAllFishQuery(undefined);
   // console.log("fishData", fishData);
+
   return (
     <motion.div
       variants={fadeUpVariants}

@@ -56,6 +56,15 @@ const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.profile],
     }),
+
+    getInTouch: builder.mutation({
+      query: (data) => ({
+        url: `/admin/create-get-in-touch`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: [tagTypes.profile],
+    }),
   }),
 });
 
@@ -66,4 +75,5 @@ export const {
   useMyFollowingQuery,
   useGetSellerBaseFollowingQuery,
   useUpdateShipingAddressMutation,
+  useGetInTouchMutation,
 } = userApi;
