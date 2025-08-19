@@ -13,6 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import BidNowModal from "./BidNowModal";
 
 const ProductCard = ({ data }: { data: any }) => {
   // console.log("data", data);
@@ -66,7 +67,7 @@ const ProductCard = ({ data }: { data: any }) => {
             alt="product-data"
             width={1200}
             height={1200}
-            className="rounded "
+            className="rounded w-full h-[250px] object-cover"
           ></Image>
           {data.pricingInfo?.estimateAvailability && (
             <div className="p-2 bg-primary-blue absolute top-0 left-0 text-sm max-w-[130px] rounded-tl">
@@ -145,23 +146,41 @@ const ProductCard = ({ data }: { data: any }) => {
         </div>
 
         {/* ================= action button ================= */}
-        <Link
-          href={`/shop/${String(
-            data?.pricingType ?? ""
-          ).toLowerCase()}-${String(data?._id ?? "")}`}
-        >
-          <Button
-            className="uppercase w-full rounded  cursor-pointer z-20 border-b-4 border-r-4 border-primary-deep-green group lg:py-5"
-            style={{
-              backgroundColor: productCardButtonColor(data?.pricingType),
-            }}
-          >
-            {data?.pricingType === "preOrder" && "Pre Order Now"}
-            {data?.pricingType === "forBids" && "BID NOW"}
-            {data?.pricingType === "directSale" && "Buy NOW"}
-            <RightArrowIcon className="group-hover:translate-x-2 duration-500"></RightArrowIcon>
-          </Button>
-        </Link>
+
+        {data?.pricingType === "forBids" ? (
+          <>
+            <BidNowModal bidInfo={{ ...data }}>
+              <Button
+                className="uppercase w-full rounded  cursor-pointer z-20 border-b-4 border-r-4 border-primary-deep-green group lg:py-5"
+                style={{
+                  backgroundColor: productCardButtonColor(data?.pricingType),
+                }}
+              >
+                Bid Now
+                <RightArrowIcon className="group-hover:translate-x-2 duration-500"></RightArrowIcon>
+              </Button>
+            </BidNowModal>
+          </>
+        ) : (
+          <>
+            <Link
+              href={`/shop/${String(
+                data?.pricingType ?? ""
+              ).toLowerCase()}-${String(data?._id ?? "")}`}
+            >
+              <Button
+                className="uppercase w-full rounded  cursor-pointer z-20 border-b-4 border-r-4 border-primary-deep-green group lg:py-5"
+                style={{
+                  backgroundColor: productCardButtonColor(data?.pricingType),
+                }}
+              >
+                {data?.pricingType === "preOrder" && "Pre Order Now"}
+                {data?.pricingType === "directSale" && "Buy NOW"}
+                <RightArrowIcon className="group-hover:translate-x-2 duration-500"></RightArrowIcon>
+              </Button>
+            </Link>
+          </>
+        )}
       </CardContent>
     </Card>
   );

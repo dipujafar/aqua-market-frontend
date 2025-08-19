@@ -1,6 +1,5 @@
 "use client";
 
-
 import ProductCard from "@/components/shared/cards/ProductCard";
 import { useGetAllFishQuery } from "@/redux/api/fishApi";
 import { IFish } from "@/types/fish.type";
@@ -34,7 +33,7 @@ const AllProducts = () => {
       initial="initial"
       whileInView="animate"
       viewport={{ once: true }}
-      className="grid grid-cols-1 md:grid-cols-2   2xl:grid-cols-3  gap-4 xl:gap-6 "
+      className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3  gap-4 xl:gap-6 "
     >
       {fishData?.data.length > 0 &&
         fishData?.data?.map((product: IFish) => (
