@@ -7,14 +7,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Controller } from "react-hook-form";
-import { Input } from "@/components/ui/input";
 
 export default function CountryStateCitySelector({
   control,
   userAddress,
-  register,
   setValue,
 }: any) {
+  // console.log("userAddress", userAddress);
+
   const [allData, setAllData] = useState([]);
 
   const [selectedCountry, setSelectedCountry] = useState<any>(
@@ -35,7 +35,18 @@ export default function CountryStateCitySelector({
       });
   }, []);
 
-  // console.log('userAddress', userAddress);
+  // -------- Sync default values when userAddress is available -------- //
+  useEffect(() => {
+    if (userAddress) {
+      setSelectedCountry(userAddress.country || "");
+      setSelectedState(userAddress.state || "");
+      setSelectedCity(userAddress.city || "");
+
+      setValue("address.country", userAddress.country || "");
+      setValue("address.state", userAddress.state || "");
+      setValue("address.city", userAddress.city || "");
+    }
+  }, [userAddress, setValue]);
 
   // -------- Keep data memoized to load once ------------ //
   const memoizedAllCountries = useMemo<any>(() => allData, [allData]);
@@ -69,9 +80,9 @@ export default function CountryStateCitySelector({
       setSelectedState(userAddress.state);
       setSelectedCity(userAddress.city);
 
-      setValue("country", userAddress.country);
-      setValue("state", userAddress.state);
-      setValue("city", userAddress.city);
+      setValue("address.country", userAddress.country);
+      setValue("address.state", userAddress.state);
+      setValue("address.city", userAddress.city);
     }
   }, [userAddress?.country]);
 
@@ -80,9 +91,8 @@ export default function CountryStateCitySelector({
       <div className="grid w-full grid-cols-2 gap-x-3 gap-y-3 lg:grid-cols-3">
         <div>
           <Controller
-            name="country"
+            name="address.country"
             control={control}
-            defaultValue={userAddress?.country || ""}
             render={({ field }) => (
               <Select
                 onValueChange={(countryName) => {
@@ -111,7 +121,7 @@ export default function CountryStateCitySelector({
             <>
               {statesOfCountry?.length ? (
                 <Controller
-                  name="state"
+                  name="address.state"
                   control={control}
                   defaultValue={userAddress?.state || ""}
                   render={({ field }) => (
@@ -165,7 +175,7 @@ export default function CountryStateCitySelector({
           {selectedState ? (
             <>
               <Controller
-                name="city"
+                name="address.city"
                 control={control}
                 defaultValue={userAddress?.city || ""}
                 render={({ field }) => (
@@ -216,51 +226,6 @@ export default function CountryStateCitySelector({
               <SelectContent></SelectContent>
             </Select>
           )}
-        </div>
-      </div>
-
-      <div className="grid w-full grid-cols-2 gap-x-3 gap-y-3 lg:grid-cols-3">
-        {/* <div>
-          <Input
-            type="text"
-            defaultValue={userAddress?.area}
-            id="area"
-            placeholder="Type Area"
-            className="outline-none focus:outline-none py-5 bg-primary-light-gray"
-            {...register("area")}
-          />
-        </div>
-
-        <div>
-          <Input
-            defaultValue={userAddress?.house}
-            type="text"
-            id="house"
-            placeholder="Type House No"
-            className="outline-none focus:outline-none py-5 bg-primary-light-gray"
-            {...register("house")}
-          />
-        </div> */}
-        <div className="col-span-2">
-          <Input
-            defaultValue={userAddress?.streetAddress}
-            type="text"
-            id="streetAddress"
-            placeholder="Street Address"
-            className="outline-none focus:outline-none py-5 bg-primary-light-gray bg-transparent"
-            {...register("streetAddress")}
-          />
-        </div>
-
-        <div>
-          <Input
-            defaultValue={userAddress?.zipCode}
-            type="number"
-            id="zipCode"
-            placeholder="Type Zip Code"
-            className="outline-none focus:outline-none py-5 bg-primary-light-gray bg-transparent"
-            {...register("zipCode")}
-          />
         </div>
       </div>
     </div>

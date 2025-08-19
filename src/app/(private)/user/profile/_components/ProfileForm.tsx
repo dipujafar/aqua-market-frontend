@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { Card, CardContent } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CommonButton from "@/components/ui/common-button";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { Label } from "@/components/ui/label";
@@ -20,73 +20,125 @@ import CountryStateCitySelector from "@/components/ui/country-state-city-selecto
 import { ImageUp, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CustomAvatar from "@/components/shared/CustomAvatar";
+import {
+  useGetUserProfileQuery,
+  useUpdateProfileMutation,
+} from "@/redux/api/userProfileApi";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/utils/getErrorMessage";
+
+const addressSchema = z.object({
+  country: z.string().min(2).max(100).optional(),
+  streetAddress: z.string().min(2).max(100).optional(),
+  city: z.string().min(2).max(100).optional(),
+  state: z.string().min(2).max(100).optional(),
+  zipCode: z.string().min(2).max(100).optional(),
+});
 
 const formSchema = z.object({
-  firstName: z
+  first_name: z
     .string({ required_error: "First Name is required" })
     .min(1, { message: "First Name is required" }),
-  lastName: z
+  last_name: z
     .string({ required_error: "Last Name is required" })
     .min(1, { message: "Last Name is required" }),
-  image: z.string().optional(),
-  userName: z
+  profile_image: z
+    .any()
+    .refine((file) => file instanceof File || file === null, {
+      message: "Must be a file",
+    }),
+
+  user_name: z
     .string({ required_error: "User Name is required" })
     .min(1, { message: "User Name is required" }),
-  phoneNumber: z
+  contact_number: z
     .string({ required_error: "Phone Number is required" })
     .min(1, { message: "Phone Number is required" }),
   email: z
     .string({ required_error: "Email is required" })
     .min(1, { message: "Email is required" })
     .email({ message: "Please enter a valid email address" }),
-  country: z.string({
-    required_error: "Please select a country.",
-  }),
-  streetAddress: z.string().min(5, {
-    message: "Street address must be at least 5 characters.",
-  }),
-  city: z.string({
-    required_error: "Please select a city.",
-  }),
-  state: z.string({
-    required_error: "Please select a state.",
-  }),
-  zipCode: z.string().min(5, {
-    message: "Zip code must be at least 5 characters.",
-  }),
+  address: addressSchema,
 });
 
 const ProfileForm = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+
+  const { data: userData } = useGetUserProfileQuery(undefined);
+  const userInfo = userData?.data || {};
+  // console.log("userInfo", userInfo);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "Ziaul Haque",
-      lastName: "Shapona",
-      userName: "Prince Shapona",
-      email: "shapona@me.com",
-      phoneNumber: "+8801712345678",
-      streetAddress: "Banasree",
-      zipCode: "5444",
-      country: "Bangladesh",
-      city: "Dhaka",
-      state: "Dhaka Division",
+      first_name: "",
+      last_name: "",
+      user_name: "",
+      email: "",
+      contact_number: "",
+      address: {
+        streetAddress: "",
+        zipCode: "",
+        country: "",
+        city: "",
+        state: "",
+      },
+      profile_image: "",
     },
   });
-  const { register, setValue, control } = form;
+  const { setValue, control, reset } = form;
 
-  const handleImageChange = (files: FileList | null) => {
-    if (files && files.length > 0) {
-      const file = files[0];
-      const url = URL.createObjectURL(file);
-      setImagePreview(url);
-    } else {
-      setImagePreview(null);
+  // ✅ When userData loads, update form values
+  useEffect(() => {
+    if (userInfo && Object.keys(userInfo).length > 0) {
+      reset({
+        first_name: userInfo.first_name ?? "",
+        last_name: userInfo.last_name ?? "",
+        user_name: userInfo.user_name ?? "",
+        email: userInfo.email ?? "",
+        contact_number: userInfo.contact_number ?? "",
+        address: {
+          streetAddress: userInfo.address?.streetAddress ?? "",
+          zipCode: userInfo.address?.zipCode ?? "",
+          country: userInfo.address?.country ?? "",
+          city: userInfo.address?.city ?? "",
+          state: userInfo.address?.state ?? "",
+        },
+        profile_image: userInfo.profile_image ?? "",
+      });
+
+      // ✅ if user already has an profile_image, set preview
+      if (userInfo.profile_image) {
+        setImagePreview(userInfo.profile_image);
+      }
     }
-  };
+  }, [userInfo, reset]);
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+  useEffect(() => {
+    return () => {
+      if (imagePreview) URL.revokeObjectURL(imagePreview);
+    };
+  }, [imagePreview]);
+
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const fieldValues = { ...data };
+
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(fieldValues));
+    formData.append("profile_image", data.profile_image);
+
+    try {
+      const res = await updateProfile(formData).unwrap();
+
+      if (res?.success) {
+        toast.success(res?.message);
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      toast.error(getErrorMessage(error));
+    }
   };
 
   return (
@@ -108,16 +160,16 @@ const ProfileForm = () => {
               {/* Image upload field */}
               <FormField
                 control={form.control}
-                name="image"
+                name="profile_image"
                 render={({ field }) => (
                   <FormItem>
                     <div className="relative size-44 mx-auto ">
                       <CustomAvatar
                         className="size-44 object-cover mx-auto"
                         img={imagePreview || "/profile_placeholder.png"}
-                        name="Ali Asraf"
+                        name={userInfo.first_name || "User"}
                         fallbackClass="lg:text-5xl"
-                      ></CustomAvatar>
+                      />
 
                       <input
                         id="avatarInput"
@@ -125,10 +177,17 @@ const ProfileForm = () => {
                         accept="image/*"
                         className="hidden"
                         onChange={(e) => {
-                          field.onChange(e.target.files);
-                          handleImageChange(e.target.files);
+                          const file = e.target.files?.[0] || null;
+                          field.onChange(file); // store the actual File
+                          if (file) {
+                            const url = URL.createObjectURL(file);
+                            setImagePreview(url); // set preview
+                          } else {
+                            setImagePreview(null);
+                          }
                         }}
                       />
+
                       <label
                         htmlFor="avatarInput"
                         className={cn(
@@ -138,12 +197,13 @@ const ProfileForm = () => {
                       >
                         <ImageUp size={20} />
                       </label>
+
                       {imagePreview && (
                         <button
                           type="button"
                           onClick={() => {
                             setImagePreview(null);
-                            field.onChange(null);
+                            field.onChange(null); // reset RHF value
                           }}
                           className="absolute top-2 right-5 bg-red-500 text-white p-1 rounded-full"
                         >
@@ -160,7 +220,7 @@ const ProfileForm = () => {
                 <div className="flex-1">
                   <FormField
                     control={form.control}
-                    name="firstName"
+                    name="first_name"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>First Name</FormLabel>
@@ -179,7 +239,7 @@ const ProfileForm = () => {
                 <div className="flex-1">
                   <FormField
                     control={form.control}
-                    name="lastName"
+                    name="last_name"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Last Name</FormLabel>
@@ -199,7 +259,7 @@ const ProfileForm = () => {
 
               <FormField
                 control={form.control}
-                name="userName"
+                name="user_name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>User Name</FormLabel>
@@ -234,7 +294,7 @@ const ProfileForm = () => {
               />
               <FormField
                 control={form.control}
-                name="phoneNumber"
+                name="contact_number"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Contact Number</FormLabel>
@@ -258,15 +318,58 @@ const ProfileForm = () => {
                 <CountryStateCitySelector
                   control={control}
                   setValue={setValue}
-                  register={register}
                   userAddress={{
-                    country: form.getValues("country"),
-                    state: form.getValues("state"),
-                    city: form.getValues("city"),
+                    country: form.getValues("address.country"),
+                    state: form.getValues("address.state"),
+                    city: form.getValues("address.city"),
                   }}
                 />
               </div>
-              <CommonButton className="w-full">Update</CommonButton>
+
+              <div className="grid w-full grid-cols-2 gap-x-3 gap-y-3 lg:grid-cols-3">
+                <div className="col-span-2">
+                  <FormField
+                    control={form.control}
+                    name="address.streetAddress"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Street Address</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter Your Street Address"
+                            {...field}
+                            className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div>
+                  <FormField
+                    control={form.control}
+                    name="address.zipCode"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Zip Code</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter Your Zip Code"
+                            {...field}
+                            className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+              <CommonButton className="w-full">
+                {isLoading ? "Updating..." : "Update"}
+              </CommonButton>
             </form>
           </Form>
         </CardContent>

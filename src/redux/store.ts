@@ -45,16 +45,17 @@ const persistConfig = {
   storage,
 };
 
+// ✅ Only wrap auth reducer with persistReducer
+const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+
 export const rootReducer = combineReducers({
   [baseApi.reducerPath]: baseApi.reducer,
-  auth: authReducer,
+  auth: persistedAuthReducer,
   cart: cartReducer,
 });
 
-const persistedAuthReducer = persistReducer(persistConfig, rootReducer);
-
 export const store = configureStore({
-  reducer: persistedAuthReducer,
+  reducer: rootReducer,
   middleware: (getDefaultMiddlewares) =>
     getDefaultMiddlewares({
       serializableCheck: {
@@ -63,9 +64,6 @@ export const store = configureStore({
     }).concat(baseApi.middleware),
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
 export const persistor = persistStore(store);
