@@ -12,7 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { toast } from "sonner";
-
+import { usePlaceBidMutation } from "@/redux/api/userApi";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 interface TimeLeft {
   days: number;
   hours: number;
@@ -36,6 +37,8 @@ const BidNowModal = ({ children, bidInfo }: BidNowModalProps) => {
     minutes: 40,
     seconds: 30,
   });
+
+  const [placeBid, { isLoading }] = usePlaceBidMutation();
 
   // Countdown timer effect
   useEffect(() => {
@@ -103,8 +106,19 @@ const BidNowModal = ({ children, bidInfo }: BidNowModalProps) => {
       return;
     }
 
-    console.log("Placing bid:", bid);
-    // TODO: send bid to backend API
+    try {
+      const res = await placeBid({
+        id: bidInfo?._id,
+        data: { bidAmount: bid },
+      }).unwrap();
+
+      if (res.success) {
+        toast.success(res?.message);
+      }
+    } catch (error) {
+      //   console.log("error", error);
+      toast.error(getErrorMessage(error));
+    }
   };
 
   const formatTime = (value: number) => value.toString().padStart(2, "0");
@@ -199,6 +213,7 @@ const BidNowModal = ({ children, bidInfo }: BidNowModalProps) => {
                   </div>
                 </div>
                 <Button
+                  type="button"
                   onClick={handlePlaceBid}
                   disabled={
                     !bidAmount ||
@@ -209,9 +224,9 @@ const BidNowModal = ({ children, bidInfo }: BidNowModalProps) => {
                       timeLeft.minutes === 0 &&
                       timeLeft.seconds === 0)
                   }
-                  className="bg-teal-500 hover:bg-teal-600 disabled:bg-gray-600 disabled:opacity-50 px-8 font-semibold"
+                  className="bg-teal-500 hover:cursor-pointer hover:bg-teal-600 disabled:bg-gray-600 disabled:opacity-50 px-8 font-semibold"
                 >
-                  PLACE BID
+                  {isLoading ? "Placing Bid..." : "PLACE BID"}
                 </Button>
               </div>
 

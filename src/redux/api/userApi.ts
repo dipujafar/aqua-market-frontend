@@ -65,6 +65,24 @@ const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.profile],
     }),
+
+    placeBid: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/user/place-bid/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: [tagTypes.fish, tagTypes.bids],
+    }),
+
+    myBids: builder.query({
+      query: (params) => ({
+        url: `/user/my-bids`,
+        method: "GET",
+        params,
+      }),
+      providesTags: [tagTypes.bids],
+    }),
   }),
 });
 
@@ -76,4 +94,6 @@ export const {
   useGetSellerBaseFollowingQuery,
   useUpdateShipingAddressMutation,
   useGetInTouchMutation,
+  usePlaceBidMutation,
+  useMyBidsQuery,
 } = userApi;

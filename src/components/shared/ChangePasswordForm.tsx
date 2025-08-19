@@ -15,12 +15,18 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import CommonButton from "@/components/ui/common-button";
+import { useChangePasswordMutation } from "@/redux/api/userProfileApi";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/utils/getErrorMessage";
+import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/redux/hooks";
+import { logout } from "@/redux/features/authSlice";
 
 const formSchema = z.object({
-  oldPassword: z
-    .string({ required_error: "Old Password is required" })
-    .min(1, { message: "Old Password is required" }),
-  password: z
+  current_password: z
+    .string({ required_error: "Current Password is required" })
+    .min(1, { message: "Current Password is required" }),
+  new_password: z
     .string({ required_error: "Password is required" })
     .min(1, { message: "Password is required" })
     .min(8, { message: " passwords must be at least 8 characters long" })
@@ -32,7 +38,7 @@ const formSchema = z.object({
           "password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character",
       }
     ),
-  confirmPassword: z
+  confirm_password: z
     .string({ required_error: "Confirm Password is required" })
     .min(1, { message: "Confirm Password is required" }),
 });
@@ -42,24 +48,50 @@ const ChangePasswordForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const [changePass, { isLoading }] = useChangePasswordMutation();
+
+  const route = useRouter();
+  const dispatch = useAppDispatch();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    try {
+      const passwordData = {
+        current_password: data.current_password,
+        new_password: data.new_password,
+        confirm_password: data.confirm_password,
+      };
+
+      const res = await changePass(passwordData).unwrap();
+      if (res.success) {
+        toast.success(res?.message);
+      }
+
+      dispatch(logout());
+      route.refresh();
+      route.push("/sign-in");
+    } catch (error) {
+      // console.log("error__", error);
+      toast.error(getErrorMessage(error));
+    }
   };
 
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
-      if (name === "confirmPassword" || name === "password") {
-        if (value.confirmPassword && value.password !== value.confirmPassword) {
-          form.setError("confirmPassword", {
+      if (name === "confirm_password" || name === "new_password") {
+        if (
+          value.confirm_password &&
+          value.new_password !== value.confirm_password
+        ) {
+          form.setError("confirm_password", {
             type: "manual",
             message: "Passwords do not match",
           });
         } else {
-          form.clearErrors("confirmPassword");
+          form.clearErrors("confirm_password");
         }
       }
     });
@@ -84,7 +116,7 @@ const ChangePasswordForm = () => {
             >
               <FormField
                 control={form.control}
-                name="oldPassword"
+                name="current_password"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Current Password</FormLabel>
@@ -121,7 +153,7 @@ const ChangePasswordForm = () => {
               />
               <FormField
                 control={form.control}
-                name="password"
+                name="new_password"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>New Password</FormLabel>
@@ -158,7 +190,7 @@ const ChangePasswordForm = () => {
               />
               <FormField
                 control={form.control}
-                name="confirmPassword"
+                name="confirm_password"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Confirm New Password</FormLabel>
@@ -195,7 +227,7 @@ const ChangePasswordForm = () => {
               />
 
               <CommonButton className="w-full border-white">
-                Change Password
+                {isLoading ? "Loading..." : "Change Password"}
               </CommonButton>
             </form>
           </Form>

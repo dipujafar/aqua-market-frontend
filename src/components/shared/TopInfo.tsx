@@ -4,13 +4,11 @@ import React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import Container from "./Container";
-import { useGetUserProfileQuery } from "@/redux/api/userProfileApi";
+import { useAppSelector } from "@/redux/hooks";
 
 const TopInfo = () => {
-  const { data: userData } = useGetUserProfileQuery(undefined);
-  // console.log("userData", userData);
-
-  const isUserLoggedIn = userData?.success === true;
+  const userInfo = useAppSelector((state) => state.auth.user);
+  const isUserLoggedIn = userInfo !== null;
 
   const quickLink = isUserLoggedIn
     ? [

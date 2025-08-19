@@ -21,186 +21,12 @@ import {
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import PaginationSection from "@/components/shared/PaginationSection";
-
-type BidStatus = "Active" | "Outbid" | "Won" | "Lost" | "Canceled";
-type AuctionStatus = "Ongoing" | "Completed" | "Canceled";
-
-interface BidItem {
-  id: string;
-  fish: string;
-  auction: AuctionStatus;
-  bidStatus: BidStatus;
-  yourBid: number;
-  highestBid: number;
-  action: string;
-}
-
-const bidData: BidItem[] = [
-  {
-    id: "1",
-    fish: "Neon Tetra Group of 5",
-    auction: "Ongoing",
-    bidStatus: "Active",
-    yourBid: 25.0,
-    highestBid: 25.0,
-    action: "Bid Again",
-  },
-  {
-    id: "2",
-    fish: "Neon Tetra Group of 5",
-    auction: "Ongoing",
-    bidStatus: "Outbid",
-    yourBid: 25.0,
-    highestBid: 20.0,
-    action: "Bid Again",
-  },
-  {
-    id: "3",
-    fish: "Neon Tetra Group of 5",
-    auction: "Completed",
-    bidStatus: "Won",
-    yourBid: 25.0,
-    highestBid: 25.0,
-    action: "Winner",
-  },
-  {
-    id: "4",
-    fish: "Neon Tetra Group of 5",
-    auction: "Ongoing",
-    bidStatus: "Active",
-    yourBid: 25.0,
-    highestBid: 25.0,
-    action: "Bid Again",
-  },
-  {
-    id: "5",
-    fish: "Neon Tetra Group of 5",
-    auction: "Completed",
-    bidStatus: "Lost",
-    yourBid: 25.0,
-    highestBid: 25.0,
-    action: "N/A",
-  },
-  {
-    id: "6",
-    fish: "Neon Tetra Group of 5",
-    auction: "Ongoing",
-    bidStatus: "Outbid",
-    yourBid: 25.0,
-    highestBid: 20.0,
-    action: "Bid Again",
-  },
-  {
-    id: "7",
-    fish: "Neon Tetra Group of 5",
-    auction: "Completed",
-    bidStatus: "Lost",
-    yourBid: 25.0,
-    highestBid: 25.0,
-    action: "N/A",
-  },
-  {
-    id: "8",
-    fish: "Neon Tetra Group of 5",
-    auction: "Canceled",
-    bidStatus: "Canceled",
-    yourBid: 25.0,
-    highestBid: 20.0,
-    action: "Auction Canceled",
-  },
-];
+import { useMyBidsQuery } from "@/redux/api/userApi";
 
 export default function BidHistory() {
-  const [filters, setFilters] = useState({
-    auction: {
-      ongoing: true,
-      completed: true,
-      canceled: true,
-    },
-    bidStatus: {
-      active: true,
-      outbid: true,
-      won: true,
-      lost: true,
-      canceled: true,
-    },
-  });
-
-  const filteredData = bidData.filter((item) => {
-    // Filter by auction status
-    if (
-      (item.auction === "Ongoing" && !filters.auction.ongoing) ||
-      (item.auction === "Completed" && !filters.auction.completed) ||
-      (item.auction === "Canceled" && !filters.auction.canceled)
-    ) {
-      return false;
-    }
-
-    // Filter by bid status
-    if (
-      (item.bidStatus === "Active" && !filters.bidStatus.active) ||
-      (item.bidStatus === "Outbid" && !filters.bidStatus.outbid) ||
-      (item.bidStatus === "Won" && !filters.bidStatus.won) ||
-      (item.bidStatus === "Lost" && !filters.bidStatus.lost) ||
-      (item.bidStatus === "Canceled" && !filters.bidStatus.canceled)
-    ) {
-      return false;
-    }
-
-    return true;
-  });
-
-  const handleAuctionFilterChange = (key: keyof typeof filters.auction) => {
-    setFilters((prev) => ({
-      ...prev,
-      auction: {
-        ...prev.auction,
-        [key]: !prev.auction[key],
-      },
-    }));
-  };
-
-  const handleBidStatusFilterChange = (key: keyof typeof filters.bidStatus) => {
-    setFilters((prev) => ({
-      ...prev,
-      bidStatus: {
-        ...prev.bidStatus,
-        [key]: !prev.bidStatus[key],
-      },
-    }));
-  };
-
-  const getBidStatusColor = (status: BidStatus) => {
-    switch (status) {
-      case "Active":
-        return "text-green-600";
-      case "Outbid":
-        return "text-red-400";
-      case "Won":
-        return "text-teal-400";
-      case "Lost":
-        return "text-blue-400";
-      case "Canceled":
-        return "text-yellow-400";
-      default:
-        return "text-white";
-    }
-  };
-
-  const getActionColor = (action: string) => {
-    switch (action) {
-      case "Bid Again":
-        return "text-blue-400";
-      case "Winner":
-        return "text-green-400";
-      case "N/A":
-        return "text-gray-400";
-      case "Auction Canceled":
-        return "text-yellow-400";
-      default:
-        return "text-white";
-    }
-  };
+  const { data: myBids } = useMyBidsQuery(undefined);
+  const bids = myBids?.data?.bids;
+  console.log("myBids___", bids);
 
   return (
     <div className="w-full">
@@ -242,20 +68,20 @@ export default function BidHistory() {
                             <div className="flex items-center space-x-2">
                               <Checkbox
                                 id="auction-ongoing"
-                                checked={filters.auction.ongoing}
-                                onCheckedChange={() =>
-                                  handleAuctionFilterChange("ongoing")
-                                }
+                                // checked={filters.auction.ongoing}
+                                // onCheckedChange={() =>
+                                //   handleAuctionFilterChange("ongoing")
+                                // }
                               />
                               <Label htmlFor="auction-ongoing">Ongoing</Label>
                             </div>
                             <div className="flex items-center space-x-2">
                               <Checkbox
                                 id="auction-completed"
-                                checked={filters.auction.completed}
-                                onCheckedChange={() =>
-                                  handleAuctionFilterChange("completed")
-                                }
+                                // checked={filters.auction.completed}
+                                // onCheckedChange={() =>
+                                //   handleAuctionFilterChange("completed")
+                                // }
                               />
                               <Label htmlFor="auction-completed">
                                 Completed
@@ -264,10 +90,10 @@ export default function BidHistory() {
                             <div className="flex items-center space-x-2">
                               <Checkbox
                                 id="auction-canceled"
-                                checked={filters.auction.canceled}
-                                onCheckedChange={() =>
-                                  handleAuctionFilterChange("canceled")
-                                }
+                                // checked={filters.auction.canceled}
+                                // onCheckedChange={() =>
+                                //   handleAuctionFilterChange("canceled")
+                                // }
                               />
                               <Label htmlFor="auction-canceled">Canceled</Label>
                             </div>
@@ -295,7 +121,7 @@ export default function BidHistory() {
                       <div className="grid gap-4">
                         <div className="space-y-2">
                           <h4 className="font-medium">Filter by Bid Status</h4>
-                          <div className="grid gap-2">
+                          {/* <div className="grid gap-2">
                             <div className="flex items-center space-x-2">
                               <Checkbox
                                 id="status-active"
@@ -346,7 +172,7 @@ export default function BidHistory() {
                               />
                               <Label htmlFor="status-canceled">Canceled</Label>
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </PopoverContent>
@@ -360,29 +186,30 @@ export default function BidHistory() {
               <TableHead className="text-white font-medium">Action</TableHead>
             </TableRow>
           </TableHeader>
+
           <TableBody>
-            {filteredData.map((item, index) => (
+            {bids?.map((item: any, index: number) => (
               <TableRow
-                key={item.id}
+                key={item._id}
                 className={cn(
                   "hover:bg-[#2a2a4a]/50 border-t  ",
                   index % 2 === 0 ? "bg-[#78c0a838]" : ""
                 )}
               >
-                <TableCell className="text-white py-5"><Link href={`/shop/1`}> {item.fish} </Link></TableCell>
+                <TableCell className="text-white py-5">
+                  <Link href={`/shop/1`}> {item?.fishName} </Link>
+                </TableCell>
                 <TableCell className="text-white">{item.auction}</TableCell>
-                <TableCell className={getBidStatusColor(item.bidStatus)}>
-                  {item.bidStatus}
+                <TableCell className={``}>{item?.status}</TableCell>
+                <TableCell className="text-white">
+                  ${item?.bidAmount.toFixed(2)}
                 </TableCell>
                 <TableCell className="text-white">
-                  ${item.yourBid.toFixed(2)}
+                  ${item?.bidAmount.toFixed(2)}
                 </TableCell>
-                <TableCell className="text-white">
-                  ${item.highestBid.toFixed(2)}
-                </TableCell>
-                <TableCell className={getActionColor(item.action)}>
-                  {item.action === "Bid Again" ? (
-                    <Link href={"/shopping-bid"}>{item.action}</Link>
+                <TableCell className={``}>
+                  {item?.isWinning === false ? (
+                    <Link href={"/shopping-bid"}>Bid Again</Link>
                   ) : (
                     item.action
                   )}
