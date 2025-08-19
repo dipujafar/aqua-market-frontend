@@ -9,7 +9,7 @@ export const metadata = {
 
 const ShopPage = () => {
     return (
-        <Container className="md:pt-10 md:pb-16 pt-5 pb-8">
+        <Container id="fish-section" className="md:pt-10 md:pb-16 pt-5 pb-8">
           <ShopPageContainer></ShopPageContainer>  
         </Container>
     );

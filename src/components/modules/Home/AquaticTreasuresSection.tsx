@@ -42,7 +42,7 @@ const AquaticTreasuresSection = () => {
         viewport={{ once: true }}
         className="grid xl:grid-cols-4 lg:grid-cols-3  md:grid-cols-2 gap-4 "
       >
-        {fishData?.data?.map((product: IFish) => (
+        {fishData?.data?.slice(0, 8).map((product: IFish) => (
           <motion.div variants={fadeUpVariants} key={product?._id}>
             <ProductCard data={product}></ProductCard>
           </motion.div>

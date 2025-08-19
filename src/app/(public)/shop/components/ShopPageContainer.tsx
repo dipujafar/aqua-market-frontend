@@ -1,3 +1,5 @@
+"use client";
+
 import Categories from "@/components/categories/Categories";
 import { collectionTypes } from "@/lib/collectionType";
 import { discountData } from "@/lib/discountData";
@@ -9,14 +11,23 @@ import { DiscoundIcon, OrderIcon } from "@/components/icons/Icons";
 import PaginationSection from "@/components/shared/PaginationSection";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { useGetAllFishQuery } from "@/redux/api/fishApi";
+import { useSearchParams } from "next/navigation";
 
 const ShopPageContainer = () => {
+  const searchParams = useSearchParams();
+  const page = Number(searchParams.get("page") || 1);
+  const limit = Number(searchParams.get("limit") || 9);
+
+  const { data: fishData } = useGetAllFishQuery({ page, limit });
+  // console.log("fishData", fishData);
+
   return (
     <div>
       <div className=" grid grid-cols-1  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5	lg:gap-8 gap-4 xl:mt-8 mt-4">
         <div className="2xl:space-y-7 space-y-5 hidden lg:block">
           <div className="relative xl:mt-9 mt-5">
-            <Search size={18} className="absolute top-3 left-2"/>
+            <Search size={18} className="absolute top-3 left-2" />
             <Input
               style={{
                 background:
@@ -50,11 +61,15 @@ const ShopPageContainer = () => {
             </div>
           </div>
           {/* ========================= all products ========================== */}
-          <AllProducts></AllProducts>
+          <AllProducts fishData={fishData}></AllProducts>
         </div>
       </div>
       {/* Pagination */}
-      <PaginationSection></PaginationSection>
+      <PaginationSection
+        id={"fish-section"}
+        setName={"page"}
+        totalItems={fishData?.meta.total}
+      />
     </div>
   );
 };

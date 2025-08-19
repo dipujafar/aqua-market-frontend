@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import BidNowModal from "./BidNowModal";
+import { getTimeRemaining } from "@/utils/getTimeRemaining";
 
 const ProductCard = ({ data }: { data: any }) => {
   // console.log("data", data);
@@ -24,8 +25,8 @@ const ProductCard = ({ data }: { data: any }) => {
 
   const image = data?.image[0];
   const sellerProfileImage = data?.sellerId?.profile_image;
-  const AvailabilityDate = data?.pricingInfo?.estimateAvailability
-    ? moment(data.pricingInfo.estimateAvailability).format("MMM Do YY")
+  const AvailabilityDate = data?.pricingInfo?.date
+    ? moment(data.pricingInfo.date).format("MMM Do YY")
     : "";
 
   const buyFishHandler = async () => {
@@ -52,6 +53,11 @@ const ProductCard = ({ data }: { data: any }) => {
     }
   };
 
+  const timeRemaining = getTimeRemaining(
+    data.pricingInfo.date,
+    data.pricingInfo.time
+  );
+
   return (
     <Card
       style={{
@@ -69,7 +75,7 @@ const ProductCard = ({ data }: { data: any }) => {
             height={1200}
             className="rounded w-full h-[250px] object-cover"
           ></Image>
-          {data.pricingInfo?.estimateAvailability && (
+          {data.pricingType == "preOrder" && (
             <div className="p-2 bg-primary-blue absolute top-0 left-0 text-sm max-w-[130px] rounded-tl">
               <div className=" flex flex-col">
                 <p>Availability :</p>
@@ -78,29 +84,27 @@ const ProductCard = ({ data }: { data: any }) => {
             </div>
           )}
 
-          {data?.pricingInfo?.discount && (
+          {data?.pricingType === "directSale" && (
             <div className="p-2 bg-primary-red absolute top-0 left-0 text-sm max-w-[130px] rounded-tl">
               <h6> {data?.pricingInfo?.discount} % off</h6>
             </div>
           )}
 
-          {data?.left && (
+          {data?.pricingType === "forBids" && (
             <div className="absolute top-0 left-0 space-y-1">
-              {data?.left && (
-                <div className="py-1 px-4 bg-primary-sky text-sm max-w-[130px] rounded-tl ">
-                  <h6 className="text-center text-lg font-bold">
-                    {data?.left}
-                  </h6>
-                  <h6 className="text-white/80 text-xs">Left</h6>
-                </div>
-              )}
+              <div className="py-1 px-4 bg-primary-sky text-sm max-w-[130px] rounded-tl ">
+                <h6 className="text-center text-lg font-bold">
+                  {timeRemaining?.totalHours}h
+                </h6>
+                <h6 className="text-white/80 text-xs">Left</h6>
+              </div>
               <hr className="w-[85%] mx-auto border-gray-400" />
               {data?.bids && (
                 <div className="py-1 px-4 bg-primary-sky text-sm max-w-[130px]  ">
                   <h6 className="text-center text-lg font-bold">
                     {data?.bids?.length}
                   </h6>
-                  <h6 className="text-white/80 text-xs">Bids</h6>
+                  <h6 className="text-white/80 text-xs text-center">Bids</h6>
                 </div>
               )}
             </div>
@@ -114,10 +118,9 @@ const ProductCard = ({ data }: { data: any }) => {
           </div>
 
           {/* =============== add to card button ====================== */}
-          {data?.type !== "bid" && (
+          {data?.pricingType !== "forBids" && (
             <div
               onClick={buyFishHandler}
-              // style={{ background: "rgba(156, 156, 156, 0.40)" }}
               className="absolute top-1 right-1 size-11 flex justify-center items-center rounded-full bg-[rgba(156,_156,_156,_0.40)] hover:bg-white/40 duration-300 cursor-pointer"
             >
               <ShoppingCartIcon />

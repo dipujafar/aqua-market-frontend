@@ -14,12 +14,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { usePlaceBidMutation } from "@/redux/api/userApi";
 import { getErrorMessage } from "@/utils/getErrorMessage";
-interface TimeLeft {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
+import { getTimeRemaining } from "@/utils/getTimeRemaining";
 
 interface BidNowModalProps {
   children: React.ReactNode;
@@ -31,46 +26,13 @@ const BidNowModal = ({ children, bidInfo }: BidNowModalProps) => {
 
   const [bidAmount, setBidAmount] = useState("");
   const [agreedToPay, setAgreedToPay] = useState(false);
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-    days: 0,
-    hours: 3,
-    minutes: 40,
-    seconds: 30,
-  });
 
   const [placeBid, { isLoading }] = usePlaceBidMutation();
 
-  // Countdown timer effect
-  useEffect(() => {
-    if (!bidInfo?.pricingInfo) return;
-
-    // Extract date part only
-    const datePart = bidInfo?.pricingInfo?.date.split("T")[0];
-    const timePart = bidInfo?.pricingInfo?.time;
-
-    const endTime = new Date(`${datePart}T${timePart}:00Z`);
-
-    const updateTimer = () => {
-      const now = new Date();
-      const diff = endTime.getTime() - now.getTime();
-
-      if (diff <= 0) {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-
-      setTimeLeft({ days, hours, minutes, seconds });
-    };
-
-    updateTimer();
-    const timer = setInterval(updateTimer, 1000);
-    return () => clearInterval(timer);
-  }, [bidInfo]);
+  const timeRemaining = getTimeRemaining(
+    bidInfo.pricingInfo.date,
+    bidInfo.pricingInfo.time
+  );
 
   //   Check current minimum bid
   const maximumPriceBid = bidInfo?.bids?.length
@@ -81,7 +43,6 @@ const BidNowModal = ({ children, bidInfo }: BidNowModalProps) => {
     maximumPriceBid > 0
       ? maximumPriceBid
       : bidInfo?.pricingInfo?.startingBid || 0;
-  //   console.log("Maximum bid amount:", Number(maximumPriceBid));
 
   const handlePlaceBid = async () => {
     const bid = parseFloat(bidAmount);
@@ -97,10 +58,10 @@ const BidNowModal = ({ children, bidInfo }: BidNowModalProps) => {
     }
 
     if (
-      timeLeft.days === 0 &&
-      timeLeft.hours === 0 &&
-      timeLeft.minutes === 0 &&
-      timeLeft.seconds === 0
+      timeRemaining?.days === 0 &&
+      timeRemaining?.hours === 0 &&
+      timeRemaining?.minutes === 0 &&
+      timeRemaining?.seconds === 0
     ) {
       toast("Auction has ended. You cannot place a bid.");
       return;
@@ -143,32 +104,32 @@ const BidNowModal = ({ children, bidInfo }: BidNowModalProps) => {
               <div className="flex gap-4 justify-center">
                 <div className="bg-red-600 rounded-lg px-4 py-3 text-center min-w-[80px]">
                   <div className="text-2xl font-bold">
-                    {formatTime(timeLeft.days)}
+                    {timeRemaining?.days}
                   </div>
                   <div className="text-sm opacity-90">days</div>
                 </div>
                 <div className="bg-red-600 rounded-lg px-4 py-3 text-center min-w-[80px]">
                   <div className="text-2xl font-bold">
-                    {formatTime(timeLeft.hours)}
+                    {timeRemaining?.hours}
                   </div>
                   <div className="text-sm opacity-90">hours</div>
                 </div>
                 <div className="bg-red-600 rounded-lg px-4 py-3 text-center min-w-[80px]">
                   <div className="text-2xl font-bold">
-                    {formatTime(timeLeft.minutes)}
+                    {timeRemaining?.minutes}
                   </div>
                   <div className="text-sm opacity-90">min</div>
                 </div>
                 <div className="bg-red-600 rounded-lg px-4 py-3 text-center min-w-[80px]">
                   <div className="text-2xl font-bold">
-                    {formatTime(timeLeft.seconds)}
+                    {timeRemaining?.seconds}
                   </div>
                   <div className="text-sm opacity-90">sec</div>
                 </div>
               </div>
-              <p className="text-center text-sm opacity-80">
+              {/* <p className="text-center text-sm opacity-80">
                 Ending Today at 9:00 PM
-              </p>
+              </p> */}
             </div>
 
             {/* Current Bid Section */}
@@ -219,10 +180,10 @@ const BidNowModal = ({ children, bidInfo }: BidNowModalProps) => {
                     !bidAmount ||
                     !agreedToPay ||
                     Number.parseFloat(bidAmount) <= currentMinBid ||
-                    (timeLeft.days === 0 &&
-                      timeLeft.hours === 0 &&
-                      timeLeft.minutes === 0 &&
-                      timeLeft.seconds === 0)
+                    (timeRemaining?.days === 0 &&
+                      timeRemaining?.hours === 0 &&
+                      timeRemaining?.minutes === 0 &&
+                      timeRemaining?.seconds === 0)
                   }
                   className="bg-teal-500 hover:cursor-pointer hover:bg-teal-600 disabled:bg-gray-600 disabled:opacity-50 px-8 font-semibold"
                 >
