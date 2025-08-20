@@ -1,15 +1,25 @@
+"use client";
+
 import CustomAvatar from "@/components/shared/CustomAvatar";
 import Image from "next/image";
 import React from "react";
 import SellerInfo from "./SellerInfo";
 import CommonButton from "@/components/ui/common-button";
 import Link from "next/link";
+import { useGetMyFollowersQuery } from "@/redux/api/sellerApi";
+import { useGetUserProfileQuery } from "@/redux/api/userProfileApi";
 
 const ProfileInfo = () => {
+  const { data: user } = useGetUserProfileQuery(undefined);
+  // console.log("user", user?.data);
+
+  const { data: followers } = useGetMyFollowersQuery(user?.data?._id);
+  // console.log("followers", followers?.data?.meta?.total);
+
   return (
     <div className="relative">
       <Image
-        src="/seller_profile_cover.png"
+        src={user?.data.profile_image || "/seller_profile_cover.png"}
         alt="profile"
         width={1900}
         height={1900}
@@ -37,15 +47,20 @@ const ProfileInfo = () => {
             </Link>
             <div className="flex justify-between bg-[#ffffff33] px-2 py-3 border-b border-white">
               <h1>Name</h1>
-              <p className=" font-semibold">Anita Alice</p>
+              <p className=" font-semibold">
+                {/* @ts-ignore */}
+                {user?.data?.first_name} {user?.data?.last_name}
+              </p>
             </div>
             <div className="flex justify-between  px-2 py-3 border-b border-white">
               <h1>Followers</h1>
-              <p className=" font-semibold">2.5K</p>
+              <p className=" font-semibold">
+                {followers?.data?.meta?.total || 0}
+              </p>
             </div>
             <div className="flex justify-between bg-[#ffffff33] px-2 py-3 border-b border-white">
               <h1>Following</h1>
-              <p className=" font-semibold">25</p>
+              <p className=" font-semibold">5</p>
             </div>
             <div className="flex justify-between  px-2 py-3 border-b border-white">
               <h1>Total Sold</h1>
@@ -54,7 +69,7 @@ const ProfileInfo = () => {
           </div>
         </div>
         <div className="lg:w-2/3">
-          <SellerInfo />
+          <SellerInfo userInfo={user?.data} />
         </div>
       </div>
     </div>

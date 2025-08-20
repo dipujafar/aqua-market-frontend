@@ -9,6 +9,7 @@ import { useAppSelector } from "@/redux/hooks";
 const TopInfo = () => {
   const userInfo = useAppSelector((state) => state.auth.user);
   const isUserLoggedIn = userInfo !== null;
+  
 
   const quickLink = isUserLoggedIn
     ? [

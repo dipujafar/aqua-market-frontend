@@ -1,7 +1,8 @@
 "use client";
-import { productData } from "@/lib/dummyData";
+
 import { motion } from "framer-motion";
 import OwnProductCard from "./OwnProductCard";
+import { IFish } from "@/types/fish.type";
 
 const fadeUpVariants = {
   initial: {
@@ -20,7 +21,9 @@ const fadeUpVariants = {
   },
 };
 
-const AllUploadedProducts = () => {
+const AllUploadedProducts = ({ myFishData }: { myFishData: IFish[] }) => {
+  // console.log(myFishData);
+
   return (
     <motion.div
       variants={fadeUpVariants}
@@ -30,8 +33,8 @@ const AllUploadedProducts = () => {
       viewport={{ once: true }}
       className="grid grid-cols-1 md:grid-cols-2   2xl:grid-cols-3  gap-4 xl:gap-6 "
     >
-      {productData?.map((product) => (
-        <motion.div variants={fadeUpVariants} key={product?._id}>
+      {myFishData?.map((product: IFish) => (
+        <motion.div key={product?._id}>
           <OwnProductCard data={product}></OwnProductCard>
         </motion.div>
       ))}

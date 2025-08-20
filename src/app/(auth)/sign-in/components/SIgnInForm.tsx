@@ -46,8 +46,8 @@ const SIgnInForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "cafig38478@discrip.com",
+      password: "SecurePass@123",
     },
   });
 
@@ -80,15 +80,16 @@ const SIgnInForm = () => {
         return;
       }
       if (decodedUser?.role === "user") {
+        router.refresh();
         router.push("/user/profile");
         return;
       }
       if (decodedUser?.role === "seller") {
+        router.refresh();
         router.push("/seller/profile");
         return;
       }
     } catch (error: any) {
-      // Error_Modal({ title: error?.data?.message });
       toast.error(error?.data?.message);
     }
   };

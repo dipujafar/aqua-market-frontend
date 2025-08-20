@@ -1,4 +1,5 @@
-"use client";;
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,10 +15,11 @@ import { Input } from "@/components/ui/input";
 import CommonButton from "@/components/ui/common-button";
 import { AdvertiseAlertDialog } from "./AdvertiseAlertDialog";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 const formSchema = z.object({
-    title: z.string().min(1, "Title is required"),
-  discountPercentage: z
+  offerTitle: z.string().min(1, "Title is required"),
+  offerDiscount: z
     .string()
     .min(1, "Discount percentage is required")
     .refine((val) => {
@@ -35,37 +37,47 @@ const formSchema = z.object({
 });
 
 export default function AdvertiseForm() {
-    const [openAlert, setOpenAlert] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [addData, setAddData] = useState<z.infer<typeof formSchema> | null>(
+    null
+  );
+
+  const searchParams = useSearchParams();
+  const fishId = searchParams.get("id");
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      discountPercentage: "",
+      offerTitle: "",
+      offerDiscount: "",
       time: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setOpenAlert(true);
-    console.log(values);
-    // Handle form submission here
-  }
+    setAddData(data);
+  };
 
   return (
-    <div >
+    <div>
       <div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
-              name="title"
+              name="offerTitle"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-white text-sm font-medium">
-                   Offer Title
+                    Offer Title
                   </FormLabel>
                   <FormControl>
                     <Input
-                    style={{ background:"linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)" }}
+                      style={{
+                        background:
+                          "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
+                      }}
                       placeholder="Enter Offer Title"
                       {...field}
                       className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 rounded-lg md:h-12 h-10 focus:border-cyan-400 focus:ring-cyan-400"
@@ -77,7 +89,7 @@ export default function AdvertiseForm() {
             />
             <FormField
               control={form.control}
-              name="discountPercentage"
+              name="offerDiscount"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-white text-sm font-medium">
@@ -85,7 +97,10 @@ export default function AdvertiseForm() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                       style={{ background:"linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)" }}
+                      style={{
+                        background:
+                          "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
+                      }}
                       placeholder="Any Discount Percentage %"
                       {...field}
                       className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 rounded-lg  md:h-12 h-10 focus:border-cyan-400 focus:ring-cyan-400"
@@ -105,9 +120,12 @@ export default function AdvertiseForm() {
                     <FormLabel className="text-white text-sm font-medium">
                       Date
                     </FormLabel>
-                     <FormControl>
+                    <FormControl>
                       <Input
-                         style={{ background:"linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)" }}
+                        style={{
+                          background:
+                            "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
+                        }}
                         placeholder="Enter Date"
                         {...field}
                         className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 rounded-lg md:h-12 h-10   focus:border-cyan-400 focus:ring-cyan-400"
@@ -129,7 +147,10 @@ export default function AdvertiseForm() {
                     </FormLabel>
                     <FormControl>
                       <Input
-                         style={{ background:"linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)" }}
+                        style={{
+                          background:
+                            "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
+                        }}
                         placeholder="Enter Time"
                         {...field}
                         className="bg-transparent border-gray-600 text-white placeholder:text-gray-400 rounded-lg md:h-12 h-10 pr-10 focus:border-cyan-400 focus:ring-cyan-400"
@@ -142,11 +163,18 @@ export default function AdvertiseForm() {
               />
             </div>
 
-            <CommonButton className="w-full border-white">Submit</CommonButton>
+            <CommonButton type="submit" className="w-full border-white">
+              Submit
+            </CommonButton>
           </form>
         </Form>
       </div>
-      <AdvertiseAlertDialog open={openAlert} setOpen={setOpenAlert} />
+      <AdvertiseAlertDialog
+        data={addData}
+        fishId={fishId}
+        open={openAlert}
+        setOpen={setOpenAlert}
+      />
     </div>
   );
 }

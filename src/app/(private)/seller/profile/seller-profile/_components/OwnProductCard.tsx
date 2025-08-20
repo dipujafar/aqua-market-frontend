@@ -7,11 +7,28 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { useDeleteMyFishMutation } from "@/redux/api/sellerApi";
+import { IFish } from "@/types/fish.type";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import { Edit, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "sonner";
 
-const OwnProductCard = ({ data }: { data: any }) => {
+const OwnProductCard = ({ data }: { data: IFish }) => {
+  // console.log(data);
+
+  const [deleteFish, { isLoading }] = useDeleteMyFishMutation();
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await deleteFish(id).unwrap();
+      if (res.success) {
+        toast.success(res.message);
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
   return (
     <Card
       style={{
@@ -23,29 +40,29 @@ const OwnProductCard = ({ data }: { data: any }) => {
       <CardContent className="px-4 space-y-4 text-white">
         <div className="relative group">
           <Image
-            src={data?.image}
+            src={data?.image[0]}
             alt="product-data"
             width={1200}
-            height={12000}
-            className="rounded"
+            height={1200}
+            className="rounded object-cover w-full h-[280px]"
           ></Image>
-          {data?.type && (
+          {data?.pricingType && (
             <div
               className={cn(
                 "p-2  absolute top-0 left-0 text-sm min-w-1/3 rounded-tl rounded-br flex justify-center items-center",
-                data?.type === "preOrder" && "bg-primary-blue",
-                data?.type === "directBuy" && "bg-[#78C0A8]",
-                data?.type === "bid" && "bg-primary-sky"
+                data?.pricingType === "preOrder" && "bg-primary-blue",
+                data?.pricingType === "directSale" && "bg-[#78C0A8]",
+                data?.pricingType === "forBids" && "bg-primary-sky"
               )}
             >
-              {data?.type === "preOrder" && <h6>Pre Order Now</h6>}
-              {data?.type === "directBuy" && <h6>Direct Sale</h6>}
-              {data?.type === "bid" && <h6>Bid</h6>}
+              {data?.pricingType === "preOrder" && <h6>Pre Order Now</h6>}
+              {data?.pricingType === "directSale" && <h6>Direct Sale</h6>}
+              {data?.pricingType === "forBids" && <h6>Bid</h6>}
             </div>
           )}
 
           <div className="absolute top-1 right-2 size-11 flex justify-center items-center gap-x-1">
-            {data?.type === "directBuy" && (
+            {data?.pricingType === "directSale" && (
               <Link
                 href={`/seller/item-list-direct-sale/add-product`}
                 className="p-1 bg-green-500 flex justify-center items-center rounded-full cursor-pointer"
@@ -53,7 +70,7 @@ const OwnProductCard = ({ data }: { data: any }) => {
                 <Edit size={18} />
               </Link>
             )}
-            {data?.type === "bid" && (
+            {data?.pricingType === "forBids" && (
               <Link
                 href={`/seller/item-list-bid/add-product`}
                 className="p-1 bg-green-500 flex justify-center items-center rounded-full cursor-pointer"
@@ -61,7 +78,7 @@ const OwnProductCard = ({ data }: { data: any }) => {
                 <Edit size={18} />
               </Link>
             )}
-            {data?.type === "preOrder" && (
+            {data?.pricingType === "preOrder" && (
               <Link
                 href={`/seller/item-list-pre-order/add-product`}
                 className="p-1 bg-green-500 flex justify-center items-center rounded-full cursor-pointer"
@@ -79,10 +96,11 @@ const OwnProductCard = ({ data }: { data: any }) => {
                 <p>Are you sure you want to delete this item?</p>
                 <div className="flex justify-end gap-2 mt-3">
                   <Button
+                    onClick={() => handleDelete(data?._id as string)}
                     size={"sm"}
-                    className="bg-transparent border  border-red-500 text-red-500"
+                    className="bg-transparent border  border-red-500 hover:cursor-pointer text-red-500"
                   >
-                    Delete
+                    {isLoading ? "Deleting..." : "Delete"}
                   </Button>
                 </div>
               </PopoverContent>
@@ -93,29 +111,36 @@ const OwnProductCard = ({ data }: { data: any }) => {
             className="absolute bottom-0 w-full p-2.5 group-hover:p-3  duration-500 flex justify-center items-center text-xl"
             style={{ background: "rgba(255, 255, 255, 0.20)" }}
           >
-            {data?.name}
+            {data?.fishName}
           </div>
         </div>
 
         <div className="flex justify-between">
           {/* ====================== product price ======================== */}
-          <h3 className="text-xl font-bold">{data.price}</h3>
+          <h3 className="text-xl font-bold">
+            ${data?.pricingInfo?.price?.toFixed(2)}
+          </h3>
           {/* ====================== Add Advertise ======================== */}
-          { data?.type !== "bid" &&
-          <Link href={`/seller/profile/advertise`}>
-            <Button
-              style={{
-                background:
-                  "linear-gradient(180deg, rgba(77, 168, 218, 0.30) 0%, rgba(120, 192, 168, 0.30) 85.08%)",
+          {data?.pricingType !== "forBids" && (
+            <Link
+              href={{
+                pathname: "/seller/profile/advertise",
+                query: { id: data?._id },
               }}
-              size={"sm"}
-              className="bg-transparent border cursor-pointer group "
             >
-              Add Advertise
-              <AnimatedArrow />
-            </Button>
-          </Link>
-}
+              <Button
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(77, 168, 218, 0.30) 0%, rgba(120, 192, 168, 0.30) 85.08%)",
+                }}
+                size={"sm"}
+                className="bg-transparent border cursor-pointer group "
+              >
+                Add Advertise
+                <AnimatedArrow />
+              </Button>
+            </Link>
+          )}
         </div>
       </CardContent>
     </Card>

@@ -28,6 +28,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { useAddFishMutation } from "@/redux/api/sellerApi";
+import { useRouter } from "next/navigation";
 
 const fishTypes = [
   "Betta Fish",
@@ -105,27 +106,11 @@ export type FormSchemaType = z.infer<typeof formSchema>;
 
 export default function AddProductForm() {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const router = useRouter();
 
   const [addFish, { isLoading }] = useAddFishMutation();
 
-  const form = useForm<FormSchemaType>({
-    // resolver: zodResolver(formSchema),
-    // defaultValues: {
-    //   image: [],
-    //   fishName: "",
-    //   commonName: "",
-    //   size: "",
-    //   careLevel: "",
-    //   tankRequirements: "",
-    //   foodRequirements: "",
-    //   behavior: "",
-    //   description: "",
-    //   paymentSystem: "",
-    //   pricingType: "",
-    //   shippingAddress: "",
-    //   doaPolicy: "",
-    // },
-  });
+  const form = useForm<FormSchemaType>({});
 
   const handleImageUpload = (files: FileList | null) => {
     if (!files) return;
@@ -177,6 +162,7 @@ export default function AddProductForm() {
       // console.log("response", res);
       if (res.success) {
         toast.success(res.message);
+        router.push("/seller/item-list-direct-sale");
       }
     } catch (error) {
       console.log("Error submitting form:", error);

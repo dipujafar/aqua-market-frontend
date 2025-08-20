@@ -4,6 +4,8 @@ import React from "react";
 import SellerInfo from "./SellerInfo";
 
 const ProfileInfo = () => {
+
+
   return (
     <div className="relative">
       <Image
@@ -30,11 +32,11 @@ const ProfileInfo = () => {
           <div className="relative md:top-[-90px] top-[-80px]">
             <div className="flex justify-between bg-[#ffffff33] px-2 py-3 border-b border-white">
               <h1>Name</h1>
-              <p className=" font-semibold">Anita Alice</p>
+              <p className=" font-semibold">Anita</p>
             </div>
             <div className="flex justify-between  px-2 py-3 border-b border-white">
               <h1>Followers</h1>
-              <p className=" font-semibold">2.5K</p>
+              <p className=" font-semibold">200.5K</p>
             </div>
             <div className="flex justify-between bg-[#ffffff33] px-2 py-3 border-b border-white">
               <h1>Following</h1>
@@ -47,7 +49,7 @@ const ProfileInfo = () => {
           </div>
         </div>
         <div className="lg:w-2/3">
-            <SellerInfo/>
+          <SellerInfo />
         </div>
       </div>
     </div>

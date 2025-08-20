@@ -17,6 +17,7 @@ import SearchAndNavIcon from "./SearchAndNavIcon";
 
 const SmallDeviceView = () => {
   const currentPath = usePathname();
+
   return (
     <div className="md:hidden block ">
       <Sheet>

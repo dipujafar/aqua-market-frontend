@@ -7,19 +7,11 @@ import {
   parentVariants,
 } from "@/animation/FramerMotionValiantsFadeUp";
 import { Input } from "@/components/ui/input";
-import { useGetUserProfileQuery } from "@/redux/api/userProfileApi";
 import { useAppSelector } from "@/redux/hooks";
-import Cookies from "js-cookie";
 
 const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
   const user: any = useAppSelector((state) => state.auth.user);
-  const isLoggedIn = Cookies.get("aqua-access-token");
-  // console.log("isLoggedIn", isLoggedIn);
-
-  const { data: userData } = useGetUserProfileQuery(undefined, {
-    skip: !isLoggedIn || !user,
-  });
-  // console.log("userData", userData?.data);
+  // console.log("isLoggedIn", user);
 
   return (
     <motion.div
@@ -46,43 +38,47 @@ const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
             <Search size={20} color="#fff" />
           </div>
         </motion.div>
-        <motion.li variants={childrenVariants}>
-          <Link
-            href={
-              userData?.data?.role === "user"
-                ? "/shopping/shopping-cart"
-                : "/sign-in"
-            }
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              viewBox="0 0 25 25"
-              fill="none"
-              className="hover:bg-white/20 rounded-full"
+
+        {user && user.role === "user" && (
+          <motion.li variants={childrenVariants}>
+            <Link
+              href={
+                user && user.role === "user"
+                  ? "/shopping/shopping-cart"
+                  : "/sign-in"
+              }
             >
-              <g opacity="0.9">
-                <mask
-                  id="mask0_20125_1387"
-                  maskUnits="userSpaceOnUse"
-                  x="0"
-                  y="0"
-                  width="25"
-                  height="25"
-                >
-                  <rect x="0.5" y="0.5" width="24" height="24" fill="#fff" />
-                </mask>
-                <g mask="url(#mask0_20125_1387)">
-                  <path
-                    d="M11.5 9.5V6.5H8.5V4.5H11.5V1.5H13.5V4.5H16.5V6.5H13.5V9.5H11.5ZM7.5 22.5C6.95 22.5 6.47917 22.3042 6.0875 21.9125C5.69583 21.5208 5.5 21.05 5.5 20.5C5.5 19.95 5.69583 19.4792 6.0875 19.0875C6.47917 18.6958 6.95 18.5 7.5 18.5C8.05 18.5 8.52083 18.6958 8.9125 19.0875C9.30417 19.4792 9.5 19.95 9.5 20.5C9.5 21.05 9.30417 21.5208 8.9125 21.9125C8.52083 22.3042 8.05 22.5 7.5 22.5ZM17.5 22.5C16.95 22.5 16.4792 22.3042 16.0875 21.9125C15.6958 21.5208 15.5 21.05 15.5 20.5C15.5 19.95 15.6958 19.4792 16.0875 19.0875C16.4792 18.6958 16.95 18.5 17.5 18.5C18.05 18.5 18.5208 18.6958 18.9125 19.0875C19.3042 19.4792 19.5 19.95 19.5 20.5C19.5 21.05 19.3042 21.5208 18.9125 21.9125C18.5208 22.3042 18.05 22.5 17.5 22.5ZM1.5 4.5V2.5H4.775L9.025 11.5H16.025L19.925 4.5H22.2L17.8 12.45C17.6167 12.7833 17.3708 13.0417 17.0625 13.225C16.7542 13.4083 16.4167 13.5 16.05 13.5H8.6L7.5 15.5H19.5V17.5H7.5C6.75 17.5 6.17917 17.175 5.7875 16.525C5.39583 15.875 5.38333 15.2167 5.75 14.55L7.1 12.1L3.5 4.5H1.5Z"
-                    fill={color}
-                  />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="25"
+                height="25"
+                viewBox="0 0 25 25"
+                fill="none"
+                className="hover:bg-white/20 rounded-full"
+              >
+                <g opacity="0.9">
+                  <mask
+                    id="mask0_20125_1387"
+                    maskUnits="userSpaceOnUse"
+                    x="0"
+                    y="0"
+                    width="25"
+                    height="25"
+                  >
+                    <rect x="0.5" y="0.5" width="24" height="24" fill="#fff" />
+                  </mask>
+                  <g mask="url(#mask0_20125_1387)">
+                    <path
+                      d="M11.5 9.5V6.5H8.5V4.5H11.5V1.5H13.5V4.5H16.5V6.5H13.5V9.5H11.5ZM7.5 22.5C6.95 22.5 6.47917 22.3042 6.0875 21.9125C5.69583 21.5208 5.5 21.05 5.5 20.5C5.5 19.95 5.69583 19.4792 6.0875 19.0875C6.47917 18.6958 6.95 18.5 7.5 18.5C8.05 18.5 8.52083 18.6958 8.9125 19.0875C9.30417 19.4792 9.5 19.95 9.5 20.5C9.5 21.05 9.30417 21.5208 8.9125 21.9125C8.52083 22.3042 8.05 22.5 7.5 22.5ZM17.5 22.5C16.95 22.5 16.4792 22.3042 16.0875 21.9125C15.6958 21.5208 15.5 21.05 15.5 20.5C15.5 19.95 15.6958 19.4792 16.0875 19.0875C16.4792 18.6958 16.95 18.5 17.5 18.5C18.05 18.5 18.5208 18.6958 18.9125 19.0875C19.3042 19.4792 19.5 19.95 19.5 20.5C19.5 21.05 19.3042 21.5208 18.9125 21.9125C18.5208 22.3042 18.05 22.5 17.5 22.5ZM1.5 4.5V2.5H4.775L9.025 11.5H16.025L19.925 4.5H22.2L17.8 12.45C17.6167 12.7833 17.3708 13.0417 17.0625 13.225C16.7542 13.4083 16.4167 13.5 16.05 13.5H8.6L7.5 15.5H19.5V17.5H7.5C6.75 17.5 6.17917 17.175 5.7875 16.525C5.39583 15.875 5.38333 15.2167 5.75 14.55L7.1 12.1L3.5 4.5H1.5Z"
+                      fill={color}
+                    />
+                  </g>
                 </g>
-              </g>
-            </svg>
-          </Link>
-        </motion.li>
+              </svg>
+            </Link>
+          </motion.li>
+        )}
+
         <motion.li variants={childrenVariants}>
           <Link href={"/notification"}>
             <Bell
@@ -95,9 +91,9 @@ const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
         <motion.li variants={childrenVariants}>
           <Link
             href={
-              userData?.data && userData?.data?.role === "user"
+              user && user.role === "user"
                 ? "/user/profile"
-                : userData?.data?.role === "seller"
+                : user && user.role === "seller"
                 ? "/seller/profile"
                 : "/sign-in"
             }

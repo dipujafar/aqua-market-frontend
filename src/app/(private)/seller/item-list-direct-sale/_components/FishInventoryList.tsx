@@ -12,119 +12,73 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import Image from "next/image";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { PopoverContent } from "@radix-ui/react-popover";
 import PaginationSection from "@/components/shared/PaginationSection";
 import Link from "next/link";
-import { useGetMyFishQuery } from "@/redux/api/sellerApi";
+import {
+  useDeleteMyFishMutation,
+  useGetMyFishQuery,
+} from "@/redux/api/sellerApi";
 import { IFish } from "@/types/fish.type";
 import moment from "moment";
+import { useSearchParams } from "next/navigation";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
-interface FishItem {
-  id: string;
-  image: string;
-  name: string;
-  itemNumber: string;
-  price: number;
-  date: string;
-  status: "Ongoing" | "Sold";
-}
+// Utility function to normalize pricing type for comparison
+const normalize = (v?: string) => (v ?? "").toLowerCase().replace(/\s|_/g, "");
 
 export default function FishInventoryList() {
   const [showSoldOnly, setShowSoldOnly] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [pricingType, setPricingType] = useState<string>("all"); // 👈 new state
 
-  const { data: allFish } = useGetMyFishQuery(undefined);
-  console.log("Fetched Fish Items:", allFish);
+  const searchParams = useSearchParams();
+  const page = Number(searchParams.get("page") || 1);
+  const limit = Number(searchParams.get("limit") || 10);
 
-  // Sample data
-  const fishItems: FishItem[] = [
-    {
-      id: "1",
-      image: "/productImage7.png",
-      name: "Pink Polka Dot Hikitsuri Loach",
-      itemNumber: "#A01124",
-      price: 25.0,
-      date: "March 24, 2025",
-      status: "Ongoing",
-    },
-    {
-      id: "2",
-      image: "/productImage5.png",
-      name: "Pink Polka Dot Hikitsuri Loach",
-      itemNumber: "#A01124",
-      price: 25.0,
-      date: "March 24, 2025",
-      status: "Sold",
-    },
-    {
-      id: "3",
-      image: "/productImage8.png",
-      name: "Pink Polka Dot Hikitsuri Loach",
-      itemNumber: "#A01124",
-      price: 25.0,
-      date: "March 24, 2025",
-      status: "Ongoing",
-    },
-    {
-      id: "4",
-      image: "/productImage4.png",
-      name: "Pink Polka Dot Hikitsuri Loach",
-      itemNumber: "#A01124",
-      price: 25.0,
-      date: "March 24, 2025",
-      status: "Sold",
-    },
-    {
-      id: "5",
-      image: "/productImage6.png",
-      name: "Pink Polka Dot Hikitsuri Loach",
-      itemNumber: "#A01124",
-      price: 25.0,
-      date: "March 24, 2025",
-      status: "Ongoing",
-    },
-    {
-      id: "6",
-      image: "/productImage2.png",
-      name: "Pink Polka Dot Hikitsuri Loach",
-      itemNumber: "#A01124",
-      price: 25.0,
-      date: "March 24, 2025",
-      status: "Sold",
-    },
-    {
-      id: "7",
-      image: "/productImage8.png",
-      name: "Pink Polka Dot Hikitsuri Loach",
-      itemNumber: "#A01124",
-      price: 25.0,
-      date: "March 24, 2025",
-      status: "Ongoing",
-    },
-    {
-      id: "8",
-      image: "/productImage6.png",
-      name: "Pink Polka Dot Hikitsuri Loach",
-      itemNumber: "#A01124",
-      price: 25.0,
-      date: "March 24, 2025",
-      status: "Sold",
-    },
-  ];
+  const { data: allFish } = useGetMyFishQuery({ page, limit });
+  const [deleteFish] = useDeleteMyFishMutation();
 
-  // Filter items based on search query and sold status
+  // Filter items based on search, sold status, and pricing type
   const filteredItems = allFish?.data?.filter((item: IFish) => {
     const matchesSearch =
       item?.fishName?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
       item?._id?.toLowerCase()?.includes(searchQuery?.toLowerCase());
+
     const matchesStatus = showSoldOnly ? item?.status === "sold" : true;
-    return matchesSearch && matchesStatus;
+
+    const matchesPricingType =
+      pricingType === "all"
+        ? true
+        : normalize(item?.pricingType) === normalize(pricingType);
+
+    return matchesSearch && matchesStatus && matchesPricingType;
   });
 
+  // Handle delete fish
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await deleteFish(id).unwrap();
+      if (res.success) {
+        toast.success(res.message);
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
+
   return (
-    <div className="w-full  space-y-4  text-white rounded-lg">
+    <div id="page" className="w-full space-y-4 text-white rounded-lg">
       {/* Search and filters */}
       <div className="flex flex-col sm:flex-row gap-3 justify-between">
         <div className="relative">
@@ -137,7 +91,21 @@ export default function FishInventoryList() {
           />
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-3 items-center">
+          {/* Pricing Type Filter */}
+          <Select value={pricingType} onValueChange={setPricingType}>
+            <SelectTrigger className="text-white bg-transparent border-white/70 shadow-none w-[150px]">
+              <SelectValue placeholder="Pricing Type" />
+            </SelectTrigger>
+            <SelectContent className="bg-[#132846] text-white">
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="forBids">For Bid</SelectItem>
+              <SelectItem value="directSale">Direct Sale</SelectItem>
+              <SelectItem value="preOrder">Pre-Order</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {/* Sold Toggle */}
           <div className="flex items-center gap-2">
             <span>Sold</span>
             <Switch checked={showSoldOnly} onCheckedChange={setShowSoldOnly} />
@@ -156,10 +124,11 @@ export default function FishInventoryList() {
           >
             <TableRow>
               <TableHead className="text-white py-5">
-                Fishes Item List
+                Fishes Item List ({allFish?.meta?.total || 0})
               </TableHead>
               <TableHead className="text-white py-5">Item Number</TableHead>
               <TableHead className="text-white py-5">Price</TableHead>
+              <TableHead className="text-white py-5">Pricing Type</TableHead>
               <TableHead className="text-white py-5">Date</TableHead>
               <TableHead className="text-white py-5">Status</TableHead>
               <TableHead className="text-white py-5">Action</TableHead>
@@ -172,7 +141,7 @@ export default function FishInventoryList() {
                 className="border-b border-white hover:bg-transparent"
               >
                 <TableCell className="flex items-center gap-3">
-                  <div className=" rounded-md overflow-hidden">
+                  <div className="rounded-md overflow-hidden">
                     <Image
                       src={item?.image[0]}
                       alt={item.fishName}
@@ -181,13 +150,14 @@ export default function FishInventoryList() {
                       className="h-[70px] w-28 object-cover"
                     />
                   </div>
-                  <span>{item.fishName}</span>
+                  <span>{item?.fishName}</span>
                 </TableCell>
                 <TableCell>#{item?._id?.slice(0, 8)}</TableCell>
-                <TableCell>${item.pricingInfo.price.toFixed(2)}</TableCell>
+                <TableCell>${item?.pricingInfo?.price?.toFixed(2)}</TableCell>
+                <TableCell>{item?.pricingType}</TableCell>
                 <TableCell>
                   {item?.pricingInfo?.date
-                    ? moment(item.pricingInfo.date).format("DD MMM YYYY")
+                    ? moment(item?.pricingInfo?.date).format("DD MMM YYYY")
                     : "-"}
                 </TableCell>
                 <TableCell>
@@ -222,16 +192,17 @@ export default function FishInventoryList() {
                   </Link>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <Trash2 className="size-4" color="red" />
+                      <Button variant="ghost" size="icon" className=" cursor-pointer">
+                        <Trash2 className="size-4 hover:cursor-pointer" color="red" />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-80  p-2 rounded bg-linear-to-r from-[#2E1345] to-[#0A2943]">
+                    <PopoverContent className="w-80 p-2 rounded bg-linear-to-r from-[#2E1345] to-[#0A2943]">
                       <p>Are you sure you want to delete this item?</p>
                       <div className="flex justify-end gap-2 mt-3">
                         <Button
+                          onClick={() => handleDelete(item?._id as string)}
                           size={"sm"}
-                          className="bg-transparent border  border-red-500 text-red-500"
+                          className="bg-transparent border border-red-500 hover:cursor-pointer text-red-500"
                         >
                           Delete
                         </Button>
@@ -244,7 +215,13 @@ export default function FishInventoryList() {
           </TableBody>
         </Table>
       </div>
-      {/* <PaginationSection className="mt-4" /> */}
+
+      <PaginationSection
+        id="page"
+        setName="page"
+        totalItems={allFish?.meta?.total}
+        className="mt-4"
+      />
     </div>
   );
 }

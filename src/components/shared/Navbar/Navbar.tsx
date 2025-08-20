@@ -9,14 +9,10 @@ import SmallDeviceView from "./SmallDeviceView";
 import { activeNavLink } from "@/utils/activeNavLinks";
 import { usePathname } from "next/navigation";
 import { navLinks } from "@/lib/navlinks";
-import { useGetUserProfileQuery } from "@/redux/api/userProfileApi";
 
 const Navbar = () => {
   const currentPath = usePathname();
   const paths = currentPath.split("/");
-
-  const { data: userdata } = useGetUserProfileQuery(undefined);
-  // console.log("userdata", userdata);
 
   return (
     <div className="bg-linear-to-r from-[#2E1345] to-[#122443] text-white">

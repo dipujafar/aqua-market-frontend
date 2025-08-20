@@ -7,16 +7,47 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useAddAdvertiseMutation } from "@/redux/api/sellerApi";
+import { getErrorMessage } from "@/utils/getErrorMessage";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+interface advertiseProps {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  data: any;
+  fishId: string | null;
+}
 
 export function AdvertiseAlertDialog({
   open,
   setOpen,
-}: {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-}) {
+  data,
+  fishId,
+}: advertiseProps) {
+
+  console.log('fishId', fishId);
+
+  const router = useRouter();
+
+  const [addAdvertise] = useAddAdvertiseMutation();
+  const handlePostAdd = async () => {
+    try {
+      const res = await addAdvertise({ data: data, id: fishId }).unwrap();
+      if (res.success) {
+        toast.success(res.message);
+        router.refresh();
+        setOpen(false);
+        router.back();
+      }
+    } catch (error) {
+      console.log("error__", error);
+      toast.error(getErrorMessage(error));
+      setOpen(false);
+    }
+  };
+
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent
@@ -36,6 +67,7 @@ export function AdvertiseAlertDialog({
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
+            onClick={handlePostAdd}
             style={{
               background: "linear-gradient(180deg, #4DA8DA 0%, #78C0A8 85.08%)",
             }}

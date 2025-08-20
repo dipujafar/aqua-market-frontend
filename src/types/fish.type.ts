@@ -56,6 +56,14 @@ export interface IShippingAddress {
   isDefault?: boolean;
   isActive?: boolean;
 }
+
+export interface IAddress {
+  country?: string;
+  streetAddress?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+}
 export interface IUser {
   _id?: string;
   first_name: string;
@@ -65,14 +73,13 @@ export interface IUser {
   location?: {
     type: "Point";
     coordinates: [number, number]; // [lng, lat]
-    address: string;
   };
   country?: string;
   streetAddress?: string;
   zipCode?: string;
   city?: string;
   state?: string;
-
+  address?: IAddress;
   contact_number?: string;
   email: string;
   password: string;

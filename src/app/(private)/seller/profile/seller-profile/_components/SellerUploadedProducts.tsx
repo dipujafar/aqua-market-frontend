@@ -1,7 +1,7 @@
+"use client";
+
 import Categories from "@/components/categories/Categories";
 import { collectionTypes } from "@/lib/collectionType";
-import { discountData } from "@/lib/discountData";
-import PriceCategory from "@/components/categories/PriceCategory";
 import { Button } from "@/components/ui/button";
 import { DiscoundIcon, OrderIcon } from "@/components/icons/Icons";
 import PaginationSection from "@/components/shared/PaginationSection";
@@ -9,14 +9,23 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import AllUploadedProducts from "./AllUploadedProducts";
 import { SmallDeviceFilter } from "./SmallDeviceFilter";
+import { useGetMyFishQuery } from "@/redux/api/sellerApi";
+import { useSearchParams } from "next/navigation";
 
 const SellerUploadedProducts = () => {
+  const searchParams = useSearchParams();
+  const page = Number(searchParams.get("page") || 1);
+  const limit = Number(searchParams.get("limit") || 9);
+
+  const { data: myFishData } = useGetMyFishQuery({ page, limit });
+  // console.log("data", myFishData);
+
   return (
-    <div>
+    <div id="seller-uploaded-products">
       <div className=" grid grid-cols-1  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5	lg:gap-8 gap-4 xl:mt-8 mt-4">
         <div className="2xl:space-y-7 space-y-5 hidden lg:block">
           <div className="relative xl:mt-9 mt-5">
-            <Search size={18} className="absolute top-3 left-2"/>
+            <Search size={18} className="absolute top-3 left-2" />
             <Input
               style={{
                 background:
@@ -50,11 +59,16 @@ const SellerUploadedProducts = () => {
             </div>
           </div>
           {/* ========================= all products ========================== */}
-          <AllUploadedProducts></AllUploadedProducts>
+          <AllUploadedProducts myFishData={myFishData?.data} />
         </div>
       </div>
       {/* Pagination */}
-      <PaginationSection></PaginationSection>
+      <PaginationSection
+        totalItems={myFishData?.meta?.total}
+        id="seller-uploaded-products"
+        setName="page"
+        pagePostsLimitProps={limit}
+      />
     </div>
   );
 };
