@@ -9,7 +9,6 @@ import Image from "next/image";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -239,14 +238,23 @@ export default function BiddingItemAddProductForm() {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger  style={{
+                      <SelectTrigger
+                        style={{
                           background:
                             "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                        }} className="w-full md:py-5 border-gray-600">
+                        }}
+                        className="w-full md:py-5 border-gray-600"
+                      >
                         <SelectValue placeholder="Enter Fish Type" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent style={{ background: "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)" }} className="text-white border-none" >
+                    <SelectContent
+                      style={{
+                        background:
+                          "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
+                      }}
+                      className="text-white border-none"
+                    >
                       {fishTypes.map((fish) => (
                         <SelectItem key={fish} value={fish}>
                           {fish}

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Search, Calendar, Eye, Trash2, Filter } from "lucide-react";
+import { Search, Eye, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -16,9 +16,10 @@ import Image from "next/image";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { PopoverContent } from "@radix-ui/react-popover";
 import PaginationSection from "@/components/shared/PaginationSection";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { useGetMyFishQuery } from "@/redux/api/sellerApi";
+import { IFish } from "@/types/fish.type";
+import moment from "moment";
 
 interface FishItem {
   id: string;
@@ -33,6 +34,9 @@ interface FishItem {
 export default function FishInventoryList() {
   const [showSoldOnly, setShowSoldOnly] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const { data: allFish } = useGetMyFishQuery(undefined);
+  console.log("Fetched Fish Items:", allFish);
 
   // Sample data
   const fishItems: FishItem[] = [
@@ -111,11 +115,11 @@ export default function FishInventoryList() {
   ];
 
   // Filter items based on search query and sold status
-  const filteredItems = fishItems.filter((item) => {
+  const filteredItems = allFish?.data?.filter((item: IFish) => {
     const matchesSearch =
-      item?.name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
-      item?.itemNumber?.toLowerCase()?.includes(searchQuery?.toLowerCase());
-    const matchesStatus = showSoldOnly ? item.status === "Sold" : true;
+      item?.fishName?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
+      item?._id?.toLowerCase()?.includes(searchQuery?.toLowerCase());
+    const matchesStatus = showSoldOnly ? item?.status === "sold" : true;
     return matchesSearch && matchesStatus;
   });
 
@@ -162,35 +166,39 @@ export default function FishInventoryList() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredItems.map((item) => (
+            {filteredItems?.map((item: IFish) => (
               <TableRow
-                key={item.id}
+                key={item._id}
                 className="border-b border-white hover:bg-transparent"
               >
                 <TableCell className="flex items-center gap-3">
                   <div className=" rounded-md overflow-hidden">
                     <Image
-                      src={item?.image}
-                      alt={item.name}
+                      src={item?.image[0]}
+                      alt={item.fishName}
                       width={1200}
                       height={1200}
                       className="h-[70px] w-28 object-cover"
                     />
                   </div>
-                  <span>{item.name}</span>
+                  <span>{item.fishName}</span>
                 </TableCell>
-                <TableCell>{item.itemNumber}</TableCell>
-                <TableCell>${item.price.toFixed(2)}</TableCell>
-                <TableCell>{item.date}</TableCell>
+                <TableCell>#{item?._id?.slice(0, 8)}</TableCell>
+                <TableCell>${item.pricingInfo.price.toFixed(2)}</TableCell>
+                <TableCell>
+                  {item?.pricingInfo?.date
+                    ? moment(item.pricingInfo.date).format("DD MMM YYYY")
+                    : "-"}
+                </TableCell>
                 <TableCell>
                   <span
                     className={`px-2 py-1 rounded text-xs ${
-                      item.status === "Ongoing"
+                      item.status === "ongoing"
                         ? "text-yellow-500"
                         : "text-green-500"
                     }`}
                   >
-                    {item?.status === "Sold" ? (
+                    {item?.status === "sold" ? (
                       <Link
                         href={`/seller/item-list-direct-sale/purchase-order`}
                         className="underline text-base"
@@ -204,9 +212,13 @@ export default function FishInventoryList() {
                 </TableCell>
                 <TableCell>
                   <Link href={`/seller/item-list-direct-sale/product-details`}>
-                  <Button variant="ghost" size="icon" className="cursor-pointer">
-                    <Eye className="size-4" />
-                  </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="cursor-pointer"
+                    >
+                      <Eye className="size-4" />
+                    </Button>
                   </Link>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -232,7 +244,7 @@ export default function FishInventoryList() {
           </TableBody>
         </Table>
       </div>
-      <PaginationSection className="mt-4" />
+      {/* <PaginationSection className="mt-4" /> */}
     </div>
   );
 }

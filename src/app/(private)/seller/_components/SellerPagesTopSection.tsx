@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hooks";
 import { logout } from "@/redux/features/authSlice";
+import { toast } from "sonner";
 
 const navLinks = [
   {
@@ -18,19 +19,19 @@ const navLinks = [
   },
   {
     _id: 2,
-    title: "Item List for Direct Sale",
+    title: "Add Fish",
     href: "/seller/item-list-direct-sale",
   },
-  {
-    _id: 3,
-    title: "Item List for Bid",
-    href: "/seller/item-list-bid",
-  },
-  {
-    _id: 4,
-    title: "Item List for Pre Order",
-    href: "/seller/item-list-pre-order",
-  },
+  // {
+  //   _id: 3,
+  //   title: "Item List for Bid",
+  //   href: "/seller/item-list-bid",
+  // },
+  // {
+  //   _id: 4,
+  //   title: "Item List for Pre Order",
+  //   href: "/seller/item-list-pre-order",
+  // },
   {
     _id: 5,
     title: "Earning",
@@ -49,9 +50,16 @@ const SellerPagesTopSection = () => {
   const currentPath = pathName?.split("/")[2];
   const router = useRouter();
 
-  const handleLogout = () => {
-    const res = dispatch(logout());
-    console.log("res_______", res);
+  const handleLogout = async () => {
+    const toastId = toast.loading("Logging out...");
+
+    const res = await dispatch(logout());
+    if (res?.type === "auth/logout") {
+      toast.success("Logged out successfully!", { id: toastId });
+      router.push("/sign-in");
+    } else {
+      toast.error("Logout failed. Please try again.", { id: toastId });
+    }
   };
 
   return (

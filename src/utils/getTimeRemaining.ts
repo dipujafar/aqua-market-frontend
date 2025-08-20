@@ -18,7 +18,7 @@ export type TimeRemaining = {
  */
 export function getTimeRemaining(date: string, time: string): TimeRemaining {
   // Combine date and time into a full Date
-  const target = new Date(`${date.split("T")[0]}T${time}:00Z`);
+  const target = new Date(`${date?.split("T")[0]}T${time}:00Z`);
   const now = new Date();
 
   const diff = target.getTime() - now.getTime();

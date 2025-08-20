@@ -32,7 +32,7 @@ const TopInfo = () => {
           {quickLink.map((link, index) =>
             link?.label === "Sign Up" ? (
               <Link
-                key={index}
+                key={`${index + 1}`}
                 href={link.href}
                 className={cn(
                   "uppercase text-gradiant flex gap-x-1 items-center"
@@ -87,7 +87,11 @@ const TopInfo = () => {
                 <span> {link.label}</span>
               </Link>
             ) : (
-              <Link key={index} href={link.href} className={cn("uppercase")}>
+              <Link
+                key={`${index + 1}`}
+                href={link.href}
+                className={cn("uppercase")}
+              >
                 {link.label}
               </Link>
             )

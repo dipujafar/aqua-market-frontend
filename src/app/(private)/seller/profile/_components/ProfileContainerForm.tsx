@@ -67,7 +67,7 @@ const ProfileContainerForm = () => {
     null
   );
 
-  const { data: userData } = useGetUserProfileQuery(undefined);
+  const { data: userData, isLoading } = useGetUserProfileQuery(undefined);
   const userInfo = userData?.data || {};
   // console.log("userInfo", userInfo);
 
@@ -434,7 +434,7 @@ const ProfileContainerForm = () => {
               </div>
 
               <CommonButton type="submit" className="w-full -translate-y-28">
-                Update
+                {isLoading ? "Loading..." : "Update"}
               </CommonButton>
             </form>
           </Form>

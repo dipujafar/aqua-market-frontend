@@ -1,10 +1,9 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
-import { Camera, Trash2, X } from "lucide-react";
+import { Camera, X } from "lucide-react";
 import Image from "next/image";
 import {
   Form,
@@ -16,10 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import CommonButton from "@/components/ui/common-button";
-import { Button } from "@/components/ui/button";
-import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import {
   Select,
   SelectContent,
@@ -27,6 +23,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import ChoosePricingType from "./ChoosePricingType";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/utils/getErrorMessage";
+import { useAddFishMutation } from "@/redux/api/sellerApi";
 
 const fishTypes = [
   "Betta Fish",
@@ -45,10 +46,41 @@ const fishTypes = [
   "Other",
 ] as const;
 
+const pricingInfoSchema = z.object({
+  style: z.string({
+    required_error: "Style is required",
+  }),
+  quantity: z.preprocess(
+    (val) => (val ? Number(val) : 0),
+    z.number().min(1, "Quantity must be at least 1")
+  ),
+  price: z.preprocess(
+    (val) => (val ? Number(val) : 0),
+    z.number().min(0, "Price must be a positive number")
+  ),
+  discount: z
+    .preprocess(
+      (val) => (val ? Number(val) : 0),
+      z.number().min(0, "Discount must be a non-negative number")
+    )
+    .optional(),
+  startingBid: z
+    .preprocess(
+      (val) => (val ? Number(val) : 0),
+      z.number().min(0, "Starting bid must be a non-negative number")
+    )
+    .optional(),
+  date: z
+    .preprocess((arg) => (arg ? new Date(arg as string) : undefined), z.date())
+    .optional(),
+  time: z.string().optional(),
+  estimateAvailability: z
+    .preprocess((arg) => (arg ? new Date(arg as string) : undefined), z.date())
+    .optional(),
+});
+
 const formSchema = z.object({
-  fishImages: z
-    .array(z.instanceof(File))
-    .min(1, "At least one image is required"),
+  image: z.array(z.instanceof(File)).min(1, "At least one image is required"),
   fishType: z.enum(fishTypes, {
     required_error: "Please select a fish type.",
   }),
@@ -56,61 +88,55 @@ const formSchema = z.object({
   commonName: z.string().min(2, "Common name must be at least 2 characters"),
   size: z.string().min(5, "Size information is required"),
   careLevel: z.string().min(5, "Care level information is required"),
-  tankRequirement: z.string().min(10, "Tank requirement details are required"),
-  foodRequirement: z.string().min(10, "Food requirement details are required"),
+  tankRequirements: z.string().min(10, "Tank requirement details are required"),
+  foodRequirements: z.string().min(10, "Food requirement details are required"),
   behavior: z.string().min(10, "Behavior description is required"),
   description: z.string().min(20, "Description must be at least 20 characters"),
-  paymentSystem: z.string().min(2, "Payment system is required"),
+  paymentSystem: z.string().optional(),
   shippingAddress: z.string().min(1, "Shipping address is required"),
   doaPolicy: z.string().min(1, "DOA policy is required"),
-  pricingType: z.enum(["direct", "auction"], {
+  pricingType: z.enum(["directSale", "forBids", "preOrder"], {
     required_error: "Please select a pricing type",
   }),
-  styles: z
-    .array(
-      z.object({
-        style: z.string().min(1, "Style is required"),
-        quantity: z.string().min(1, "Quantity is required"),
-        price: z.string().min(1, "Price is required"),
-        discount: z.string().optional(),
-      })
-    )
-    .min(1, "At least one style is required"),
+  pricingInfo: pricingInfoSchema,
 });
+
+export type FormSchemaType = z.infer<typeof formSchema>;
 
 export default function AddProductForm() {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
-  const [styles, setStyles] = useState([
-    { style: "", quantity: "", price: "", discount: "" },
-  ]);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      fishImages: [],
-      fishName: "",
-      commonName: "",
-      size: "",
-      careLevel: "",
-      tankRequirement: "",
-      foodRequirement: "",
-      behavior: "",
-      description: "",
-      paymentSystem: "",
-      pricingType: "direct",
-      shippingAddress: "",
-      doaPolicy: "",
-    },
+  const [addFish, { isLoading }] = useAddFishMutation();
+
+  const form = useForm<FormSchemaType>({
+    // resolver: zodResolver(formSchema),
+    // defaultValues: {
+    //   image: [],
+    //   fishName: "",
+    //   commonName: "",
+    //   size: "",
+    //   careLevel: "",
+    //   tankRequirements: "",
+    //   foodRequirements: "",
+    //   behavior: "",
+    //   description: "",
+    //   paymentSystem: "",
+    //   pricingType: "",
+    //   shippingAddress: "",
+    //   doaPolicy: "",
+    // },
   });
 
   const handleImageUpload = (files: FileList | null) => {
     if (!files) return;
 
     const fileArray = Array.from(files);
-    const currentImages = form.getValues("fishImages");
+
+    // Ensure currentImages is always an array
+    const currentImages = form.getValues("image") || [];
     const newImages = [...currentImages, ...fileArray];
 
-    form.setValue("fishImages", newImages);
+    form.setValue("image", newImages);
 
     // Create preview URLs
     const newPreviews = fileArray.map((file) => URL.createObjectURL(file));
@@ -118,40 +144,45 @@ export default function AddProductForm() {
   };
 
   const removeImage = (index: number) => {
-    const currentImages = form.getValues("fishImages");
+    const currentImages = form.getValues("image");
     const newImages = currentImages.filter((_, i) => i !== index);
-    form.setValue("fishImages", newImages);
+    form.setValue("image", newImages);
 
     // Clean up preview URL
     URL.revokeObjectURL(imagePreviews[index]);
     setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const addStyle = () => {
-    const newStyle = { style: "", quantity: "", price: "", discount: "" };
-    setStyles([...styles, newStyle]);
-    const currentStyles = form.getValues("styles");
-    form.setValue("styles", [...currentStyles, newStyle]);
-  };
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const fishData = {
+      ...data,
+      startingBid: Number(data.pricingInfo.startingBid) || 0,
+      discount: Number(data.pricingInfo.discount) || 0,
+      price: Number(data.pricingInfo.price) || 0,
+      quantity: Number(data.pricingInfo.quantity) || 0,
+    };
 
-  const updateStyle = (index: number, field: string, value: string) => {
-    const updatedStyles = styles.map((style, i) =>
-      i === index ? { ...style, [field]: value } : style
-    );
-    setStyles(updatedStyles);
-    form.setValue("styles", updatedStyles);
-  };
+    // console.log("fishData", fishData);
 
-  const removeStyle = (index: number) => {
-    const updatedStyles = styles.filter((_, i) => i !== index);
-    setStyles(updatedStyles);
-    form.setValue("styles", updatedStyles);
-  };
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(fishData));
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    // Handle form submission here
-  }
+    // Append all images
+    data.image.forEach((img: File) => {
+      formData.append("image", img);
+    });
+
+    try {
+      const res = await addFish(formData).unwrap();
+      // console.log("response", res);
+      if (res.success) {
+        toast.success(res.message);
+      }
+    } catch (error) {
+      console.log("Error submitting form:", error);
+      toast.error(getErrorMessage(error));
+    }
+  };
 
   return (
     <div className=" ">
@@ -161,7 +192,7 @@ export default function AddProductForm() {
             {/* Fish Images Upload */}
             <FormField
               control={form.control}
-              name="fishImages"
+              name="image"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-white text-lg font-medium">
@@ -211,7 +242,7 @@ export default function AddProductForm() {
                               <button
                                 type="button"
                                 onClick={() => removeImage(index)}
-                                className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                               >
                                 <X className="w-4 h-4" />
                               </button>
@@ -237,10 +268,13 @@ export default function AddProductForm() {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger  style={{
+                      <SelectTrigger
+                        style={{
                           background:
                             "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                        }} className="w-full md:py-5 border-gray-600">
+                        }}
+                        className="w-full md:py-5 border-gray-600"
+                      >
                         <SelectValue placeholder="Enter Fish Type" />
                       </SelectTrigger>
                     </FormControl>
@@ -362,7 +396,7 @@ export default function AddProductForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
-                name="tankRequirement"
+                name="tankRequirements"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-white">
@@ -386,7 +420,7 @@ export default function AddProductForm() {
 
               <FormField
                 control={form.control}
-                name="foodRequirement"
+                name="foodRequirements"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-white">
@@ -457,182 +491,7 @@ export default function AddProductForm() {
             </div>
 
             {/* Pricing Type */}
-            <FormField
-              control={form.control}
-              name="pricingType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-white text-lg">
-                    Choose Pricing Type
-                  </FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="grid grid-cols-1 md:grid-cols-2 justify-center gap-4 "
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem
-                          value="direct"
-                          id="direct"
-                          className="border-gray-400 text-white"
-                        />
-                        <label
-                          htmlFor="direct"
-                          className="text-white/80  lg:text-base text-sm"
-                        >
-                          Direct Sale (Set a fixed price for immediate purchase)
-                        </label>
-                      </div>
-                      <div className="flex items-center space-x-2 md:ml-auto">
-                        <RadioGroupItem
-                          value="auction"
-                          id="auction"
-                          className="border-gray-400 text-white/80"
-                        />
-                        <label
-                          htmlFor="auction"
-                          className="text-white/80 lg:text-base text-sm"
-                        >
-                          Auction (Buyers bid on your item, highest bid wins)
-                        </label>
-                      </div>
-                      <div className="flex items-center space-x-2 md:col-span-2 mx-auto">
-                        <RadioGroupItem
-                          value="pre-order"
-                          id="pre-order"
-                          className="border-gray-400 text-white/80"
-                        />
-                        <label
-                          htmlFor="pre-order"
-                          className="text-white/80  lg:text-base text-sm"
-                        >
-                          Pre Order Now for this fish
-                        </label>
-                      </div>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage className="text-red-300" />
-                </FormItem>
-              )}
-            />
-
-            <div>
-              <div
-                style={{
-                  background:
-                    "linear-gradient(180deg, rgba(77, 168, 218, 0.16) 0%, rgba(120, 192, 168, 0.16) 85.08%)",
-                }}
-                className="p-6 space-y-4 rounded-lg"
-              >
-                {styles.map((style, index) => (
-                  <div key={index}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                      <div>
-                        <label className="text-white text-sm mb-2 block">
-                          Style
-                        </label>
-                        <Input
-                          placeholder="Enter Style"
-                          value={style.style}
-                          onChange={(e) =>
-                            updateStyle(index, "style", e.target.value)
-                          }
-                          style={{
-                            background:
-                              "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                          }}
-                          className="border-gray-600 text-white placeholder:text-gray-400 md:py-5"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-white text-sm mb-2 block">
-                          Quantity
-                        </label>
-                        <Input
-                          placeholder="Enter Quantity"
-                          value={style.quantity}
-                          onChange={(e) =>
-                            updateStyle(index, "quantity", e.target.value)
-                          }
-                          style={{
-                            background:
-                              "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                          }}
-                          className="border-gray-600 text-white placeholder:text-gray-400 md:py-5"
-                        />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-white text-sm mb-2 block">
-                          Price
-                        </label>
-                        <Input
-                          placeholder="Enter Price"
-                          value={style.price}
-                          onChange={(e) =>
-                            updateStyle(index, "price", e.target.value)
-                          }
-                          style={{
-                            background:
-                              "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                          }}
-                          className="border-gray-600 text-white placeholder:text-gray-400 md:py-5"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-white text-sm mb-2 block">
-                          Any Discount Offer
-                        </label>
-                        <Input
-                          placeholder="Any Discount Percentage %"
-                          value={style.discount}
-                          onChange={(e) =>
-                            updateStyle(index, "discount", e.target.value)
-                          }
-                          style={{
-                            background:
-                              "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                          }}
-                          className="border-gray-600 text-white placeholder:text-gray-400 md:py-5"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                {/* remove another style */}
-                {styles.length > 1 && (
-                  <div className="flex">
-                    <Button
-                      type="button"
-                      onClick={() => removeStyle(styles.length - 1)}
-                      variant="outline"
-                      className="ml-auto cursor-pointer text-red-500 hover:bg-gray-700 group hover:text-white/70 border-none  md:py-5 border-r-3 border-b-3 border-white"
-                      style={{
-                        background:
-                          "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                      }}
-                    >
-                      <Trash2 />
-                    </Button>
-                  </div>
-                )}
-
-                <Button
-                  type="button"
-                  onClick={addStyle}
-                  variant="outline"
-                  className="w-full  text-white hover:bg-gray-700 group hover:text-white/70 border-none  md:py-5 border-r-3 border-b-3 border-white"
-                  style={{
-                    background:
-                      "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                  }}
-                >
-                  ADD ANOTHER STYLE <AnimatedArrow />
-                </Button>
-              </div>
-            </div>
+            <ChoosePricingType form={form} />
 
             {/* ---------- Shipping Address --------------- */}
             <FormField
@@ -684,7 +543,9 @@ export default function AddProductForm() {
               )}
             />
 
-            <CommonButton className="w-full border-white">Submit</CommonButton>
+            <CommonButton className="w-full border-white">
+              {isLoading ? "Submitting..." : "Submit"}
+            </CommonButton>
           </form>
         </Form>
       </div>

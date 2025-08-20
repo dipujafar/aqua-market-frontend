@@ -77,6 +77,7 @@ export const baseApi = createApi({
     "fish",
     "admin",
     "bids",
+    "seller",
   ],
   endpoints: () => ({}),
 });
