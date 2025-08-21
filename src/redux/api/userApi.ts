@@ -83,6 +83,23 @@ const userApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.bids],
     }),
+
+    createOrder: builder.mutation({
+      query: (data) => ({
+        url: `/orders/create-order`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: [tagTypes.orders, tagTypes.user],
+    }),
+
+    getMyOrders: builder.query({
+      query: () => ({
+        url: `user/my-orders`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.orders, tagTypes.user],
+    }),
   }),
 });
 
@@ -96,4 +113,6 @@ export const {
   useGetInTouchMutation,
   usePlaceBidMutation,
   useMyBidsQuery,
+  useCreateOrderMutation,
+  useGetMyOrdersQuery,
 } = userApi;

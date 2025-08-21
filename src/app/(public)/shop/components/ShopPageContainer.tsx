@@ -56,7 +56,7 @@ const ShopPageContainer = () => {
   }
 
   const { data: fishData } = useGetAllFishQuery({ ...query, page, limit });
-  console.log("fishData", fishData);
+  // console.log("fishData", fishData);
 
   // 🔹 Filtered data logic
   const filteredProducts = useMemo(() => {

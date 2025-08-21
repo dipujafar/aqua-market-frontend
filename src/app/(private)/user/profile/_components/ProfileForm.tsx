@@ -283,6 +283,8 @@ const ProfileForm = () => {
                     <FormLabel>Email Address</FormLabel>
                     <FormControl>
                       <Input
+                        disabled
+                        readOnly
                         placeholder="Enter Your Email"
                         {...field}
                         className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5"

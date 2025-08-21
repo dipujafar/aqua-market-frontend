@@ -22,53 +22,38 @@ import { useUpdateShipingAddressMutation } from "@/redux/api/userApi";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 
-const formSchema = z.object({
-  firstName: z.string().min(2, {
-    message: "First name must be at least 2 characters.",
-  }),
-  lastName: z.string().min(2, {
-    message: "Last name must be at least 2 characters.",
-  }),
+// ✅ FIXED Zod schema (removed body wrapper, added rememberMe)
+export const formSchema = z.object({
+  firstName: z.string({ required_error: "First name is required" }),
+  lastName: z.string({ required_error: "Last name is required" }),
   companyName: z.string().optional(),
-  country: z.string({
-    required_error: "Please select a country.",
-  }),
-  streetAddress: z.string().min(5, {
-    message: "Street address must be at least 5 characters.",
-  }),
-  city: z.string({
-    required_error: "Please select a city.",
-  }),
-  state: z.string({
-    required_error: "Please select a state.",
-  }),
-  zipCode: z.string().min(5, {
-    message: "Zip code must be at least 5 characters.",
-  }),
-  phoneNumber: z.string().min(10, {
-    message: "Phone number must be at least 10 characters.",
-  }),
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
+  country: z.string({ required_error: "Country is required" }),
+  streetAddress: z.string({ required_error: "Street address is required" }),
+  city: z.string({ required_error: "City is required" }),
+  state: z.string({ required_error: "State is required" }),
+  zipCode: z.string({ required_error: "ZIP code is required" }),
+  phoneNumber: z.string({ required_error: "Phone number is required" }),
+  email: z
+    .string({ required_error: "Email is required" })
+    .email("Invalid email format"),
   shippingMethod: z.string({
-    required_error: "Please select a shipping method.",
+    required_error: "Shipping method is required",
   }),
-  rememberMe: z.boolean(),
+  isDefault: z.boolean().optional(),
+  isActive: z.boolean().optional(),
+  rememberMe: z.boolean().optional(),
 });
 
 export default function ShippingAddressForm() {
   const [value, setValue] = useState<string>("");
-  // console.log("value", value);
 
   const [updateShippingAddress, { isLoading }] =
     useUpdateShipingAddressMutation();
 
   const { data: userData } = useGetUserProfileQuery(undefined);
-  // console.log("userData", userData?.data?.shippingAddress);
-
   const existingShippingAddress = userData?.data?.shippingAddress;
 
+  // ✅ Form aligned with schema
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -86,9 +71,10 @@ export default function ShippingAddressForm() {
       rememberMe: false,
     },
   });
+
   const { register, control, reset } = form;
 
-  // ✅ When userData loads, update form values
+  // ✅ Sync existing shipping address
   useEffect(() => {
     if (existingShippingAddress) {
       reset({
@@ -105,7 +91,7 @@ export default function ShippingAddressForm() {
         shippingMethod: existingShippingAddress.shippingMethod || "",
         rememberMe: false,
       });
-    }
+    } 
   }, [existingShippingAddress, reset]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -115,6 +101,7 @@ export default function ShippingAddressForm() {
         toast.success(res.message);
       }
     } catch (error) {
+      console.log("error", error);
       toast.error(getErrorMessage(error));
     }
   }
@@ -185,7 +172,7 @@ export default function ShippingAddressForm() {
           />
 
           {/* Country, State, City Selector */}
-          <div className="grid w-full  items-center gap-1.5">
+          <div className="grid w-full items-center gap-1.5">
             <Label>Location</Label>
             <CountryStateCitySelector
               control={control}
@@ -235,16 +222,24 @@ export default function ShippingAddressForm() {
             )}
           />
 
-          {/* Shipping Method - replace static div with Select */}
-          <div>
-            <h5>Shipping Method</h5>
-            <div className="flex justify-between gap-x-2 px-2.5 py-3 border border-[#fff]/80 rounded-md">
-              <h6 className="text-white/50">
-                Express <br /> 1 to 2 business days
-              </h6>
-              <h4 className="text-white/50 font-bold">$56.00</h4>
-            </div>
-          </div>
+          {/* Shipping Method */}
+          <FormField
+            control={control}
+            name="shippingMethod"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Shipping Method</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="e.g. Express, Standard"
+                    {...field}
+                    className="py-5 border-[#fff]/80 text-white placeholder:text-gray-400"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           {/* Remember Me */}
           <FormField
@@ -253,7 +248,7 @@ export default function ShippingAddressForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xl mb-0.5">Remember Me</FormLabel>
-                <div className="flex flex-row items-start gap-x-2 rounded-md ">
+                <div className="flex flex-row items-start gap-x-2 rounded-md">
                   <FormControl>
                     <Checkbox
                       checked={field.value}
@@ -263,8 +258,7 @@ export default function ShippingAddressForm() {
                   </FormControl>
                   <div className="space-y-1 leading-none">
                     <FormLabel className="text-white/80">
-                      Save my information for a faster checkout with a Shop
-                      account
+                      Save my information for faster checkout
                     </FormLabel>
                   </div>
                 </div>

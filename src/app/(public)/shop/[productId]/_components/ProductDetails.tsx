@@ -27,6 +27,10 @@ interface fishDetailsProps {
   fishAverageRating: IFishAverageRating;
 }
 const fishDetails = ({ fishDetails, fishAverageRating }: fishDetailsProps) => {
+  const discount = fishDetails?.pricingInfo?.discount ?? 0;
+  const price = fishDetails?.pricingInfo?.price ?? 0;
+  const discountPrice = price - price * (discount / 100);
+
   return (
     <div className=" space-y-5">
       {/* --------- product header ---------- */}
@@ -41,19 +45,20 @@ const fishDetails = ({ fishDetails, fishAverageRating }: fishDetailsProps) => {
           </div>
           <h4 className="md:text-3xl text-xl">{}</h4>
         </div>
-        {fishDetails?.pricingInfo?.discount && (
+        {discount > 0 && (
           <div className="flex gap-x-6 items-center">
+            {/* original price (crossed out) */}
             <p className="line-through text-primary-gray text-lg ">
-              ${fishDetails?.pricingInfo?.price}
+              ${price.toFixed(2)}
             </p>
+
+            {/* discount badge */}
             <div className="bg-primary-red text-primary-white px-4 py-1 rounded-tl-lg rounded-br-lg">
-              {fishDetails?.pricingInfo?.discount}% Off
+              {discount}% Off
             </div>
           </div>
         )}
-        <h4 className="md:text-3xl text-xl">
-          ${fishDetails?.pricingInfo?.price}
-        </h4>
+        <h4 className="md:text-3xl text-xl">${discountPrice.toFixed(2)}</h4>
       </div>
 
       {/* --------- product details data ---------- */}

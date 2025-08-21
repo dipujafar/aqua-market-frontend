@@ -19,7 +19,9 @@ const SellerDetails = ({ sellerDetails }: { sellerDetails: any }) => {
     sellerDetails?._id
   );
   const status =
-    followingData?.data?.isActive === true ? "Following" : "Follow Seller";
+    followingData?.data?.isActive === true
+      ? "Unfollow Seller"
+      : "Follow Seller";
 
   const handleFollowSeller = async (sellerId: string) => {
     try {

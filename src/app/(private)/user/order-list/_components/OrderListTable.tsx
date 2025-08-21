@@ -17,63 +17,24 @@ import {
 } from "@/components/ui/table";
 import { ClaimIcon, FilterIcon } from "@/icons";
 import { findStatusColor } from "@/utils/findStatusColor";
-import Image from "next/image";
 import { useState } from "react";
 import { ClaimSendDialog } from "./ClaimSendDialog";
 import PaginationSection from "@/components/shared/PaginationSection";
 import { Input } from "@/components/ui/input";
 import { Eye, Search } from "lucide-react";
 import Link from "next/link";
-
-const productData = [
-  {
-    name: "Pink Polka Dot Hillstream Loach",
-    image: "/productImage3.png",
-    price: 25,
-    quantity: 2,
-    discount: 20,
-    seller_info: "AquaPet Seller",
-    style: "Single",
-    status: "pending",
-    date: "24 May, 2025",
-  },
-  {
-    name: "Pink Polka Dot Hillstream Loach",
-    image: "/productImage2.png",
-    price: 30,
-    quantity: 3,
-    discount: 20,
-    seller_info: "AquaPet Seller",
-    style: "Single",
-    status: "delivered",
-    date: "24 May, 2025",
-  },
-  {
-    name: "Pink Polka Dot Hillstream Loach",
-    image: "/productImage1.png",
-    price: 30,
-    quantity: 3,
-    discount: 20,
-    seller_info: "AquaPet Seller",
-    style: "Single",
-    status: "delivered",
-    date: "24 May, 2025",
-  },
-  {
-    name: "Pink Polka Dot Hillstream Loach",
-    image: "/productImage6.png",
-    price: 30,
-    quantity: 3,
-    discount: 20,
-    seller_info: "AquaPet Seller",
-    style: "Single",
-    status: "delivered",
-    date: "24 May, 2025",
-  },
-];
+import { useGetMyOrdersQuery } from "@/redux/api/userApi";
+import { IOrder } from "@/types/order.types";
+import moment from "moment";
+import ViewOrderItem from "./ViewOrderItem";
 
 const OrderListTable = () => {
   const [openClaimForm, setOpenClaimForm] = useState(false);
+
+  const { data: myOrders } = useGetMyOrdersQuery(undefined);
+  const orders = myOrders?.data?.data;
+  // console.log("myOrders", orders);
+
   return (
     <>
       <div className="md:mb-5 mb-3 flex justify-between items-center">
@@ -112,58 +73,37 @@ const OrderListTable = () => {
               <TableHead className="text-white text-center ">
                 DOA Claim
               </TableHead>
-              <TableHead className="text-white text-center ">
-                Details
-              </TableHead>
+              <TableHead className="text-white text-center ">Details</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {productData?.map((data, idx) => (
-              <TableRow key={idx} className="hover:bg-transparent ">
+            {orders?.map((data: IOrder) => (
+              <TableRow key={data?._id} className="hover:bg-transparent ">
                 <TableCell className="font-medium min-w-fit">
-                  <div className=" flex flex-col lg:flex-row items-center md:gap-2 gap-1  min-w-fit">
-                    <Link href="/shop/1">
-                      <Image
-                        src={data?.image}
-                        alt="product_image"
-                        width={950}
-                        height={700}
-                        className="md:size-28 size-20 rounded object-cover origin-center"
-                      />
-                    </Link>
-                    <div className="flex flex-col lg:gap-y-2">
-                      <Link href="/shop/1">
-                        <p className="truncate font-medium lg:text-lg text-sm">
-                          {data?.name}
-                        </p>
-                      </Link>
-                      <div className="truncate text-sm font-light flex items-center gap-x-2 text-white/60">
-                        <p>Seller info:</p>
-                        <p>{data?.seller_info}</p>
-                      </div>
-                      <div className="truncate text-sm font-light flex items-center gap-x-2 text-white/60">
-                        <p>Style:</p>
-                        <p>{data?.style}</p>
-                      </div>
-                    </div>
-                  </div>
+                  <ViewOrderItem items={data?.items} />
                 </TableCell>
-                <TableCell className="text-center ">${data?.price}</TableCell>
-                <TableCell className="text-center ">{data?.quantity}</TableCell>
                 <TableCell className="text-center ">
-                  {data?.discount}%
+                  ${data?.totalPrice}
                 </TableCell>
+                <TableCell className="text-center ">
+                  {data?.items?.length}
+                </TableCell>
+                <TableCell className="text-center ">{10}%</TableCell>
                 <TableCell>
-                  $ {data?.price * data?.quantity * (1 - data?.discount / 100)}
+                  $
+                  {data?.totalPrice &&
+                    data?.totalPrice * data?.items?.length * (1 - 10 / 100)}
                 </TableCell>
                 <TableCell
-                  style={{ color: findStatusColor(data?.status) }}
+                  style={{ color: findStatusColor(data?.status as string) }}
                   className={`capitalize`}
                 >
                   {data?.status}
                 </TableCell>
                 <TableCell className="text-center text-sm">
-                  {data?.date}
+                  <span>
+                    {moment(data?.createdAt).format("MMMM Do YYYY, h:mm A")}
+                  </span>
                 </TableCell>
                 <TableCell
                   onClick={() => setOpenClaimForm(true)}
@@ -172,8 +112,11 @@ const OrderListTable = () => {
                   <ClaimIcon className="w-fit mx-auto cursor-pointer" />
                 </TableCell>
                 <TableCell className="text-center text-sm ">
-                  <Link href={`/user/order-list/1`} className="flex items-center justify-center">
-                  <Eye size={20}/>
+                  <Link
+                    href={`/user/order-list/1`}
+                    className="flex items-center justify-center"
+                  >
+                    <Eye size={20} />
                   </Link>
                 </TableCell>
               </TableRow>
@@ -181,7 +124,7 @@ const OrderListTable = () => {
           </TableBody>
         </Table>
       </div>
-      <PaginationSection className="mt-5" />
+      {/* <PaginationSection className="mt-5" /> */}
 
       {/* claim send form dialog */}
       <ClaimSendDialog

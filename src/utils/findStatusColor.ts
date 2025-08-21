@@ -2,15 +2,9 @@ export const findStatusColor = (color: string) => {
   switch (color) {
     case "pending":
       return "#FFD700";
-    case "delivered":
+    case "completed":
       return "#78C0A8";
-    case "in_progress":
-      return "#A78BFA";
-    case "on_the_why":
-      return "#60A5FA;";
-    case "rejected":
+    case "canceled":
       return "#F87171";
-    default:
-      return "#9CA3AF";
   }
 };

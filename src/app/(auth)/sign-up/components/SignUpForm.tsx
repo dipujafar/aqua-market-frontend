@@ -26,6 +26,16 @@ import { useCreateUserMutation } from "@/redux/api/authApi";
 import { useAppDispatch } from "@/redux/hooks";
 import { setUser } from "@/redux/features/authSlice";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { getErrorMessage } from "@/utils/getErrorMessage";
+
+const addressSchema = z.object({
+  country: z.string().min(2).max(100).optional(),
+  streetAddress: z.string().min(2).max(100).optional(),
+  city: z.string().min(2).max(100).optional(),
+  state: z.string().min(2).max(100).optional(),
+  zipCode: z.string().min(2).max(100).optional(),
+});
 
 const formSchema = z.object({
   first_name: z
@@ -44,22 +54,9 @@ const formSchema = z.object({
     .string({ required_error: "Email is required" })
     .min(1, { message: "Email is required" })
     .email({ message: "Please enter a valid email address" }),
-  country: z.string({
-    required_error: "Please select a country.",
-  }),
-  storeName: z.string().optional(),
-  streetAddress: z.string().min(5, {
-    message: "Street address must be at least 5 characters.",
-  }),
-  city: z.string({
-    required_error: "Please select a city.",
-  }),
-  state: z.string({
-    required_error: "Please select a state.",
-  }),
-  zipCode: z.string().min(5, {
-    message: "Zip code must be at least 5 characters.",
-  }),
+
+  store_name: z.string().optional(),
+  address: addressSchema,
   password: z
     .string({ required_error: "Password is required" })
     .min(1, { message: "Password is required" })
@@ -89,39 +86,29 @@ const SignUpForm = () => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      streetAddress: "",
-      zipCode: "",
-      country: "",
-      city: "",
-      state: "",
-      storeName: "",
-    },
   });
   const { register, setValue, control } = form;
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    // console.log(data);
+    console.log(data);
 
     try {
       const res = await createUser(data).unwrap();
-      console.log("res______", res);
+      // console.log("res______", res);
       if (res?.data?.otpToken?.token) {
         dispatch(
           setUser({
             token: res?.data?.otpToken?.token,
           })
         );
-        toast.success("User Created Successfully");
         toast.success(
-          "Please verify your email with OTP, which has been sent to your email."
+          "You are registered successfully! Please verify your email."
         );
         router.push("/verify-otp");
       }
     } catch (error) {
       console.log("error______", error);
+      toast.error(getErrorMessage(error));
     }
   };
 
@@ -272,7 +259,7 @@ const SignUpForm = () => {
               {userRole === "Seller" && (
                 <FormField
                   control={form.control}
-                  name="storeName"
+                  name="store_name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Store Name (Optional)</FormLabel>
@@ -399,7 +386,7 @@ const SignUpForm = () => {
               </div>
 
               <CommonButton type="submit" disabled={!agree} className="w-full">
-                SIGN UP
+                {isLoading ? "Registering..." : "SIGN UP"}
               </CommonButton>
 
               <div className="flex justify-center gap-x-2">

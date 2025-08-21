@@ -24,7 +24,7 @@ const ShoppingCartTable = () => {
   const dispatch = useAppDispatch();
   const cartData = useAppSelector((state) => state.cart);
   const cartProducts = cartData?.items || [];
-  // console.log("cartProducts", cartProducts);
+  // console.log("cartProducts", );
 
   const [quantities, setQuantities] = useState<number[]>([]);
 
