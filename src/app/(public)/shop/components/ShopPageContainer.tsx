@@ -8,7 +8,10 @@ import PriceCategory from "@/components/categories/PriceCategory";
 import PaginationSection from "@/components/shared/PaginationSection";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
-import { useGetAllFishQuery } from "@/redux/api/fishApi";
+import {
+  useGetAllFishQuery,
+  useGetFishMaxPriceQuery,
+} from "@/redux/api/fishApi";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { IFish } from "@/types/fish.type";
@@ -18,12 +21,20 @@ import { DiscoundIcon, OrderIcon } from "@/components/icons/Icons";
 import DiscountCategories from "@/components/categories/DiscountCategories";
 
 const ShopPageContainer = () => {
+  const { data: maxPriceData } = useGetFishMaxPriceQuery(undefined);
+  const maxPrice = maxPriceData?.data;
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, maxPrice]);
   const [discountRange, setDiscountRange] = useState<[number, number]>([
     0, 100,
   ]);
+  const [selectedType, setSelectedType] = useState<string | null>(null);
+
+  const handleType = (type: string) => {
+    setSelectedType(type);
+  };
 
   const searchParams = useSearchParams();
   const page = Number(searchParams.get("page") || 1);
@@ -44,8 +55,8 @@ const ShopPageContainer = () => {
     query["maxDiscount"] = discountRange[1];
   }
 
-  const { data: fishData } = useGetAllFishQuery(query);
-  // console.log("fishData", fishData);
+  const { data: fishData } = useGetAllFishQuery({ ...query, page, limit });
+  console.log("fishData", fishData);
 
   // 🔹 Filtered data logic
   const filteredProducts = useMemo(() => {
@@ -60,10 +71,24 @@ const ShopPageContainer = () => {
         ? item?.fishType === selectedCategory
         : true;
 
-      return matchesSearch && matchesCategory;
+      const matchesType = selectedType
+        ? item?.pricingType === selectedType
+        : true;
+
+      return matchesSearch && matchesCategory && matchesType;
     });
-  }, [fishData, searchTerm, selectedCategory]);
+  }, [fishData, searchTerm, selectedCategory, selectedType]);
+
   // console.log("setSelectedCategory", filteredProducts);
+
+  // Reset all filters
+  const resetAllFilters = () => {
+    setSearchTerm("");
+    setSelectedCategory(null);
+    setPriceRange([0, 5000]);
+    setDiscountRange([0, 100]);
+    setSelectedType(null);
+  };
 
   return (
     <div>
@@ -97,11 +122,23 @@ const ShopPageContainer = () => {
           />
 
           <div className="space-y-4">
-            <Button className="w-full bg-primary-blue py-6 hover:bg-gray-800 cursor-pointer">
+            <Button
+              onClick={() => handleType("preOrder")}
+              className="w-full bg-primary-blue py-6 hover:bg-gray-800 cursor-pointer"
+            >
               <OrderIcon></OrderIcon> Pre Order Now
             </Button>
-            <Button className="w-full bg-linear-to-t   from-[#78C0A8]/80 to-[#4DA8DA]/70 py-6 cursor-pointer">
+            <Button
+              onClick={() => handleType("forBids")}
+              className="w-full bg-linear-to-t   from-[#78C0A8]/80 to-[#4DA8DA]/70 py-6 cursor-pointer"
+            >
               <DiscoundIcon></DiscoundIcon> Bid Now
+            </Button>
+            <Button
+              onClick={resetAllFilters}
+              className="w-full bg-red-500 py-6 cursor-pointer hover:bg-red-600 text-white font-bold"
+            >
+              Reset All Filters
             </Button>
           </div>
         </div>
@@ -115,6 +152,7 @@ const ShopPageContainer = () => {
                 data={collectionTypes}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
+                resetAllFilters={resetAllFilters}
               ></SmallDeviceFilter>
             </div>
           </div>
@@ -124,8 +162,8 @@ const ShopPageContainer = () => {
       </div>
       {/* Pagination */}
       <PaginationSection
-        id={"fish-section"}
-        setName={"page"}
+        id="fish-section"
+        setName="page"
         totalItems={fishData?.meta.total}
       />
     </div>

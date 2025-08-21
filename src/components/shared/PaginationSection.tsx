@@ -9,7 +9,6 @@ interface PaginationSectionProps {
   totalItems?: number;
   id: string;
   setName: string;
-  pagePostsLimitProps?: number;
 }
 
 const PaginationSection = ({
@@ -17,7 +16,6 @@ const PaginationSection = ({
   totalItems,
   id,
   setName,
-  pagePostsLimitProps,
 }: PaginationSectionProps) => {
   const updateSearchParam = useUpdateSearchParams(id);
   const currentPage = useSearchParams()?.get(setName || "page");
@@ -27,7 +25,7 @@ const PaginationSection = ({
     <div className={cn("mt-10 text-end", className)}>
       <Pagination
         currentPage={Number(currentPage) || 1}
-        itemsPerPage={Number(pagePostsLimit) || pagePostsLimitProps || 9}
+        itemsPerPage={Number(pagePostsLimit) || 9}
         onPageChange={(pageNumber) =>
           updateSearchParam(setName || "page", pageNumber?.toString())
         }

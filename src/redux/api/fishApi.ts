@@ -35,6 +35,14 @@ export const fishApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.fish],
     }),
+
+    getFishMaxPrice: builder.query({
+      query: () => ({
+        url: `/fish/max-price`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.fish],
+    }),
   }),
 });
 
@@ -43,4 +51,5 @@ export const {
   useGetFishDetailsQuery,
   useGetFishBaseReviewQuery,
   useGetFishBaseAverageReviewQuery,
+  useGetFishMaxPriceQuery,
 } = fishApi;

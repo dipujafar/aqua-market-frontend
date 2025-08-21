@@ -11,12 +11,14 @@ interface SmallDeviceFilterProps {
   data: ICollectionType[];
   selectedCategory?: string | null;
   setSelectedCategory?: (category: string | null) => void;
+  resetAllFilters?: () => void;
 }
 
 export function SmallDeviceFilter({
   data,
   selectedCategory,
   setSelectedCategory,
+  resetAllFilters
 }: SmallDeviceFilterProps) {
   return (
     <Sheet>
@@ -42,6 +44,12 @@ export function SmallDeviceFilter({
             </Button>
             <Button className="w-full bg-linear-to-t   from-[#78C0A8]/80 to-[#4DA8DA]/70 py-6 cursor-pointer">
               <DiscoundIcon></DiscoundIcon> Bid Now
+            </Button>
+            <Button
+              onClick={resetAllFilters}
+              className="w-full bg-red-500 py-4 hover:bg-red-600 text-white font-bold"
+            >
+              Reset All Filters
             </Button>
           </div>
         </div>

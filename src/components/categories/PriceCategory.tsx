@@ -36,9 +36,11 @@ const containerVariants = {
 const PriceCategory = ({
   values,
   setValues,
+  maxPrice,
 }: {
   values: [number, number];
   setValues: (val: [number, number]) => void;
+  maxPrice: number;
 }) => {
   const [show, hide] = useState(true);
 
@@ -60,7 +62,7 @@ const PriceCategory = ({
             <RangeSlider
               value={values}
               onValueChange={(price) => setValues(price as [number, number])}
-         max={values[1] >= 950 ? values[1] + 100 : 1000}
+              max={maxPrice}
               step={1}
             />
             <div className="flex items-center justify-between mt-5 gap-x-2">

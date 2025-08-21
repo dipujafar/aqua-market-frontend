@@ -140,7 +140,7 @@ const ProductCard = ({ data }: { data: any }) => {
               alt="seller-profile-image"
               width={1200}
               height={1200}
-              className="size-7"
+              className="size-7 rounded-full object-cover"
             />
             <p>{data?.sellerName}</p>
           </Link>

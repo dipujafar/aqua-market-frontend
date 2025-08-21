@@ -40,17 +40,13 @@ interface ICategoryProps {
   data: ICollectionType[];
   selectedCategory?: string | null;
   setSelectedCategory?: (category: string | null) => void;
-  values: [number, number];
-  setValues: (val: [number, number]) => void;
 }
 
 const Categories = ({
   title,
   data,
   selectedCategory,
-  setSelectedCategory,
-  value,
-  setValue,
+  setSelectedCategory
 }: ICategoryProps) => {
   const [show, hide] = useState(true);
 
