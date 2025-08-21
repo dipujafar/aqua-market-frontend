@@ -347,6 +347,7 @@ const ChoosePricingType = ({ form }: ChoosePricingTypeProps) => {
                     <FormLabel className="text-white">Time</FormLabel>
                     <FormControl>
                       <Input
+                        type="time"
                         style={{
                           background:
                             "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
@@ -462,10 +463,10 @@ const ChoosePricingType = ({ form }: ChoosePricingTypeProps) => {
             <div>
               <FormField
                 control={form.control}
-                name="pricingInfo.startingBid"
+                name="pricingInfo.discount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-white">Starting Bid</FormLabel>
+                    <FormLabel className="text-white">Any Discount Offer</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -473,7 +474,7 @@ const ChoosePricingType = ({ form }: ChoosePricingTypeProps) => {
                           background:
                             "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
                         }}
-                        placeholder="Enter Starting Bid"
+                        placeholder="Enter Discount"
                         {...field}
                         className=" border-gray-600 text-white placeholder:text-gray-400 md:py-5"
                       />

@@ -2,52 +2,57 @@
 import {
   AppleIcon,
   MasterCardIcon,
-  ShareIcon,
   VisaCardIcon,
 } from "@/components/icons/Icons";
 import { Rating } from "@/components/ui/rating";
-import { envConfig } from "@/config";
-import { productDetails } from "@/lib/dummyData";
 import ActionButtons from "./ActionButtons";
 import CommonButton from "@/components/ui/common-button";
 import Link from "next/link";
-// import ActionButtons from "./ActionButtons";
-// import SellerDetails from "./SellerDetails";
+import { IFish, IFishAverageRating,} from "@/types/fish.type";
 
-const handleShare = () => {
-  navigator.share({
-    title: productDetails?.title,
-    url: `${envConfig?.client_url}/shop/${productDetails?._id}`,
-  });
-};
 
-const ProductDetails = () => {
+interface ProductDetailsProps {
+  productDetails: IFish;
+  fishAverageRating: IFishAverageRating
+}
+
+const ProductDetails = ({ productDetails, fishAverageRating }: ProductDetailsProps) => {
+  const discount = productDetails?.pricingInfo?.discount ?? 0;
+  const price = productDetails?.pricingInfo?.price ?? 0;
+  const discountPrice = price - price * (discount / 100);
+
   return (
     <div className=" space-y-6">
       {/* --------- product header ---------- */}
       <div className="space-y-3">
         <div>
           <div className="flex items-center  gap-x-2 text-white/80">
-            <Rating rating={productDetails?.rating}></Rating>
+            <Rating rating={fishAverageRating?.averageRating || 0}></Rating>
             <p>
-              {productDetails?.rating} ({productDetails?.reviews} Reviews)
+              {fishAverageRating?.averageRating || 0} (
+              {fishAverageRating?.totalReviews || 0} Reviews)
             </p>
           </div>
           <h4 className="md:text-3xl text-xl font-light">
-            {productDetails?.title}
+            {productDetails?.fishName}
           </h4>
         </div>
-        {productDetails?.discount && (
+        {discount > 0 && (
           <div className="flex gap-x-6 items-center">
+            {/* original price (crossed out) */}
             <p className="line-through text-primary-gray text-lg ">
-              ${productDetails?.originalPrice}
+              ${price.toFixed(2)}
             </p>
+
+            {/* discount badge */}
             <div className="bg-primary-red text-primary-white px-4 py-1 rounded-tl-lg rounded-br-lg">
-              {productDetails?.discount} Off
+              {discount}% Off
             </div>
           </div>
         )}
-        <h4 className="md:text-3xl text-xl">${productDetails?.price}</h4>
+
+        {/* final price after discount */}
+        <h4 className="md:text-3xl text-xl">${discountPrice.toFixed(2)}</h4>
       </div>
 
       {/* --------- edit button ---------- */}

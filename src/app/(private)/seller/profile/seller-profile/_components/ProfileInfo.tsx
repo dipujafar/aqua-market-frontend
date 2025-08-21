@@ -19,7 +19,7 @@ const ProfileInfo = () => {
   return (
     <div className="relative">
       <Image
-        src={user?.data.profile_image || "/seller_profile_cover.png"}
+        src={user?.data?.profile_image}
         alt="profile"
         width={1900}
         height={1900}
@@ -35,7 +35,7 @@ const ProfileInfo = () => {
           className="relative lg:w-1/3 pt-4 px-3 rounded-lg"
         >
           <CustomAvatar
-            img="/seller_profile.png"
+            img={user?.data?.profile_image || "/seller_profile.png"}
             name="Anita Alice"
             className=" xl:size-48 md:size-36 size-28 md:top-[-100px] top-[-80px] mx-auto"
           ></CustomAvatar>

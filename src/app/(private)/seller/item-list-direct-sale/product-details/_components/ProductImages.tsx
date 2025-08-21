@@ -1,15 +1,14 @@
 "use client";
 import { EmblaOptionsType } from "embla-carousel";
-import { productDetails } from "@/lib/dummyData";
 import ProductImagesCarousel from "@/components/shared/carousel/ProductImagesCarousel";
 
 const OPTIONS: EmblaOptionsType = {};
 
-const ProductImages = () => {
+const ProductImages = ({ images }: { images: string[] }) => {
   return (
     <div>
       <ProductImagesCarousel
-        slides={productDetails?.image}
+        slides={images}
         options={OPTIONS}
       ></ProductImagesCarousel>
     </div>

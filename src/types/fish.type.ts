@@ -126,6 +126,7 @@ export interface IFish {
   status: "sold" | "ongoing" | "processing" | "delivered";
   advertise?: IAdvertise;
   bids: IPBids[];
+  fishType: string;
 }
 
 export interface IFishReview {

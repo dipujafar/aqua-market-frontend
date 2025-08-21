@@ -26,7 +26,7 @@ import { useMyBidsQuery } from "@/redux/api/userApi";
 export default function BidHistory() {
   const { data: myBids } = useMyBidsQuery(undefined);
   const bids = myBids?.data?.bids;
-  console.log("myBids___", bids);
+  // console.log("myBids___", bids);
 
   return (
     <div className="w-full">

@@ -2,14 +2,6 @@ import { Rating } from "@/components/ui/rating";
 import { cn } from "@/lib/utils";
 import { IFishAverageRating } from "@/types/fish.type";
 
-// const ratings = [
-//   { value: 5, percentage: 90 },
-//   { value: 4, percentage: 60 },
-//   { value: 3, percentage: 40 },
-//   { value: 2, percentage: 30 },
-//   { value: 1, percentage: 10 },
-// ];
-
 interface RatingBarProps {
   value: number;
   percentage: number;

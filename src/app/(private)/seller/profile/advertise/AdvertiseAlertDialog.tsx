@@ -26,8 +26,7 @@ export function AdvertiseAlertDialog({
   data,
   fishId,
 }: advertiseProps) {
-
-  console.log('fishId', fishId);
+  console.log("fishId", fishId);
 
   const router = useRouter();
 

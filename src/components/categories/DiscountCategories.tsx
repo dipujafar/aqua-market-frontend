@@ -1,57 +1,30 @@
 "use client";
-import {
-  childrenVariants,
-  parentVariants,
-} from "@/animation/FramerMotionValiants";
-import { Checkbox } from "@/components/ui/checkbox";
-import { ICollectionType } from "@/lib/collectionType";
+
 import { motion } from "framer-motion";
 import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { childrenVariants } from "@/animation/FramerMotionValiants";
 
-const containerVariants = {
-  visible: {
-    opacity: 1,
-    height: "auto",
-    marginTop: "0.75rem",
-    transition: {
-      duration: 0.5,
-      ease: "easeInOut",
-      when: "beforeChildren",
-      staggerChildren: 0.06,
-    },
-  },
-  hidden: {
-    opacity: 0,
-    height: 0,
-    marginTop: 0,
-    transition: {
-      duration: 0.5,
-      ease: "easeInOut",
-      when: "afterChildren",
-      staggerChildren: 0.06,
-      staggerDirection: -1,
-    },
-  },
-};
+export interface IDiscountType {
+  _id: number;
+  label: string;
+  value: number;
+}
 
-interface ICategoryProps {
+interface IDiscountProps {
   title: string;
-  data: ICollectionType[];
-  selectedCategory?: string | null;
-  setSelectedCategory?: (category: string | null) => void;
+  data: IDiscountType[];
   values: [number, number];
   setValues: (val: [number, number]) => void;
 }
 
-const Categories = ({
+const DiscountCategories = ({
   title,
   data,
-  selectedCategory,
-  setSelectedCategory,
-  value,
-  setValue,
-}: ICategoryProps) => {
+  values,
+  setValues,
+}: IDiscountProps) => {
   const [show, hide] = useState(true);
 
   return (
@@ -72,11 +45,9 @@ const Categories = ({
         initial={show ? "visible" : "hidden"}
         animate={show ? "visible" : "hidden"}
         exit="hidden"
-        variants={containerVariants}
         className="overflow-hidden"
       >
         <motion.div
-          variants={parentVariants}
           initial="initial"
           whileInView="animate"
           exit="exit"
@@ -84,21 +55,34 @@ const Categories = ({
           className="space-y-4"
         >
           {data?.map((type) => {
-            const isChecked = selectedCategory === type.label;
+            // Check if the current discountRange matches this item
+            const isChecked =
+              values[0] === (Array.isArray(type.value) ? type.value[0] : 0) &&
+              values[1] === (Array.isArray(type.value) ? type.value[1] : 100);
 
             return (
               <motion.div
                 variants={childrenVariants}
-                key={type?._id}
+                key={type._id}
                 className="flex items-center space-x-3 cursor-pointer"
+                onClick={() => {
+                  if (isChecked) {
+                    // Unselect: reset to full range
+                    setValues([0, 100]);
+                  } else {
+                    if (type.value === 0) {
+                      setValues([0, 100]); // All
+                    } else if (Array.isArray(type.value)) {
+                      setValues([type.value[0], type.value[1]]);
+                    }
+                  }
+                }}
               >
                 <Checkbox
                   id={type.label}
-                  className="border-primary-gray"
                   checked={isChecked}
-                  onCheckedChange={() =>
-                    setSelectedCategory(isChecked ? null : type.label)
-                  }
+                  className="border-primary-gray cursor-pointer"
+                  onCheckedChange={() => {}}
                 />
                 <label
                   htmlFor={type.label}
@@ -115,4 +99,4 @@ const Categories = ({
   );
 };
 
-export default Categories;
+export default DiscountCategories;

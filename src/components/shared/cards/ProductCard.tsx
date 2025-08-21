@@ -57,6 +57,7 @@ const ProductCard = ({ data }: { data: any }) => {
     data.pricingInfo.date,
     data.pricingInfo.time
   );
+  // console.log("timeRemaining", timeRemaining);
 
   return (
     <Card
@@ -94,7 +95,7 @@ const ProductCard = ({ data }: { data: any }) => {
             <div className="absolute top-0 left-0 space-y-1">
               <div className="py-1 px-4 bg-primary-sky text-sm max-w-[130px] rounded-tl ">
                 <h6 className="text-center text-lg font-bold">
-                  {timeRemaining?.totalHours}h
+                  {timeRemaining?.totalHours || 0}h
                 </h6>
                 <h6 className="text-white/80 text-xs">Left</h6>
               </div>

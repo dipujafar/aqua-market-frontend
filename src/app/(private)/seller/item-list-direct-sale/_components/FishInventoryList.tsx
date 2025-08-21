@@ -181,19 +181,28 @@ export default function FishInventoryList() {
                   </span>
                 </TableCell>
                 <TableCell>
-                  <Link href={`/seller/item-list-direct-sale/product-details`}>
+                  <Link
+                    href={`/seller/item-list-direct-sale/product-details/${item._id}`}
+                  >
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="cursor-pointer"
+                      className="cursor-pointer hover:bg-transparent hover:text-[#316A8A] hover:transform hover:scale-110 transition-transform duration-300 "
                     >
                       <Eye className="size-4" />
                     </Button>
                   </Link>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button variant="ghost" size="icon" className=" cursor-pointer">
-                        <Trash2 className="size-4 hover:cursor-pointer" color="red" />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className=" cursor-pointer hover:bg-transparent hover:text-red-500 hover:transform hover:scale-110 transition-transform duration-300 "
+                      >
+                        <Trash2
+                          className="size-4 hover:cursor-pointer"
+                          color="red"
+                        />
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-80 p-2 rounded bg-linear-to-r from-[#2E1345] to-[#0A2943]">

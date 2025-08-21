@@ -4,13 +4,13 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { CheckIcon } from "@/components/icons/Icons";
+import { IFish } from "@/types/fish.type";
 
 const shippingMethods = [
   "Orders are shipped on Monday, Tuesday, or Wednesday to ensure your snails arrive before the weekend and avoid delays.",
   "All live animals, including Blueberry Snails, are shipped via overnight shipping to minimize stress and ensure safe delivery.",
   "1–2 days after shipping, depending on your location.",
 ];
-
 
 const deliveryPolicies = [
   "If any snails arrive dead, you must provide photo or video documentation of the dead snails in their original packaging within 1 hour of delivery. Contact the seller immediately to report the issue..",
@@ -43,7 +43,9 @@ const containerVariants = {
   },
 };
 
-const ProductDescription = () => {
+const ProductDescription = ({ fishDetails }: { fishDetails: IFish }) => {
+  // console.log("fishDetails", fishDetails);
+
   const [showDescription, setShowDescription] = useState(true);
   const [showShipping, setShowShipping] = useState(true);
   const [showDeliveryPolicy, setShowDeliveryPolicy] = useState(true);
@@ -74,15 +76,7 @@ const ProductDescription = () => {
             // showDescription ? "h-max" : "h-0"
           )}
         >
-          <p>
-            The Blueberry Snail is a striking freshwater snail with a glossy,
-            dark shell that ranges from deep blue to black with subtle purple
-            hues. These peaceful snails are excellent tank cleaners, feeding on
-            algae, detritus, and leftover food, making them a functional and
-            attractive addition to any aquarium. They are livebearers, meaning
-            they give birth to live young rather than laying eggs, which can add
-            an interesting dynamic to your tank.
-          </p>
+          <p>{fishDetails?.description}</p>
         </motion.div>
       </div>
 
@@ -110,11 +104,14 @@ const ProductDescription = () => {
           className="text-primary-gray overflow-hidden"
         >
           <div>
-            {shippingMethods.map((method, index) => (
-              <p key={index} className="flex gap-x-1">
-                <CheckIcon></CheckIcon> <span className="flex-1"> {method}</span>
-              </p>
-            ))}
+            <p className="flex gap-x-1">
+              <CheckIcon></CheckIcon>
+              <span className="flex-1">
+                {fishDetails?.shippingAddress
+                  ? fishDetails?.shippingAddress
+                  : "No shipping address available for this product at the moment."}
+              </span>
+            </p>
           </div>
         </motion.div>
       </div>
@@ -142,13 +139,16 @@ const ProductDescription = () => {
           variants={containerVariants}
           className="text-primary-gray overflow-hidden"
         >
-          
           <div>
-            {deliveryPolicies.map((deliveryPolicy, index) => (
-              <p key={index} className="flex gap-x-1">
-                <CheckIcon></CheckIcon> <span className="flex-1"> {deliveryPolicy}</span>
-              </p>
-            ))}
+            <p className="flex gap-x-1">
+              <CheckIcon></CheckIcon>
+              <span className="flex-1">
+                {" "}
+                {fishDetails?.doaPolicy
+                  ? fishDetails?.doaPolicy
+                  : "No delivery policy available for this product at the moment."}
+              </span>
+            </p>
           </div>
         </motion.div>
       </div>

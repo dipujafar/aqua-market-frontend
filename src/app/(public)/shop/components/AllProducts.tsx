@@ -21,7 +21,7 @@ const fadeUpVariants = {
   },
 };
 
-const AllProducts = ({ fishData }: { fishData: { data: IFish[] } }) => {
+const AllProducts = ({ fishData }: { fishData: IFish[] }) => {
   // console.log("fishData", fishData?.data);
 
   return (
@@ -33,8 +33,8 @@ const AllProducts = ({ fishData }: { fishData: { data: IFish[] } }) => {
       viewport={{ once: true }}
       className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3  gap-4 xl:gap-6 "
     >
-      {fishData?.data.length > 0 &&
-        fishData?.data?.map((product: IFish) => (
+      {fishData?.length > 0 &&
+        fishData?.map((product: IFish) => (
           <motion.div key={product?._id}>
             <ProductCard data={product}></ProductCard>
           </motion.div>

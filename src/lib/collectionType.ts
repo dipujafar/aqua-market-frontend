@@ -1,4 +1,10 @@
-export const collectionTypes = [
+export interface ICollectionType {
+  _id: number;
+  label: string;
+  value: string;
+}
+
+export const collectionTypes: ICollectionType[] = [
     {
       _id: 1,
       label: "Betta Fish",
