@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Select,
   SelectContent,
@@ -27,17 +28,25 @@ import { useGetMyOrdersQuery } from "@/redux/api/userApi";
 import { IOrder } from "@/types/order.types";
 import moment from "moment";
 import ViewOrderItem from "./ViewOrderItem";
+import { useSearchParams } from "next/navigation";
 
 const OrderListTable = () => {
   const [openClaimForm, setOpenClaimForm] = useState(false);
 
-  const { data: myOrders } = useGetMyOrdersQuery(undefined);
+  const searchParams = useSearchParams();
+  const page = Number(searchParams.get("page") || 1);
+  const limit = Number(searchParams.get("limit") || 10);
+
+  const { data: myOrders } = useGetMyOrdersQuery({ page, limit });
   const orders = myOrders?.data?.data;
-  // console.log("myOrders", orders);
+  // console.log("myOrders", myOrders?.data);
 
   return (
     <>
-      <div className="md:mb-5 mb-3 flex justify-between items-center">
+      <div
+        id="order-pagination"
+        className="md:mb-5 mb-3 flex justify-between items-center"
+      >
         <h5 className="md:text-2xl font-light truncate">My Order History</h5>
         <div className="lg:min-w-sm min-w-[200px] relative">
           <Input
@@ -124,7 +133,12 @@ const OrderListTable = () => {
           </TableBody>
         </Table>
       </div>
-      {/* <PaginationSection className="mt-5" /> */}
+      <PaginationSection
+        id="order-pagination"
+        className="mt-5"
+        setName="page"
+        totalItems={myOrders?.data?.meta?.total}
+      />
 
       {/* claim send form dialog */}
       <ClaimSendDialog

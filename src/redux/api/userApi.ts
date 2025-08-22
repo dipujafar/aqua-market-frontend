@@ -94,9 +94,10 @@ const userApi = baseApi.injectEndpoints({
     }),
 
     getMyOrders: builder.query({
-      query: () => ({
-        url: `user/my-orders`,
+      query: (params) => ({
+        url: `/user/my-orders`,
         method: "GET",
+        params,
       }),
       providesTags: [tagTypes.orders, tagTypes.user],
     }),

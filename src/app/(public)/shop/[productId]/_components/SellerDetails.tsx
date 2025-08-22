@@ -16,7 +16,7 @@ const SellerDetails = ({ sellerDetails }: { sellerDetails: any }) => {
 
   const [followUnfollow] = useFollowSellerMutation();
   const { data: followingData } = useGetSellerBaseFollowingQuery(
-    sellerDetails?._id
+    sellerDetails?.sellerId?._id
   );
   const status =
     followingData?.data?.isActive === true
@@ -59,22 +59,30 @@ const SellerDetails = ({ sellerDetails }: { sellerDetails: any }) => {
             <div>
               <Link href="/seller-profile">
                 <h5 className="font-medium">
-                  {sellerDetails?.first_name} {sellerDetails?.last_name}
+                  {sellerDetails?.sellerId?.first_name}{" "}
+                  {sellerDetails?.sellerId?.last_name}
                 </h5>{" "}
               </Link>
-              <p className="text-sm text-white/80">{sellerDetails?.email}</p>
+              <p className="text-sm text-white/80">
+                {sellerDetails?.sellerId?.email}
+              </p>
             </div>
           </div>
 
           <div className="flex gap-x-2  items-center h-fit  ">
             <MapIcon></MapIcon>
-            <h6>{sellerDetails?.location}</h6>
+            <h6>
+              {sellerDetails?.sellerId?.address?.city},
+              <span>{sellerDetails?.sellerId?.address?.country}</span>
+            </h6>
           </div>
           <hr />
         </div>
 
         <CommonButton
-          handlerFunction={() => handleFollowSeller(sellerDetails?._id)}
+          handlerFunction={() =>
+            handleFollowSeller(sellerDetails?.sellerId?._id)
+          }
           className="w-full mt-4 group border-r-3 border-b-3 border-white "
         >
           {status}

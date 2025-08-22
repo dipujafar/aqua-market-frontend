@@ -71,8 +71,8 @@ const fishDetails = ({ fishDetails, fishAverageRating }: fishDetailsProps) => {
             style={{ boxShadow: "0px 4px 5px 0px rgba(0, 0, 0, 0.07)" }}
             onClick={() =>
               handleShare({
-                fishName: fishDetails.fishName as string,
-                _id: fishDetails._id as string,
+                fishName: fishDetails?.fishName as string,
+                _id: fishDetails?._id as string,
               })
             }
           >
@@ -120,7 +120,7 @@ const fishDetails = ({ fishDetails, fishAverageRating }: fishDetailsProps) => {
       {/* ======================= all actions buttons ================ */}
       <ActionButtons fishDetails={fishDetails}></ActionButtons>
       {/* ========================= seller details ========================= */}
-      <SellerDetails sellerDetails={fishDetails?.sellerId} />
+      <SellerDetails sellerDetails={fishDetails} />
     </div>
   );
 };

@@ -13,7 +13,7 @@ import {
   useGetFishMaxPriceQuery,
 } from "@/redux/api/fishApi";
 import { useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { IFish } from "@/types/fish.type";
 import { discountData } from "@/lib/discountData";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,7 @@ import DiscountCategories from "@/components/categories/DiscountCategories";
 
 const ShopPageContainer = () => {
   const { data: maxPriceData } = useGetFishMaxPriceQuery(undefined);
-  const maxPrice = maxPriceData?.data;
+  const maxPrice = maxPriceData?.data || 5000;
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -41,45 +41,50 @@ const ShopPageContainer = () => {
   const limit = Number(searchParams.get("limit") || 9);
 
   // --------------------- set queries ---------------------
-  const query: Record<string, string | number> = {};
-  query["limit"] = Number(limit) || 9;
-  query["page"] = Number(page) || 1;
+  const query: Record<string, string | number> = {
+    limit,
+    page,
+  };
 
-  if (priceRange) {
+  if (priceRange[0] !== 0 || priceRange[1] !== maxPrice) {
     query["minPrice"] = priceRange[0];
     query["maxPrice"] = priceRange[1];
   }
 
-  if (discountRange) {
+  if (discountRange[0] !== 0 || discountRange[1] !== 100) {
     query["minDiscount"] = discountRange[0];
     query["maxDiscount"] = discountRange[1];
   }
 
-  const { data: fishData } = useGetAllFishQuery({ ...query, page, limit });
+  const { data: fishData } = useGetAllFishQuery(query);
   // console.log("fishData", fishData);
 
-  // 🔹 Filtered data logic
-  const filteredProducts = useMemo(() => {
-    if (!fishData?.data) return [];
+  // 🔹 Filtered data logic (no useMemo)
+  const filteredProducts: IFish[] = fishData?.data
+    ? fishData.data.filter((item: IFish) => {
+        const matchesSearch = item?.fishName
+          ?.toLowerCase()
+          .includes(searchTerm.toLowerCase());
 
-    return fishData.data.filter((item: IFish) => {
-      const matchesSearch = item?.fishName
-        ?.toLowerCase()
-        .includes(searchTerm.toLowerCase());
+        const matchesCategory = selectedCategory
+          ? item?.fishType === selectedCategory
+          : true;
 
-      const matchesCategory = selectedCategory
-        ? item?.fishType === selectedCategory
-        : true;
+        const matchesType = selectedType
+          ? item?.pricingType === selectedType
+          : true;
 
-      const matchesType = selectedType
-        ? item?.pricingType === selectedType
-        : true;
-
-      return matchesSearch && matchesCategory && matchesType;
-    });
-  }, [fishData, searchTerm, selectedCategory, selectedType]);
+        return matchesSearch && matchesCategory && matchesType;
+      })
+    : [];
 
   // console.log("setSelectedCategory", filteredProducts);
+
+  useEffect(() => {
+    if (maxPrice) {
+      setPriceRange([0, maxPrice]);
+    }
+  }, [maxPrice]);
 
   // Reset all filters
   const resetAllFilters = () => {
@@ -113,7 +118,11 @@ const ShopPageContainer = () => {
             title="COLLECTION"
             data={collectionTypes}
           ></Categories>
-          <PriceCategory values={priceRange} setValues={setPriceRange} />
+          <PriceCategory
+            values={priceRange}
+            setValues={setPriceRange}
+            maxPrice={maxPrice}
+          />
           <DiscountCategories
             title="Discount"
             data={discountData}

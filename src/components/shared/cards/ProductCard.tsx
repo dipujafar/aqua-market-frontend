@@ -53,11 +53,10 @@ const ProductCard = ({ data }: { data: any }) => {
     }
   };
 
-  const timeRemaining = getTimeRemaining(
-    data.pricingInfo.date,
-    data.pricingInfo.time
-  );
-  // console.log("timeRemaining", timeRemaining);
+  const fTime = String(data?.pricingInfo?.time);
+  const fDate = data?.pricingInfo?.date?.slice(0, 10);
+  const timeRemaining = getTimeRemaining(fDate, fTime);
+  // console.log('timeRemaining', timeRemaining);
 
   return (
     <Card
@@ -94,8 +93,9 @@ const ProductCard = ({ data }: { data: any }) => {
           {data?.pricingType === "forBids" && (
             <div className="absolute top-0 left-0 space-y-1">
               <div className="py-1 px-4 bg-primary-sky text-sm max-w-[130px] rounded-tl ">
-                <h6 className="text-center text-lg font-bold">
-                  {timeRemaining?.totalHours || 0}h
+                <h6 className="text-center flex flex-col italic justify-center text-sm font-bold">
+                  <span>{timeRemaining?.days || 0}d </span>
+                  <span>{timeRemaining?.hours || 0}h</span>
                 </h6>
                 <h6 className="text-white/80 text-xs">Left</h6>
               </div>

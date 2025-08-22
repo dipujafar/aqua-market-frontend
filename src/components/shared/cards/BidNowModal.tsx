@@ -29,20 +29,20 @@ const BidNowModal = ({ children, bidInfo }: BidNowModalProps) => {
 
   const [placeBid, { isLoading }] = usePlaceBidMutation();
 
-  const timeRemaining = getTimeRemaining(
-    bidInfo.pricingInfo.date,
-    bidInfo.pricingInfo.time
-  );
+  const fTime = String(bidInfo?.pricingInfo?.time);
+  const fDate = bidInfo?.pricingInfo?.date?.slice(0, 10);
+  const timeRemaining = getTimeRemaining(fDate, fTime);
 
-  //   Check current minimum bid
+  // Ensure all bidAmounts are numbers
   const maximumPriceBid = bidInfo?.bids?.length
-    ? Math.max(...bidInfo.bids.map((bid: any) => bid?.bidAmount))
+    ? Math.max(...bidInfo.bids.map((bid: any) => Number(bid?.bidAmount)))
     : 0;
 
+  // If no bids yet (maximumPriceBid === 0), show starting bid
   const currentMinBid =
-    maximumPriceBid > 0
+    bidInfo?.bids?.length && maximumPriceBid > 0
       ? maximumPriceBid
-      : bidInfo?.pricingInfo?.startingBid || 0;
+      : Number(bidInfo?.pricingInfo?.startingBid ?? 0);
 
   const handlePlaceBid = async () => {
     const bid = parseFloat(bidAmount);
@@ -81,8 +81,6 @@ const BidNowModal = ({ children, bidInfo }: BidNowModalProps) => {
       toast.error(getErrorMessage(error));
     }
   };
-
-  const formatTime = (value: number) => value.toString().padStart(2, "0");
 
   return (
     <Dialog>
@@ -127,9 +125,6 @@ const BidNowModal = ({ children, bidInfo }: BidNowModalProps) => {
                   <div className="text-sm opacity-90">sec</div>
                 </div>
               </div>
-              {/* <p className="text-center text-sm opacity-80">
-                Ending Today at 9:00 PM
-              </p> */}
             </div>
 
             {/* Current Bid Section */}
@@ -137,7 +132,7 @@ const BidNowModal = ({ children, bidInfo }: BidNowModalProps) => {
               <div className="text-lg font-semibold">
                 Current Bid:{" "}
                 <span className="text-teal-300">
-                  ${maximumPriceBid.toFixed(2)}
+                  ${currentMinBid.toFixed(2)}
                 </span>
               </div>
               <div className="text-sm opacity-80">

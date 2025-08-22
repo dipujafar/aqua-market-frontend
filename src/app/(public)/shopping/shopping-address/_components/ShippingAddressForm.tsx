@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import {
   Form,
@@ -18,9 +18,20 @@ import { PhoneInput } from "@/components/ui/phone-input";
 import CommonButton from "@/components/ui/common-button";
 import { useGetUserProfileQuery } from "@/redux/api/userProfileApi";
 import { useEffect, useState } from "react";
-import { useUpdateShipingAddressMutation } from "@/redux/api/userApi";
+import {
+  useCreateOrderMutation,
+  useUpdateShipingAddressMutation,
+} from "@/redux/api/userApi";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/utils/getErrorMessage";
+import { useAppSelector } from "@/redux/hooks";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // ✅ FIXED Zod schema (removed body wrapper, added rememberMe)
 export const formSchema = z.object({
@@ -47,8 +58,12 @@ export const formSchema = z.object({
 export default function ShippingAddressForm() {
   const [value, setValue] = useState<string>("");
 
+  const cartData = useAppSelector((state) => state.cart);
+  // console.log("cartData", cartData);
+
   const [updateShippingAddress, { isLoading }] =
     useUpdateShipingAddressMutation();
+  const [createOrder] = useCreateOrderMutation();
 
   const { data: userData } = useGetUserProfileQuery(undefined);
   const existingShippingAddress = userData?.data?.shippingAddress;
@@ -91,17 +106,59 @@ export default function ShippingAddressForm() {
         shippingMethod: existingShippingAddress.shippingMethod || "",
         rememberMe: false,
       });
-    } 
+    }
   }, [existingShippingAddress, reset]);
+
+  // async function onSubmit(values: z.infer<typeof formSchema>) {
+  //   try {
+  //     const res = await updateShippingAddress(values).unwrap();
+  //     if (res.success) {
+  //       toast.success(res.message);
+
+  //       const orderData = {
+  //         items: cartData?.items,
+  //         totalPrice: cartData?.totalPrice,
+  //         paymentMethod: "card",
+  //       };
+
+  //       const resp = await createOrder(orderData).unwrap();
+  //       console.log("resp", resp);
+  //     }
+  //   } catch (error) {
+  //     console.log("error", error);
+  //     toast.error(getErrorMessage(error));
+  //   }
+  // }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      // 1️⃣ Update shipping address first
       const res = await updateShippingAddress(values).unwrap();
-      if (res.success) {
-        toast.success(res.message);
+      // console.log("res___", res);
+      if (!res.success) {
+        toast.error(res.message || "Failed to update shipping address");
+        return;
       }
+      toast.success(res.message);
+
+      // // 2️⃣ Create order
+      const orderData = {
+        items: cartData?.items,
+        totalPrice: cartData?.totalPrice,
+        paymentMethod: res?.data?.shippingAddress?.shippingMethod,
+      };
+      const orderResp = await createOrder(orderData).unwrap();
+      // console.log("Order created:", orderResp);
+
+      if (!orderResp?.data) {
+        toast.error("Failed to initiate payment. Try again.");
+        return;
+      }
+
+      // 4️⃣ Redirect user to Stripe Checkout
+      window.location.href = orderResp?.data;
     } catch (error) {
-      console.log("error", error);
+      console.error("Payment error:", error);
       toast.error(getErrorMessage(error));
     }
   }
@@ -222,22 +279,20 @@ export default function ShippingAddressForm() {
             )}
           />
 
-          {/* Shipping Method */}
-          <FormField
+          {/* Payment Method Selector */}
+          <Controller
             control={control}
             name="shippingMethod"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Shipping Method</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="e.g. Express, Standard"
-                    {...field}
-                    className="py-5 border-[#fff]/80 text-white placeholder:text-gray-400"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+              <Select onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger className="py-5 border-[#fff]/80 text-white placeholder:text-gray-400 w-full">
+                  <SelectValue placeholder="Select Payment Method" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="card">Card</SelectItem>
+                  <SelectItem value="paypal">PayPal</SelectItem>
+                </SelectContent>
+              </Select>
             )}
           />
 
@@ -267,7 +322,7 @@ export default function ShippingAddressForm() {
           />
 
           <CommonButton type="submit" className="w-full border-white">
-            Continue to payment
+            {isLoading ? "Loading..." : "Continue to payment"}
           </CommonButton>
         </form>
       </Form>

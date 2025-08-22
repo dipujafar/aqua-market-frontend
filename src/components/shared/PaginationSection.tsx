@@ -17,6 +17,7 @@ const PaginationSection = ({
   id,
   setName,
 }: PaginationSectionProps) => {
+
   const updateSearchParam = useUpdateSearchParams(id);
   const currentPage = useSearchParams()?.get(setName || "page");
   const pagePostsLimit = useSearchParams()?.get("limit");

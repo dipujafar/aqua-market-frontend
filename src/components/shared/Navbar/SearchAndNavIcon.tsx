@@ -8,6 +8,7 @@ import {
 } from "@/animation/FramerMotionValiantsFadeUp";
 import { Input } from "@/components/ui/input";
 import { useAppSelector } from "@/redux/hooks";
+import NavSearch from "./NavSearch";
 
 const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
   const user: any = useAppSelector((state) => state.auth.user);
@@ -33,13 +34,7 @@ const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
         className="flex lg:gap-x-4 gap-x-2 items-center justify-center  "
       >
         <motion.div variants={childrenVariants} className="relative">
-          <Input
-            className={`border-0 border-b  focus:outline-0 shadow-none rounded-none focus-visible:ring-0 placeholder:text-${color} min-w-[120px] `}
-            placeholder="Search here....."
-          ></Input>
-          <div className="absolute  right-0 top-2">
-            <Search size={20} color="#fff" />
-          </div>
+          <NavSearch color={color} />
         </motion.div>
 
         {user?.role === "user" && (
