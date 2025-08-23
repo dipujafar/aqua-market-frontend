@@ -2,18 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import CommonButton from "@/components/ui/common-button";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import Image from "next/image";
 import Link from "next/link";
+import { IFish } from "@/types/fish.type";
 
 interface CountdownTimerProps {
-  targetDate: string | Date;
   title?: string;
   subtitle?: string;
   discount?: string;
   onComplete?: () => void;
+  fish: IFish;
 }
 
 interface TimeLeft {
@@ -24,11 +23,11 @@ interface TimeLeft {
 }
 
 export default function CountdownTimer({
-  targetDate,
   title = "Limited Time Offer! Don't Miss Out!",
   subtitle,
   discount = "30% OFF",
   onComplete,
+  fish,
 }: CountdownTimerProps) {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
@@ -38,46 +37,42 @@ export default function CountdownTimer({
   });
   const [isExpired, setIsExpired] = useState(false);
 
-  useEffect(() => {
-    const calculateTimeLeft = () => {
-      const now = new Date().getTime();
-      const target = new Date(targetDate).getTime();
-      const difference = target - now;
-
-      if (difference > 0) {
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor(
-          (difference % (1000 * 60 * 60)) / (1000 * 60)
-        );
-        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-        setTimeLeft({ days, hours, minutes, seconds });
-        setIsExpired(false);
-      } else {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        setIsExpired(true);
-        if (onComplete) {
-          onComplete();
-        }
-      }
-    };
-
-    // Calculate immediately
-    calculateTimeLeft();
-
-    // Set up interval to update every second
-    const timer = setInterval(calculateTimeLeft, 1000);
-
-    // Cleanup interval on component unmount
-    return () => clearInterval(timer);
-  }, [targetDate, onComplete]);
-
   const formatNumber = (num: number) => {
     return num.toString().padStart(2, "0");
   };
+
+  useEffect(() => {
+    if (!fish?.advertise?.date || !fish?.advertise?.time) return;
+
+    const advertiseDate = new Date(fish?.advertise?.date);
+    const [hours, minutes] = fish?.advertise?.time.split(":").map(Number);
+    advertiseDate.setHours(hours);
+    advertiseDate.setMinutes(minutes);
+    advertiseDate.setSeconds(0);
+
+    const countdownInterval = setInterval(() => {
+      const now = new Date();
+      const timeDifference = advertiseDate.getTime() - now.getTime();
+
+      if (timeDifference <= 0) {
+        setIsExpired(true);
+        clearInterval(countdownInterval);
+        if (onComplete) onComplete();
+      } else {
+        const seconds = Math.floor(timeDifference / 1000) % 60;
+        const minutes = Math.floor(timeDifference / (1000 * 60)) % 60;
+        const hours = Math.floor(timeDifference / (1000 * 60 * 60)) % 24;
+        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+        const daysToShow = days > 30 ? "30+" : days.toString();
+
+        // @ts-ignore
+        setTimeLeft({ days: daysToShow, hours, minutes, seconds });
+      }
+    }, 1000);
+
+    return () => clearInterval(countdownInterval);
+  }, [fish, onComplete]);
 
   return (
     <div
@@ -87,31 +82,26 @@ export default function CountdownTimer({
       }}
       className="relative overflow-hidden xl:px-20 md:px-10 px-4 xl:py-12  md:py-8 py-4 text-white rounded-lg"
     >
-      {/* Background pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)]" />
 
-      <div className="flex flex-col-reverse md:flex-row justify-between ">
-        <div className="relative z-10 max-w-xl md::w-1/3 ">
-          {/* Discount text */}
+      <div className="flex flex-col-reverse md:flex-row justify-between w-full">
+        <div className="relative z-10 w-full md:w-1/3">
           <div className="mb-2">
             <h2 className="md:text-5xl text-2xl font-medium tracking-tight font-playfair">
               {discount}
             </h2>
           </div>
 
-          {/* Title */}
           <h3 className="mb-4 md:text-4xl text-xl font-medium font-playfair leading-tight">
             {title}
           </h3>
 
-          {/* Subtitle if provided */}
           {subtitle && <p className="mb-6 text-sm opacity-90">{subtitle}</p>}
 
-          {/* Countdown display */}
           {!isExpired ? (
-            <div className="mb-6 flex gap-3">
+            <div className="mb-6 flex gap-3 w-full">
               <div className="flex flex-col items-center">
-                <div className="flex md:size-16 size-8 items-center justify-center rounded-lg bg-black/30 backdrop-blur-sm">
+                <div className="flex md:size-16 size-8 items-center justify-center rounded-lg bg-black/30 backdrop-blur-sm ">
                   <span className="md:text-2xl text-lg font-bold">
                     {formatNumber(timeLeft.days)}
                   </span>
@@ -178,8 +168,11 @@ export default function CountdownTimer({
             </div>
           )}
 
-          {/* +++++++++++++++++++++ action button ++++++++++++++++++++ */}
-          <Link href={"/shop/1"}>
+          <Link
+            href={`/shop/${String(
+              fish?.pricingType ?? ""
+            ).toLowerCase()}-${String(fish?._id ?? "")}`}
+          >
             <Button
               style={{
                 background:
@@ -194,12 +187,12 @@ export default function CountdownTimer({
         </div>
         <div className="xl:w-1/3">
           <Image
-            src={"/offer_section_image.png"}
+            src={fish?.image[0]}
             alt="product-data"
             width={1200}
-            height={12000}
-            className=" md:max-w-[300px] max-w-[200px] mx-auto  object-cover "
-          ></Image>
+            height={1200}
+            className="mx-auto object-cover rounded-lg h-[300px]"
+          />
         </div>
       </div>
     </div>

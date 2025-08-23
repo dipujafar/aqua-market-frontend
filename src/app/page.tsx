@@ -4,12 +4,10 @@ import DiscordHelpSection from "@/components/modules/Home/DiscordHelpSection";
 import Hero from "@/components/modules/Home/Hero";
 import OfferCarousel from "@/components/modules/Home/OfferCarousel";
 
-
 export const metadata = {
   title: "Home | AquaMarket",
   description: "Enjoy your shopping with AquaMarket!",
-}
-
+};
 
 export default function Home() {
   return (

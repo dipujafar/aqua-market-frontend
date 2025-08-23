@@ -9,22 +9,35 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import CountdownTimer from "./CountdownTimerCard";
 import Container from "@/components/shared/Container";
-
-const bannerImage = [
-  "/bannerImage1.png",
-  "/bannerImage2.png",
-  "/bannerImage3.png",
-  "/bannerImage4.png",
-];
+import { useGetAllFishQuery } from "@/redux/api/fishApi";
+import { IFish } from "@/types/fish.type";
 
 const OfferCarousel = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
-  const futureDate = new Date();
-  futureDate.setDate(futureDate.getDate() + 30);
-  futureDate.setHours(futureDate.getHours() + 16);
-  futureDate.setMinutes(futureDate.getMinutes() + 54);
-  futureDate.setSeconds(futureDate.getSeconds() + 32);
+
+  const { data: fishData } = useGetAllFishQuery(undefined);
+
+  // Filter offers based on discount and expiry
+  const isDiscounted = fishData?.data.filter((fish: any) => {
+    if (fish?.advertise?.offerDiscount > 0) {
+      const advertiseDate = new Date(fish.advertise.date);
+      const [hours, minutes] = fish.advertise.time.split(":").map(Number);
+      advertiseDate.setHours(hours);
+      advertiseDate.setMinutes(minutes);
+      advertiseDate.setSeconds(0);
+
+      const now = new Date();
+
+      // Check if the advertisement is expired
+      if (advertiseDate > now) {
+        return true;
+      }
+    }
+    return false;
+  });
+
+  // console.log("isDiscounted", isDiscounted);
 
   const plugin = useRef(
     Autoplay({
@@ -42,7 +55,6 @@ const OfferCarousel = () => {
     };
 
     api.on("select", onSelect);
-    // Call once to set initial state
     onSelect();
 
     return () => {
@@ -64,13 +76,12 @@ const OfferCarousel = () => {
           setApi={setApi}
         >
           <CarouselContent>
-            {bannerImage?.map((image: string, index: number) => (
-              <CarouselItem key={index}>
+            {isDiscounted?.map((fish: IFish) => (
+              <CarouselItem key={fish?._id}>
                 <CountdownTimer
-                  targetDate={futureDate}
-                  title="Limited Time Offer! Don't Miss Out!"
-                  discount="30% OFF"
-                  //   onComplete={handleCountdownComplete}
+                  title={fish.advertise?.offerTitle}
+                  discount={`${fish?.advertise?.offerDiscount}% OFF`}
+                  fish={fish}
                 />
               </CarouselItem>
             ))}
@@ -79,7 +90,7 @@ const OfferCarousel = () => {
 
         {/* Pagination Dots */}
         <div className="flex justify-center gap-2 mt-4 absolute -bottom-6 left-0 right-0">
-          {bannerImage.map((_, index) => (
+          {isDiscounted?.map((_: any, index: number) => (
             <button
               key={index}
               className={`h-2.5 rounded-full transition-all ${

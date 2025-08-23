@@ -6,16 +6,16 @@ import {
   childrenVariants,
   parentVariants,
 } from "@/animation/FramerMotionValiantsFadeUp";
-import { Input } from "@/components/ui/input";
 import { useAppSelector } from "@/redux/hooks";
 import NavSearch from "./NavSearch";
+import { useGetMyNotificationsQuery } from "@/redux/api/userApi";
 
 const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
   const user: any = useAppSelector((state) => state.auth.user);
   // console.log("isLoggedIn", user);
 
   const cartData = useAppSelector((state) => state.cart);
-  // console.log(cartData?.totalQuantity);
+  const { data: myNotifications } = useGetMyNotificationsQuery(undefined);
 
   return (
     <motion.div
@@ -50,15 +50,23 @@ const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
           </motion.li>
         )}
 
-        <motion.li variants={childrenVariants}>
-          <Link href={"/notification"}>
-            <Bell
-              size={20}
-              color={color}
-              className="hover:bg-white/20 rounded-full"
-            />
-          </Link>
-        </motion.li>
+        {(user?.role === "user" || user?.role === "seller") && (
+          <motion.li variants={childrenVariants} className="relative">
+            <Link href="/notification" className="relative">
+              <Bell
+                size={20}
+                color={color}
+                className="hover:bg-white/20 rounded-full"
+              />
+              {myNotifications?.data?.meta?.total > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-semibold rounded-full px-1">
+                  {myNotifications?.data?.meta?.total}
+                </span>
+              )}
+            </Link>
+          </motion.li>
+        )}
+
         <motion.li variants={childrenVariants}>
           <Link
             href={

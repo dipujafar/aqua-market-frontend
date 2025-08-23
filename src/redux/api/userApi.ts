@@ -124,6 +124,15 @@ const userApi = baseApi.injectEndpoints({
         body: { ids },
       }),
     }),
+
+    claimReport: builder.mutation({
+      query: (data) => ({
+        url: `/user/claim-doc-report`,
+        method: "POST",
+        body: data,
+      }),
+      // invalidatesTags: [tagTypes.user, tagTypes.admin],
+    }),
   }),
 });
 
@@ -142,4 +151,5 @@ export const {
   useGetMyNotificationsQuery,
   useDeleteMyNotificationMutation,
   useDeleteManyNotificationsMutation,
+  useClaimReportMutation,
 } = userApi;

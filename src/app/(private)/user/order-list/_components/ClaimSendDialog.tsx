@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import type React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -18,6 +18,9 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { UploadIcon } from "@/icons";
 import CommonButton from "@/components/ui/common-button";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/utils/getErrorMessage";
+import { useClaimReportMutation } from "@/redux/api/userApi";
 
 // Define the form schema with Zod
 const formSchema = z.object({
@@ -26,7 +29,12 @@ const formSchema = z.object({
   reason: z.string().min(10, {
     message: "Please provide at least 10 characters for the reason",
   }),
-  photos: z.array(z.any()).min(1, { message: "Please upload at least one photo" }),
+  photos: z
+    .any()
+    .refine((val) => Array.isArray(val) || val instanceof FileList, {
+      message: "Please upload at least one photo",
+    })
+    .transform((val) => (val instanceof FileList ? Array.from(val) : val)),
 });
 
 // Define the type for our form values
@@ -40,33 +48,49 @@ export function ClaimSendDialog({
   open: boolean;
   setOpen: (open: boolean) => void;
 }) {
+  const [claimReport] = useClaimReportMutation();
+
   const [photos, setPhotos] = useState<File[]>([]);
 
   // Initialize the form
   const form = useForm<FishReportFormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      fish: "",
-      seller: "",
-      reason: "",
-    },
+    // resolver: zodResolver(formSchema),
+    // defaultValues: {
+    //   fish: "",
+    //   seller: "",
+    //   reason: "",
+    // },
   });
 
   // Handle form submission
-  function onSubmit(data: FishReportFormValues) {
-    console.log("Form submitted:", data);
-    console.log("Photos:", photos);
-    // Here you would typically send the data to your API
-    setOpen(false);
-  }
+  const onSubmit = async (data: FishReportFormValues) => {
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(data));
+    photos.forEach((file) => {
+      formData.append("photos", file);
+    });
 
-  // Handle file upload
+    try {
+      const res = await claimReport(formData).unwrap();
+      // console.log("res", res);
+
+      if (res.success) {
+        toast.success(res.message);
+
+        setOpen(false);
+      }
+    } catch (error) {
+      // console.log("errors", error);
+      toast.error(getErrorMessage(error));
+      setOpen(false);
+    }
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const newPhotos = Array.from(e.target.files);
       setPhotos((prev) => [...prev, ...newPhotos]);
-      // @ts-ignore
-      form.setValue("photos", e.target.files);
+      form.setValue("photos", newPhotos, { shouldValidate: true }); // 👈 force array
     }
   };
 
@@ -81,7 +105,12 @@ export function ClaimSendDialog({
         className="sm:max-w-[425px] border-none"
       >
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit, (errors) => {
+              console.log("Validation failed:", errors);
+            })}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="fish"
