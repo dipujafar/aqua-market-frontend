@@ -101,6 +101,29 @@ const userApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.orders, tagTypes.user],
     }),
+
+    getMyNotifications: builder.query({
+      query: (params) => ({
+        url: `/notifications/all-notifications`,
+        method: "GET",
+        params,
+      }),
+    }),
+
+    deleteMyNotification: builder.mutation({
+      query: (id) => ({
+        url: `/notifications/delete/${id}`,
+        method: "DELETE",
+      }),
+    }),
+
+    deleteManyNotifications: builder.mutation({
+      query: (ids) => ({
+        url: `/notifications/delete-all`,
+        method: "DELETE",
+        body: { ids },
+      }),
+    }),
   }),
 });
 
@@ -116,4 +139,7 @@ export const {
   useMyBidsQuery,
   useCreateOrderMutation,
   useGetMyOrdersQuery,
+  useGetMyNotificationsQuery,
+  useDeleteMyNotificationMutation,
+  useDeleteManyNotificationsMutation,
 } = userApi;
