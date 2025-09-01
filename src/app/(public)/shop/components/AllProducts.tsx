@@ -42,7 +42,7 @@ const AllProducts = ({
       className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4 xl:gap-6"
     >
       {isLoadingState
-        ? Array.from({ length: 6 }).map((_, idx) => (
+        ? Array.from({ length: 9 }).map((_, idx) => (
             <motion.div key={idx}>
               <SkeletonFishCard />
             </motion.div>
