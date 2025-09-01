@@ -79,6 +79,7 @@ export const baseApi = createApi({
     "bids",
     "seller",
     "advertise",
+    "payment",
   ],
   endpoints: () => ({}),
 });

@@ -35,7 +35,11 @@ const ActionButtons = ({ fishDetails }: IActionButtonsProps) => {
           quantity: 1,
           price: fishDetails?.pricingInfo?.price as number,
           stock: fishDetails?.pricingInfo?.quantity as number,
-          image: fishDetails?.image[0],
+          image: fishDetails?.image[0] as {
+            key: string;
+            url: string;
+            _id?: string;
+          },
           sellerName:
             `${fishDetails.sellerId.first_name} ${fishDetails.sellerId.last_name}` as string,
           style: fishDetails?.pricingInfo?.style as string,
@@ -43,6 +47,32 @@ const ActionButtons = ({ fishDetails }: IActionButtonsProps) => {
       );
       toast.success("Item added to cart successfully");
       router.push("/shopping/shopping-cart");
+    } catch (error) {
+      console.log("error______", error);
+    }
+  };
+  const handleAddToCart = async () => {
+    try {
+      dispatch(
+        addToCart({
+          userId: userData?.data?._id as string,
+          userEmail: userData?.data?.email as string,
+          fishId: fishDetails?._id as string,
+          sellerId: fishDetails?.sellerId._id as string,
+          quantity: 1,
+          price: fishDetails?.pricingInfo?.price as number,
+          stock: fishDetails?.pricingInfo?.quantity as number,
+          image: fishDetails?.image[0] as {
+            key: string;
+            url: string;
+            _id?: string;
+          },
+          sellerName:
+            `${fishDetails.sellerId.first_name} ${fishDetails.sellerId.last_name}` as string,
+          style: fishDetails?.pricingInfo?.style as string,
+        })
+      );
+      toast.success("Item added to cart successfully");
     } catch (error) {
       console.log("error______", error);
     }
@@ -105,7 +135,7 @@ const ActionButtons = ({ fishDetails }: IActionButtonsProps) => {
           </Button>
 
           <div
-            onClick={buyFishHandler}
+            onClick={handleAddToCart}
             style={{
               background: "rgba(77, 168, 218, 0.40)",
             }}

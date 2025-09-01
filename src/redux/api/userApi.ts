@@ -93,11 +93,28 @@ const userApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.orders, tagTypes.user],
     }),
 
+    checkout: builder.mutation({
+      query: (data) => ({
+        url: `/payment/checkout`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: [tagTypes.payment, tagTypes.user],
+    }),
+
     getMyOrders: builder.query({
       query: (params) => ({
         url: `/user/my-orders`,
         method: "GET",
         params,
+      }),
+      providesTags: [tagTypes.orders, tagTypes.user],
+    }),
+
+    getMyOrdersDetails: builder.query({
+      query: (id) => ({
+        url: `/user/my-order-details/${id}`,
+        method: "GET",
       }),
       providesTags: [tagTypes.orders, tagTypes.user],
     }),
@@ -108,6 +125,7 @@ const userApi = baseApi.injectEndpoints({
         method: "GET",
         params,
       }),
+      providesTags: [tagTypes.user],
     }),
 
     deleteMyNotification: builder.mutation({
@@ -115,6 +133,7 @@ const userApi = baseApi.injectEndpoints({
         url: `/notifications/delete/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: [tagTypes.user],
     }),
 
     deleteManyNotifications: builder.mutation({
@@ -123,6 +142,16 @@ const userApi = baseApi.injectEndpoints({
         method: "DELETE",
         body: { ids },
       }),
+      invalidatesTags: [tagTypes.user],
+    }),
+
+    notificationMarkAsRead: builder.mutation({
+      query: ({ data, id }) => ({
+        url: `/notifications/mark-as-read/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: [tagTypes.user],
     }),
 
     claimReport: builder.mutation({
@@ -131,7 +160,6 @@ const userApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      // invalidatesTags: [tagTypes.user, tagTypes.admin],
     }),
   }),
 });
@@ -148,8 +176,10 @@ export const {
   useMyBidsQuery,
   useCreateOrderMutation,
   useGetMyOrdersQuery,
+  useGetMyOrdersDetailsQuery,
   useGetMyNotificationsQuery,
   useDeleteMyNotificationMutation,
   useDeleteManyNotificationsMutation,
   useClaimReportMutation,
+  useNotificationMarkAsReadMutation,
 } = userApi;

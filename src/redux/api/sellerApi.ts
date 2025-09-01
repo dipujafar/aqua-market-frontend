@@ -45,6 +45,14 @@ const sellerApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.advertise, tagTypes.seller],
     }),
+
+    connectAccount: builder.mutation({
+      query: () => ({
+        url: "/stripe/connect",
+        method: "PATCH",
+      }),
+      invalidatesTags: [tagTypes.seller],
+    }),
   }),
 });
 
@@ -54,4 +62,5 @@ export const {
   useDeleteMyFishMutation,
   useGetMyFollowersQuery,
   useAddAdvertiseMutation,
+  useConnectAccountMutation,
 } = sellerApi;

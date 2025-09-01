@@ -39,7 +39,7 @@ const OrderListTable = () => {
 
   const { data: myOrders } = useGetMyOrdersQuery({ page, limit });
   const orders = myOrders?.data?.data;
-  // console.log("myOrders", myOrders?.data);
+  // console.log("myOrders", myOrders);
 
   return (
     <>
@@ -73,8 +73,8 @@ const OrderListTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orders?.map((data: IOrder) => (
-              <TableRow key={data?._id} className="hover:bg-transparent ">
+            {orders?.map((data: IOrder, idx: number) => (
+              <TableRow key={`${idx + 1}`} className="hover:bg-transparent ">
                 <TableCell className="font-medium min-w-fit">
                   <ViewOrderItem items={data?.items} />
                 </TableCell>
@@ -88,7 +88,11 @@ const OrderListTable = () => {
                 <TableCell>
                   $
                   {data?.totalPrice &&
-                    (data?.totalPrice * data?.items?.length * (1 - 10 / 100)).toFixed(2)}
+                    (
+                      data?.totalPrice *
+                      data?.items?.length *
+                      (1 - 10 / 100)
+                    ).toFixed(2)}
                 </TableCell>
                 <TableCell
                   style={{ color: findStatusColor(data?.status as string) }}
@@ -109,7 +113,7 @@ const OrderListTable = () => {
                 </TableCell>
                 <TableCell className="text-center text-sm ">
                   <Link
-                    href={`/user/order-list/1`}
+                    href={`/user/order-list/${data?._id}`}
                     className="flex items-center justify-center"
                   >
                     <Eye size={20} />

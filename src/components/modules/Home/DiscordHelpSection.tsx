@@ -2,13 +2,11 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
-import { useRouter } from "next/navigation";
 import Container from "@/components/shared/Container";
 import { motion } from "framer-motion";
 import { fadeUpWithBlurVariants } from "@/animation/motionVariants";
 
 const DiscordHelpSection = () => {
-  const router = useRouter();
   return (
     <Container>
       <section
@@ -48,11 +46,14 @@ const DiscordHelpSection = () => {
               variants={fadeUpWithBlurVariants()}
               className="pt-4"
             >
-              <Button
-                className="bg-white text-black hover:bg-blue-50 hover:text-black/80 font-semibold px-8  text-base md:text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer py-5 xl:py-6 border-b-2 border-r-2 border-black rounded-none group"
-                onClick={() => router.push("https://discord.com")}
-              >
-                JOIN ON DISCORD
+              <Button className="bg-white text-black hover:bg-blue-50 hover:text-black/80 font-semibold px-8  text-base md:text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer py-5 xl:py-6 border-b-2 border-r-2 border-black rounded-none group">
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://discord.gg/He6t3Ecc"
+                >
+                  JOIN ON DISCORD
+                </a>
                 <AnimatedArrow />
               </Button>
             </motion.div>

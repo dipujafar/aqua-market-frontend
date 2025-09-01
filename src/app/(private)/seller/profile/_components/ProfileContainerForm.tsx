@@ -113,15 +113,15 @@ const ProfileContainerForm = () => {
         },
         store_name: userInfo.store_name ?? "",
         about: userInfo.about ?? "",
-        profile_image: userInfo.profile_image ?? null,
-        banner: userInfo.banner ?? null,
+        profile_image: userInfo.profile_image?.url ?? null,
+        banner: userInfo?.banner?.url ?? null,
       });
 
       if (typeof userInfo.profile_image === "string") {
-        setImagePreview(userInfo.profile_image);
+        setImagePreview(userInfo.profile_image.url);
       }
       if (typeof userInfo.banner === "string") {
-        setCoverImagePreview(userInfo.banner);
+        setCoverImagePreview(userInfo.banner.url);
       }
     }
   }, [userInfo, reset]);

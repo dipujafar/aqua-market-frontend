@@ -1,3 +1,5 @@
+"use client";
+
 import CommonButton from "@/components/ui/common-button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { IOrderItem } from "@/types/order.types";
@@ -8,6 +10,7 @@ interface ViewOrderItemProps {
 }
 
 const ViewOrderItem = ({ items }: ViewOrderItemProps) => {
+
   return (
     <>
       <Dialog>
@@ -19,15 +22,15 @@ const ViewOrderItem = ({ items }: ViewOrderItemProps) => {
         <DialogContent className="border-none shadow-none bg-[#2A475A]">
           <div className="space-y-4">
             {items?.length > 0 ? (
-              items.map((item: IOrderItem) => (
+              items.map((item: IOrderItem, idx: number) => (
                 <div
-                  key={item._id}
+                  key={`${idx + 1}`}
                   className="flex text-white items-center gap-4 rounded-2xl border-[#2D1445] p-4 shadow-sm hover:shadow-md transition bg-[#2D1445]/5 "
                 >
                   {/* Product Image */}
                   <div className="relative h-20 w-20 flex-shrink-0">
                     <Image
-                      src={item.image}
+                      src={item?.image?.url}
                       alt={item.fishId?.fishName || "Fish"}
                       fill
                       className="rounded-xl object-cover"

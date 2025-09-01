@@ -44,14 +44,19 @@ const persistConfig = {
   key: "auth",
   storage,
 };
+const cartPersistConfig = {
+  key: "cart",
+  storage,
+};
 
 // ✅ Only wrap auth reducer with persistReducer
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
 
 export const rootReducer = combineReducers({
   [baseApi.reducerPath]: baseApi.reducer,
   auth: persistedAuthReducer,
-  cart: cartReducer,
+  cart: persistedCartReducer,
 });
 
 export const store = configureStore({

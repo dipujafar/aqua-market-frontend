@@ -24,7 +24,7 @@ const ShoppingCartTable = () => {
   const dispatch = useAppDispatch();
   const cartData = useAppSelector((state) => state.cart);
   const cartProducts = cartData?.items || [];
-  // console.log("cartProducts", );
+  // console.log("cartProducts", cartData);
 
   const [quantities, setQuantities] = useState<number[]>([]);
 
@@ -66,7 +66,9 @@ const ShoppingCartTable = () => {
                   </div>
                   <div className=" flex flex-col lg:flex-row items-center md:gap-3 gap-1  min-w-fit">
                     <Image
-                      src={data?.image ? data?.image : "/no-image.jpg"}
+                      src={
+                        data?.image?.url ? data?.image?.url : "/no-image.jpg"
+                      }
                       alt="product_image"
                       width={950}
                       height={700}

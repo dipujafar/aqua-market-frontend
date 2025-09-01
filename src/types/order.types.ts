@@ -3,7 +3,7 @@ import { IFish, IUser } from "./fish.type";
 export interface IOrderItem {
   _id?: string;
   fishId: IFish;
-  image: string;
+  image: any;
   price: number;
   quantity: number;
   sellerName: string;

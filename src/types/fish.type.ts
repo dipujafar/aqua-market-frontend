@@ -102,12 +102,16 @@ export interface IUser {
   shippingAddress?: IShippingAddress;
 }
 
+interface IImage {
+  url: string;
+  key: string;
+}
 export interface IFish {
   _id?: string;
   id?: string;
   fishName: string;
   commonName: string;
-  image: string[];
+  image: IImage[];
   video?: string[];
   size: string;
   careLevel: string;

@@ -187,7 +187,7 @@ export default function CountdownTimer({
         </div>
         <div className="xl:w-1/3">
           <Image
-            src={fish?.image[0]}
+            src={fish?.image[0]?.url}
             alt="product-data"
             width={1200}
             height={1200}

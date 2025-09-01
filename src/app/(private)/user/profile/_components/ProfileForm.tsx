@@ -42,11 +42,18 @@ const formSchema = z.object({
   last_name: z
     .string({ required_error: "Last Name is required" })
     .min(1, { message: "Last Name is required" }),
-  profile_image: z
-    .any()
-    .refine((file) => file instanceof File || file === null, {
-      message: "Must be a file",
-    }),
+    profile_image: z
+      .object({
+        url: z.string().url('Invalid URL format'),
+        key: z.string(),
+      })
+      .optional(),
+    banner: z
+      .object({
+        url: z.string().url('Invalid URL format'),
+        key: z.string(),
+      })
+      .optional(),
 
   user_name: z
     .string({ required_error: "User Name is required" })
@@ -85,7 +92,10 @@ const ProfileForm = () => {
         city: "",
         state: "",
       },
-      profile_image: "",
+      profile_image: {
+        url: "",
+        key: "",
+      },
     },
   });
   const { setValue, control, reset } = form;
@@ -106,12 +116,12 @@ const ProfileForm = () => {
           city: userInfo.address?.city ?? "",
           state: userInfo.address?.state ?? "",
         },
-        profile_image: userInfo.profile_image ?? "",
+        profile_image: userInfo?.profile_image?.url ?? "",
       });
 
       // ✅ if user already has an profile_image, set preview
-      if (userInfo.profile_image) {
-        setImagePreview(userInfo.profile_image);
+      if (userInfo?.profile_image?.url) {
+        setImagePreview(userInfo?.profile_image?.url);
       }
     }
   }, [userInfo, reset]);
@@ -127,7 +137,7 @@ const ProfileForm = () => {
 
     const formData = new FormData();
     formData.append("data", JSON.stringify(fieldValues));
-    formData.append("profile_image", data.profile_image);
+    // formData.append("profile_image", data.profile_image);
 
     try {
       const res = await updateProfile(formData).unwrap();

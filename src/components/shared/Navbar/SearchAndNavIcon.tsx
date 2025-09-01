@@ -1,5 +1,6 @@
 "use client";
-import { Bell, Search, ShoppingCart } from "lucide-react";
+
+import { Bell, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -9,13 +10,27 @@ import {
 import { useAppSelector } from "@/redux/hooks";
 import NavSearch from "./NavSearch";
 import { useGetMyNotificationsQuery } from "@/redux/api/userApi";
+import { useEffect, useState } from "react";
+import { UINotification } from "@/types/notification.type";
 
 const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
+  const [limit, setLimit] = useState<number>(999);
   const user: any = useAppSelector((state) => state.auth.user);
-  // console.log("isLoggedIn", user);
-
   const cartData = useAppSelector((state) => state.cart);
-  const { data: myNotifications } = useGetMyNotificationsQuery(undefined);
+  const { data: myNotifications } = useGetMyNotificationsQuery({ limit });
+
+  useEffect(() => {
+    if (
+      myNotifications?.data?.meta?.total &&
+      myNotifications?.data?.meta?.total > limit
+    ) {
+      setLimit(myNotifications.data.meta.total);
+    }
+  }, [myNotifications, limit]);
+
+  const newNotifications = myNotifications?.data?.data?.filter(
+    (notification: UINotification) => !notification.isRead
+  );
 
   return (
     <motion.div
@@ -39,7 +54,13 @@ const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
 
         {user?.role === "user" && (
           <motion.li variants={childrenVariants} className="relative">
-            <Link href="/shopping/shopping-cart">
+            <Link
+              href={`${
+                cartData?.totalQuantity > 0
+                  ? "/shopping/shopping-cart"
+                  : "/shop"
+              }`}
+            >
               <ShoppingCart size={20} color={color} />
               {cartData?.totalQuantity > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-semibold rounded-full px-1">
@@ -58,9 +79,9 @@ const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
                 color={color}
                 className="hover:bg-white/20 rounded-full"
               />
-              {myNotifications?.data?.meta?.total > 0 && (
+              {newNotifications?.length > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-semibold rounded-full px-1">
-                  {myNotifications?.data?.meta?.total}
+                  {newNotifications?.length || 0}
                 </span>
               )}
             </Link>

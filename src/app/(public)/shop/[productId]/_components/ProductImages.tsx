@@ -4,13 +4,36 @@ import ProductImagesCarousel from "@/components/shared/carousel/ProductImagesCar
 
 const OPTIONS: EmblaOptionsType = {};
 
-const ProductImages = ({ images }: { images: string[] }) => {
+interface MediaItem {
+  _id?: string;
+  url: string;
+  key: string;
+  type?: "image" | "video";
+}
+
+interface ProductImagesProps {
+  images?: MediaItem[];
+  videos?: MediaItem[];
+}
+
+const ProductImages = ({ videos = [], images = [] }: ProductImagesProps) => {
+  // mark type and merge
+  const medias: MediaItem[] = [
+    ...images.map((img) => ({ ...img, type: "image" as const })),
+    ...videos.map((vid) => ({ ...vid, type: "video" as const })),
+  ];
+
+  if (!medias.length) {
+    return (
+      <div className="w-full h-[250px] flex items-center justify-center text-gray-400">
+        No media available
+      </div>
+    );
+  }
+
   return (
     <div>
-      <ProductImagesCarousel
-        slides={images}
-        options={OPTIONS}
-      ></ProductImagesCarousel>
+      <ProductImagesCarousel slides={medias} options={OPTIONS} />
     </div>
   );
 };

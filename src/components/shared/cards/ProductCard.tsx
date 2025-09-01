@@ -11,25 +11,25 @@ import { productCardButtonColor } from "@/utils/productCardButtonColor";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import BidNowModal from "./BidNowModal";
 import { getTimeRemaining } from "@/utils/getTimeRemaining";
+import { useRef } from "react";
 
 const ProductCard = ({ data }: { data: any }) => {
   // console.log("data", data);
 
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const dispatch = useAppDispatch();
   const { data: userData } = useGetUserProfileQuery(undefined);
-  const router = useRouter();
 
-  const image = data?.image[0];
-  const sellerProfileImage = data?.sellerId?.profile_image;
+  const image = data?.image[0]?.url;
+  const sellerProfileImage = data?.sellerId?.profile_image?.url;
   const AvailabilityDate = data?.pricingInfo?.date
     ? moment(data.pricingInfo.date).format("MMM Do YY")
     : "";
 
-  const buyFishHandler = async () => {
+  const handleAddToCart = async () => {
     try {
       dispatch(
         addToCart({
@@ -40,14 +40,13 @@ const ProductCard = ({ data }: { data: any }) => {
           quantity: 1,
           price: data?.pricingInfo?.price as number,
           stock: data?.pricingInfo?.quantity as number,
-          image: data?.image[0],
+          image: data?.image[0] as { key: string; url: string; _id?: string },
           sellerName:
             `${data.sellerId.first_name} ${data.sellerId.last_name}` as string,
           style: data?.pricingInfo?.style as string,
         })
       );
       toast.success("Item added to cart successfully");
-      router.push("/shopping/shopping-cart");
     } catch (error) {
       console.log("error______", error);
     }
@@ -57,6 +56,19 @@ const ProductCard = ({ data }: { data: any }) => {
   const fDate = data?.pricingInfo?.date?.slice(0, 10);
   const timeRemaining = getTimeRemaining(fDate, fTime);
   // console.log('timeRemaining', timeRemaining);
+
+  // Video playback controls
+  const handleMouseEnter = () => {
+    if (videoRef.current) {
+      videoRef.current.play();
+    }
+  };
+  const handleMouseLeave = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0; // reset to start
+    }
+  };
 
   return (
     <Card
@@ -68,13 +80,41 @@ const ProductCard = ({ data }: { data: any }) => {
     >
       <CardContent className="px-4 space-y-4 text-white">
         <div className="relative group">
-          <Image
-            src={image ? image : "/no-image.jpg"}
-            alt="product-data"
-            width={1200}
-            height={1200}
-            className="rounded w-full h-[250px] object-cover"
-          ></Image>
+          <div
+            className="relative w-full h-[250px] rounded overflow-hidden"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            {data?.video?.length > 0 ? (
+              <>
+                {/* Thumbnail as background */}
+                <Image
+                  src={image ? image : "/no-image.jpg"}
+                  alt="product-thumbnail"
+                  width={1200}
+                  height={1200}
+                  className="absolute inset-0 w-full h-full object-cover rounded"
+                />
+                {/* Video overlay */}
+                <video
+                  ref={videoRef}
+                  src={data.video[0].url}
+                  muted
+                  playsInline
+                  preload="metadata"
+                  className="absolute inset-0 w-full h-full object-cover rounded"
+                />
+              </>
+            ) : (
+              <Image
+                src={image ? image : "/no-image.jpg"}
+                alt="product-data"
+                width={1200}
+                height={1200}
+                className="rounded w-full h-[250px] object-cover"
+              />
+            )}
+          </div>
           {data.pricingType == "preOrder" && (
             <div className="p-2 bg-primary-blue absolute top-0 left-0 text-sm max-w-[130px] rounded-tl">
               <div className=" flex flex-col">
@@ -121,7 +161,7 @@ const ProductCard = ({ data }: { data: any }) => {
           {/* =============== add to card button ====================== */}
           {data?.pricingType !== "forBids" && (
             <div
-              onClick={buyFishHandler}
+              onClick={handleAddToCart}
               className="absolute top-1 right-1 size-11 flex justify-center items-center rounded-full bg-[rgba(156,_156,_156,_0.40)] hover:bg-white/40 duration-300 cursor-pointer"
             >
               <ShoppingCartIcon />

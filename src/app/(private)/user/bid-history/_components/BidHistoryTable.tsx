@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { Filter, ChevronDown } from "lucide-react";
+import { Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -20,13 +19,12 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import PaginationSection from "@/components/shared/PaginationSection";
 import { useMyBidsQuery } from "@/redux/api/userApi";
 
 export default function BidHistory() {
   const { data: myBids } = useMyBidsQuery(undefined);
   const bids = myBids?.data?.bids;
-  // console.log("myBids___", bids);
+  // console.log("myBids___", myBids);
 
   return (
     <div className="w-full">
@@ -219,7 +217,6 @@ export default function BidHistory() {
           </TableBody>
         </Table>
       </div>
-      <PaginationSection className="mt-5" />
     </div>
   );
 }

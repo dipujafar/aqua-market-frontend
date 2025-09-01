@@ -67,11 +67,19 @@ const OrderSummaryCard = () => {
       </CardContent>
       <CardFooter>
         {pathName !== "/shopping/shopping-address" && (
-          <Link href={"/shopping/shopping-address"} className="w-full">
-            <CommonButton className="w-full border-white">
-              Proceed to checkout
-            </CommonButton>
-          </Link>
+          <>
+            {cartData?.totalQuantity === 0 ? (
+              <CommonButton disabled className="w-full border-white">
+                Proceed to checkout
+              </CommonButton>
+            ) : (
+              <Link href="/shopping/shopping-address" className="w-full">
+                <CommonButton className="w-full border-white">
+                  Proceed to checkout
+                </CommonButton>
+              </Link>
+            )}
+          </>
         )}
       </CardFooter>
     </Card>

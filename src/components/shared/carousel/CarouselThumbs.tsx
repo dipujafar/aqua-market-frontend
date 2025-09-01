@@ -2,34 +2,52 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import React from "react";
 
+interface MediaItem {
+  url: string;
+  key: string;
+  type?: "image" | "video";
+}
+
 type PropType = {
   selected: boolean;
   index: number;
   onClick: () => void;
-  data: any;
+  data: MediaItem;
 };
 
-export const CarouselThumbs: React.FC<PropType> = (props) => {
-  const { selected, onClick, data } = props;
-
+export const CarouselThumbs: React.FC<PropType> = ({
+  selected,
+  onClick,
+  data,
+}) => {
   return (
-    <div className={"embla-thumbs__slide"}>
+    <div className="embla-thumbs__slide p-1">
       <button
-        onMouseEnter={onClick}
+        onClick={onClick}
         type="button"
         className={cn(
-          "embla-thumbs__slide__number w-full p-1 rounded",
-          selected && "hidden"
+          "w-full h-full rounded border-2 overflow-hidden transition-all",
+          selected
+            ? "border-blue-500 scale-105"
+            : "border-transparent hover:scale-105"
         )}
       >
-        {/* {index + 1} */}
-        <Image
-          src={data}
-          width={500}
-          height={500}
-          alt="thumbnail"
-          className={cn("2xl:h-[180px] md:h-[110px] h-[70px]  object-cover origin-center w-full rounded")}
-        ></Image>
+        {data.type === "video" ? (
+          <video
+            src={data.url}
+            muted
+            playsInline
+            className="w-full h-[80px] object-cover"
+          />
+        ) : (
+          <Image
+            src={data.url}
+            width={100}
+            height={80}
+            alt="thumbnail"
+            className="w-full h-[80px] object-cover"
+          />
+        )}
       </button>
     </div>
   );

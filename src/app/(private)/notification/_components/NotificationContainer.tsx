@@ -23,10 +23,13 @@ import {
   useDeleteManyNotificationsMutation,
   useDeleteMyNotificationMutation,
   useGetMyNotificationsQuery,
+  useNotificationMarkAsReadMutation,
 } from "@/redux/api/userApi";
 import { UINotification } from "@/types/notification.type";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/utils/getErrorMessage";
+import PaginationSection from "@/components/shared/PaginationSection";
+import { useSearchParams } from "next/navigation";
 
 // -------------------------------------------------------------
 // Utilities
@@ -56,10 +59,20 @@ function coalesceLink(n: UINotification) {
 // Component
 // -------------------------------------------------------------
 export default function NotificationContainer() {
-  const { data, isLoading } = useGetMyNotificationsQuery(undefined);
+  const searchParams = useSearchParams();
+  const limit = searchParams.get("limit") || 10;
+  const page = searchParams.get("page") || 1;
+
+  const { data, isLoading } = useGetMyNotificationsQuery({
+    page,
+    limit,
+  });
+  // console.log("data", data);
+
   const [deleteNotification, { isLoading: isDeleting }] =
     useDeleteMyNotificationMutation();
   const [deleteManyNotification] = useDeleteManyNotificationsMutation();
+  const [markAsRead] = useNotificationMarkAsReadMutation();
 
   const apiItems: UINotification[] = React.useMemo(() => {
     const raw = data?.data?.data ?? [];
@@ -135,18 +148,23 @@ export default function NotificationContainer() {
     }
   };
 
-  const handleMarkReadToggle = async (id: string, isRead?: boolean) => {
-    // TODO: call your mark-read mutation here, e.g. await markRead({ id, isRead: !isRead })
-    setItems((list) =>
-      list.map((n) => (n._id === id ? { ...n, isRead: !isRead } : n))
-    );
+  const handleMarkReadToggle = async (id: string) => {
+    try {
+      const res = await markAsRead({ id, isRead: true }).unwrap();
+      if (res.success) {
+        toast.success(res.message);
+      }
+    } catch (error) {
+      console.error("Failed to mark notification as read:", error);
+      toast.error(getErrorMessage(error));
+    }
   };
 
   // -----------------------------------------------------------
   // Render
   // -----------------------------------------------------------
   return (
-    <div className="space-y-4">
+    <div id="notification" className="space-y-4">
       {/* Header / Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
@@ -160,7 +178,7 @@ export default function NotificationContainer() {
               Notifications
             </h2>
             <p className="text-xs text-muted-foreground">
-              {items.length} total
+              {data?.data?.meta?.total} total
             </p>
           </div>
         </div>
@@ -172,7 +190,9 @@ export default function NotificationContainer() {
               checked={allChecked}
               onCheckedChange={toggleSelectAll}
               className={
-                someChecked ? "data-[state=indeterminate]:opacity-100 cursor-pointer" : " cursor-pointer"
+                someChecked
+                  ? "data-[state=indeterminate]:opacity-100 cursor-pointer"
+                  : " cursor-pointer"
               }
               aria-label="Select all notifications"
             />
@@ -301,9 +321,7 @@ export default function NotificationContainer() {
                               className="min-w-44"
                             >
                               <DropdownMenuItem
-                                onClick={() =>
-                                  handleMarkReadToggle(n._id, n.isRead)
-                                }
+                                onClick={() => handleMarkReadToggle(n._id)}
                               >
                                 <CheckCircle2 className="mr-2 size-4" />
                                 {n.isRead ? "Mark as unread" : "Mark as read"}
@@ -338,6 +356,11 @@ export default function NotificationContainer() {
           })
         )}
       </div>
+      <PaginationSection
+        id="notification"
+        setName="page"
+        totalItems={data?.data?.meta?.total}
+      />
     </div>
   );
 }

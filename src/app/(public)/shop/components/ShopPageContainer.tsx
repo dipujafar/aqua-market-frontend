@@ -56,7 +56,7 @@ const ShopPageContainer = () => {
     query["maxDiscount"] = discountRange[1];
   }
 
-  const { data: fishData } = useGetAllFishQuery(query);
+  const { data: fishData, isLoading, isFetching } = useGetAllFishQuery(query);
   // console.log("fishData", fishData);
 
   // 🔹 Filtered data logic (no useMemo)
@@ -156,7 +156,7 @@ const ShopPageContainer = () => {
           {/* =============================== categories ========================== */}
           <div className="flex justify-between items-center xl:mb-8 mb-4 ">
             <div></div>
-            <div className="lg:hidden block  ">
+            <div className="lg:hidden block">
               <SmallDeviceFilter
                 data={collectionTypes}
                 selectedCategory={selectedCategory}
@@ -166,7 +166,11 @@ const ShopPageContainer = () => {
             </div>
           </div>
           {/* ========================= all products ========================== */}
-          <AllProducts fishData={filteredProducts}></AllProducts>
+          <AllProducts
+            fishData={filteredProducts}
+            isLoading={isLoading}
+            isFetching={isFetching}
+          />
         </div>
       </div>
       {/* Pagination */}

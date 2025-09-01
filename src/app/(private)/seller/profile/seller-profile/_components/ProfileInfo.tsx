@@ -6,21 +6,41 @@ import React from "react";
 import SellerInfo from "./SellerInfo";
 import CommonButton from "@/components/ui/common-button";
 import Link from "next/link";
-import { useGetMyFollowersQuery } from "@/redux/api/sellerApi";
+import {
+  useConnectAccountMutation,
+  useGetMyFollowersQuery,
+} from "@/redux/api/sellerApi";
 import { useGetUserProfileQuery } from "@/redux/api/userProfileApi";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 const ProfileInfo = () => {
+  const [connectAccount, { isLoading }] = useConnectAccountMutation();
   const { data: user } = useGetUserProfileQuery(undefined);
-  // console.log("user", user?.data);
 
   const { data: followers } = useGetMyFollowersQuery(user?.data?._id);
   // console.log("followers", followers?.data?.meta?.total);
 
+  const handleConnectAccount = async () => {
+    try {
+      const res = await connectAccount({}).unwrap();
+      // console.log("res___", res);
+      if (res.success) {
+        setTimeout(() => {
+          window.location.href = res.data && res.data;
+        }, 1000);
+      }
+    } catch (error) {
+      console.log("error", error);
+      toast.error(getErrorMessage(error));
+    }
+  };
+
   return (
     <div className="relative">
       <Image
-        src={user?.data?.profile_image}
-        alt="profile"
+        src={user?.data?.banner?.url || "/seller_profile.png"}
+        alt="Banner"
         width={1900}
         height={1900}
         className="max-h-[220px] min-h-[120px] object-cover w-full rounded-lg"
@@ -35,16 +55,28 @@ const ProfileInfo = () => {
           className="relative lg:w-1/3 pt-4 px-3 rounded-lg"
         >
           <CustomAvatar
-            img={user?.data?.profile_image || "/seller_profile.png"}
+            img={user?.data?.profile_image?.url || "/seller_profile.png"}
             name="Anita Alice"
-            className=" xl:size-48 md:size-36 size-28 md:top-[-100px] top-[-80px] mx-auto"
+            className=" xl:size-48 md:size-36 size-28 md:top-[-100px] top-[-80px] mx-auto object-cover"
           ></CustomAvatar>
           <div className="relative md:top-[-90px] top-[-80px]">
-            <Link href={"/seller/profile"}>
-              <CommonButton className="w-full border-white mb-2">
-                Edit Profile
-              </CommonButton>
-            </Link>
+            <div className="flex items-center justify-between gap-3">
+              <Link href={"/seller/profile"} className="w-full">
+                <CommonButton className="w-full border-white mb-2">
+                  Edit Profile
+                </CommonButton>
+              </Link>
+              {!user?.data?.stripeAccountId && (
+                <div className="w-full">
+                  <CommonButton
+                    handlerFunction={handleConnectAccount}
+                    className="w-full border-white mb-2"
+                  >
+                    {isLoading ? "Connecting..." : "Connect Stripe"}
+                  </CommonButton>
+                </div>
+              )}
+            </div>
             <div className="flex justify-between bg-[#ffffff33] px-2 py-3 border-b border-white">
               <h1>Name</h1>
               <p className=" font-semibold">

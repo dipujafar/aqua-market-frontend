@@ -1,7 +1,12 @@
+"use client";
 import React from "react";
 import TrackingCard from "./TrackingCard";
+import { useGetMyOrdersDetailsQuery } from "@/redux/api/userApi";
 
-const DetailsAddress = () => {
+const DetailsAddress = ({ id }: { id: string }) => {
+  const { data: fishDetails } = useGetMyOrdersDetailsQuery(id);
+  console.log("fishDetails___", fishDetails);
+
   return (
     <TrackingCard
       orderId="#STG123456789"

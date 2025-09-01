@@ -9,6 +9,7 @@ export const tagTypes = {
   bids: "bids",
   seller: "seller",
   advertise: "advertise",
+  payment: "payment",
 } as const;
 
 export const tagTypesList = [
@@ -22,4 +23,5 @@ export const tagTypesList = [
   tagTypes.bids,
   tagTypes.seller,
   tagTypes.advertise,
+  tagTypes.payment,
 ];

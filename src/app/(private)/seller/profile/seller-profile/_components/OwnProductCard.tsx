@@ -40,7 +40,7 @@ const OwnProductCard = ({ data }: { data: IFish }) => {
       <CardContent className="px-4 space-y-4 text-white">
         <div className="relative group">
           <Image
-            src={data?.image[0]}
+            src={data?.image[0]?.url}
             alt="product-data"
             width={1200}
             height={1200}
