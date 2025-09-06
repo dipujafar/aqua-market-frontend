@@ -56,7 +56,7 @@ const Navbar = () => {
             {/* Logo Text */}
             <h1 className=" text-sm lg:text-2xl font-semibold lg:font-bold text-white tracking-widest">
               S H R I M P{" "}
-              <span className="text-gradient text-sm">E X C H A N G E</span>
+              <span className="text-gradient text-sm">S W A P</span>
             </h1>
           </Link>
         </div>

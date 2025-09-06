@@ -41,7 +41,7 @@ const Hero = () => {
         </motion.h2> */}
 
         <TextAnimation2
-          text="Shrimp Exchange"
+          text="Shrimp Swap"
           className="text-transparent bg-clip-text bg-gradient-to-b from-[#4DA8DA] to-[#78C0A8] xl:text-[140px] md:text-7xl text-[40px] font-extrabold"
           initialDelay={0.3}
         />

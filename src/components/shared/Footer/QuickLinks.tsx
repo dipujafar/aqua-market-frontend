@@ -39,7 +39,7 @@ const QuickLinks = () => {
 
   return (
     <div className="py-2 border-t border-t-white/80 w-full xl:mt-10 md:mt-6 mt-3 flex flex-col lg:flex-row justify-between text-primary-black/70 text-sm gap-y-1 md:items-center">
-      <p>Copyright © {isYear} Shrimp Exchange. All rights reserved.</p>
+      <p>Copyright © {isYear} Shrimp Swap. All rights reserved.</p>
       <div className="md:flex grid grid-cols-2 md:gap-x-4 gap-x-2 gap-y-1">
         {quickLink.map((link) => (
           <div

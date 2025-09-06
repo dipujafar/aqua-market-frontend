@@ -34,36 +34,36 @@ const playfair = Playfair({
 // ✅ SEO Friendly Metadata
 export const metadata: Metadata = {
   title: {
-    default: "Shrimp Exchange",
-    template: "%s | Shrimp Exchange",
+    default: "Shrimp Swap",
+    template: "%s | Shrimp Swap",
   },
   description:
-    "Shrimp Exchange is the official marketplace for premium shrimp trading. Buy, sell, and explore shrimp products globally.",
+    "Shrimp Swap is the official marketplace for premium shrimp trading. Buy, sell, and explore shrimp products globally.",
   keywords: [
-    "Shrimp Exchange",
+    "Shrimp Swap",
     "Shrimp Trading",
     "Seafood Marketplace",
     "Buy Shrimp Online",
     "Shrimp Export",
     "Shrimp Business",
   ],
-  authors: [{ name: "Shrimp Exchange Team", url: "https://shrimpswap.com" }],
-  creator: "Shrimp Exchange",
-  publisher: "Shrimp Exchange",
+  authors: [{ name: "Shrimp Swap Team", url: "https://shrimpswap.com" }],
+  creator: "Shrimp Swap",
+  publisher: "Shrimp Swap",
 
   // Open Graph (for Facebook, LinkedIn, etc.)
   openGraph: {
-    title: "Shrimp Exchange - Global Shrimp Marketplace",
+    title: "Shrimp Swap - Global Shrimp Marketplace",
     description:
-      "Join Shrimp Exchange, the world's trusted shrimp trading platform. Connect with buyers & sellers globally.",
+      "Join Shrimp Swap, the world's trusted shrimp trading platform. Connect with buyers & sellers globally.",
     url: "https://shrimpswap.com",
-    siteName: "Shrimp Exchange",
+    siteName: "Shrimp Swap",
     images: [
       {
         url: "https://shrimpswap.com/og-image.jpg", // replace with your OG image
         width: 1200,
         height: 630,
-        alt: "Shrimp Exchange",
+        alt: "Shrimp Swap",
       },
     ],
     locale: "en_US",
@@ -73,11 +73,11 @@ export const metadata: Metadata = {
   // Twitter Card
   twitter: {
     card: "summary_large_image",
-    title: "Shrimp Exchange - Global Shrimp Marketplace",
+    title: "Shrimp Swap - Global Shrimp Marketplace",
     description:
-      "Buy, sell & explore shrimp products worldwide with Shrimp Exchange.",
+      "Buy, sell & explore shrimp products worldwide with Shrimp Swap.",
     images: ["https://shrimpswap.com/og-image.jpg"], // replace with your image
-    creator: "@shrimpexchange", // your Twitter handle
+    creator: "@shrimpSwap", // your Twitter handle
   },
 
   // Robots / SEO Indexing
