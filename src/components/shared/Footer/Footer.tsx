@@ -21,7 +21,7 @@ const Footer = () => {
           className=""
         ></Image>
         <p className="md:text-center lg:text-xl text-white/90 ">
-          At aquaMarket, discover a thriving community where aquarium
+          At Shrimp Exchange, discover a thriving community where aquarium
           enthusiasts buy and sell fish with ease. Whether you're shopping,
           selling, or joining live bidding, every interaction supports
           responsible fishkeeping. Dive into a vibrant marketplace designed to

@@ -74,7 +74,7 @@ export default function ContactForm() {
             boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.10))",
           }}
           onSubmit={form.handleSubmit(onSubmit)} // <-- use your onSubmit function
-          className="space-y-4 md:p-6 p-3 rounded-lg"
+          className="space-y-6 lg:space-y-10 md:p-10 p-3 rounded-lg w-full max-w-4xl mx-auto"
         >
           <div className="grid grid-cols-2 gap-3">
             <FormField

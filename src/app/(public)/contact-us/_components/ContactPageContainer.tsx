@@ -23,7 +23,7 @@ const ContactPageContainer = () => {
           </div>
           <div className="flex items-center gap-x-1">
             <Mail size={20} />
-            <Link href="mailto:aquamarket@gmail.com">aquamarket@gmail.com</Link>
+            <Link href="mailto:aquamarket@gmail.com">cantedservices713@gmail.com</Link>
           </div>
           <div className="flex items-center gap-x-1">
             <Clock size={20} />
@@ -34,9 +34,9 @@ const ContactPageContainer = () => {
       <div>
         <ContactForm />
       </div>
-      <div>
+      {/* <div>
         <LocationMap></LocationMap>
-      </div>
+      </div> */}
     </Container>
   );
 };

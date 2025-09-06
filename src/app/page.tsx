@@ -5,8 +5,8 @@ import Hero from "@/components/modules/Home/Hero";
 // import OfferCarousel from "@/components/modules/Home/OfferCarousel";
 
 export const metadata = {
-  title: "Home | AquaMarket",
-  description: "Enjoy your shopping with AquaMarket!",
+  title: "Home | Shrimp Exchange",
+  description: "Enjoy your shopping with Shrimp Exchange!",
 };
 
 export default function Home() {
