@@ -2,7 +2,7 @@ import AquaticTreasuresSection from "@/components/modules/Home/AquaticTreasuresS
 import DiscordHelpSection from "@/components/modules/Home/DiscordHelpSection";
 
 import Hero from "@/components/modules/Home/Hero";
-import OfferCarousel from "@/components/modules/Home/OfferCarousel";
+// import OfferCarousel from "@/components/modules/Home/OfferCarousel";
 
 export const metadata = {
   title: "Home | AquaMarket",
@@ -15,8 +15,8 @@ export default function Home() {
       <Hero></Hero>
       <hr className="border-t-2 border-t-white/10" />
       <AquaticTreasuresSection></AquaticTreasuresSection>
-      <hr className="border-t-2 border-t-white/10" />
-      <OfferCarousel />
+      {/* <hr className="border-t-2 border-t-white/10" /> */}
+      {/* <OfferCarousel /> */}
       <hr className="border-t-2 border-t-white/10" />
       <DiscordHelpSection />
     </div>

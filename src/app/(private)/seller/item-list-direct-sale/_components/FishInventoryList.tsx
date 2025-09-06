@@ -143,7 +143,7 @@ export default function FishInventoryList() {
                 <TableCell className="flex items-center gap-3">
                   <div className="rounded-md overflow-hidden">
                     <Image
-                      src={item?.image[0]}
+                      src={item?.image[0]?.url}
                       alt={item.fishName}
                       width={1200}
                       height={1200}

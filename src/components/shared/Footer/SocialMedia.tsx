@@ -1,7 +1,7 @@
 "use client";
 import facebook from "@/assets/icons/facebook.png";
 import instagram from "@/assets/icons/instagram.png";
-import linkedin from "@/assets/icons/linkedin.png";
+import discord from "@/assets/icons/discord.png";
 import XIcon from "@/assets/icons/x-icon.png";
 import Image from "next/image";
 import Link from "next/link";
@@ -47,18 +47,30 @@ const SocialMedia = () => {
           className="flex justify-center items-center gap-x-8  w-full md:w-fit "
         >
           <motion.li variants={childrenVariants}>
-            <Link href={"https://www.facebook.com/"}>
-              <Image src={facebook} alt="facebook"></Image>
-            </Link>
-          </motion.li>
-          <motion.li variants={childrenVariants}>
-            <Link href={"https://www.instagram.com/"}>
-              <Image src={instagram} alt="instagram"></Image>
-            </Link>
-          </motion.li>
-          <motion.li variants={childrenVariants}>
-            <Link href={"https://www.x.com/"}>
+            <Link target="_blank" href={"https://www.facebook.com/shrimpswap"}>
               <Image
+                width={50}
+                height={50}
+                src={facebook}
+                alt="facebook"
+              ></Image>
+            </Link>
+          </motion.li>
+          <motion.li variants={childrenVariants}>
+            <Link target="_blank" href={"https://www.instagram.com/shrimpswap"}>
+              <Image
+                width={50}
+                height={50}
+                src={instagram}
+                alt="instagram"
+              ></Image>
+            </Link>
+          </motion.li>
+          <motion.li variants={childrenVariants}>
+            <Link target="_blank" href={"https://www.x.com/shrimpexchange"}>
+              <Image
+                width={50}
+                height={50}
                 src={XIcon}
                 alt="X"
                 className="xl:max-h-12 xl:max-w-12 lg:max-h-10 lg:max-w-10 md:max-h-8 md:max-w-8 max-h-12 max-w-12"
@@ -66,8 +78,8 @@ const SocialMedia = () => {
             </Link>
           </motion.li>
           <motion.li variants={childrenVariants}>
-            <Link href={"https://www.linkedin.com/"}>
-              <Image src={linkedin} alt="linkedin"></Image>
+            <Link target="_blank" href={"https://discord.gg/He6t3Ecc"}>
+              <Image width={50} height={50} src={discord} alt="Discord"></Image>
             </Link>
           </motion.li>
         </motion.ul>

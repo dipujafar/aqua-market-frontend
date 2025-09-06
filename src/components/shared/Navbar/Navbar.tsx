@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Container from "../Container";
-import logo from "@/assets/images/logo.png";
+import logo from "@/assets/logos/h-logo.png";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import SearchAndNavIcon from "./SearchAndNavIcon";
@@ -20,7 +20,7 @@ const Navbar = () => {
         {/* ======= Small Screen view ========== */}
         <SmallDeviceView></SmallDeviceView>
         {/* ======= category ========== */}
-        <div className="md:flex lg:gap-x-2 gap-x-1 hidden ">
+        <div className="md:flex lg:gap-x-2 gap-x-1 hidden">
           {navLinks.map((item) => (
             <div key={item.id} className="relative group">
               {/* Navigation Link */}
@@ -43,13 +43,26 @@ const Navbar = () => {
           ))}
         </div>
         {/* ======= logo ========== */}
-        <div className="flex justify-center items-center flex-1 ">
-          <Link href={"/"}>
-            <Image src={logo} alt="logo" className="min-w-[150px]"></Image>
+        <div className="flex justify-center items-center flex-1 relative">
+          <Link href={"/"} className="flex items-center space-x-2">
+            {/* Logo Image */}
+            <Image
+              src={logo}
+              alt="logo"
+              height={50}
+              width={80}
+              className="h-auto w-auto"
+            />
+            {/* Logo Text */}
+            <h1 className=" text-sm lg:text-2xl font-semibold lg:font-bold text-white tracking-widest">
+              S H R I M P{" "}
+              <span className="text-gradient text-sm">E X C H A N G E</span>
+            </h1>
           </Link>
         </div>
+
         {/* ======= search and nav icon  ========== */}
-        <div className="md:block hidden ">
+        <div className="md:block hidden">
           <SearchAndNavIcon></SearchAndNavIcon>
         </div>
       </Container>

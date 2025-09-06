@@ -12,51 +12,29 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import CommonButton from "@/components/ui/common-button";
-import { PhoneInput } from "@/components/ui/phone-input";
 import PageTopSection from "@/components/shared/PageTopSection";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Label } from "@/components/ui/label";
-import CountryStateCitySelector from "@/components/ui/country-state-city-selector";
 import { useCreateUserMutation } from "@/redux/api/authApi";
 import { useAppDispatch } from "@/redux/hooks";
 import { setUser } from "@/redux/features/authSlice";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 
-const addressSchema = z.object({
-  country: z.string().min(2).max(100).optional(),
-  streetAddress: z.string().min(2).max(100).optional(),
-  city: z.string().min(2).max(100).optional(),
-  state: z.string().min(2).max(100).optional(),
-  zipCode: z.string().min(2).max(100).optional(),
-});
-
 const formSchema = z.object({
-  first_name: z
-    .string({ required_error: "First Name is required" })
-    .min(1, { message: "First Name is required" }),
-  last_name: z
-    .string({ required_error: "Last Name is required" })
-    .min(1, { message: "Last Name is required" }),
   user_name: z
     .string({ required_error: "User Name is required" })
-    .min(1, { message: "User Name is required" }),
-  contact_number: z
-    .string({ required_error: "Phone Number is required" })
-    .min(1, { message: "Phone Number is required" }),
+    .min(3, { message: "User Name is required" }),
   email: z
     .string({ required_error: "Email is required" })
     .min(1, { message: "Email is required" })
     .email({ message: "Please enter a valid email address" }),
 
-  store_name: z.string().optional(),
-  address: addressSchema,
+  store_name: z.string(),
   password: z
     .string({ required_error: "Password is required" })
     .min(1, { message: "Password is required" })
@@ -87,10 +65,9 @@ const SignUpForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
-  const { register, setValue, control } = form;
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+    // console.log(data);
 
     try {
       const res = await createUser(data).unwrap();
@@ -159,47 +136,6 @@ const SignUpForm = () => {
               onSubmit={form.handleSubmit(onSubmit)}
               className="md:space-y-6 space-y-4"
             >
-              <div className=" flex flex-col md:flex-row md:items-center  gap-4 ">
-                <div className="flex-1">
-                  <FormField
-                    control={form.control}
-                    name="first_name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>First Name</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Enter Your First Name"
-                            {...field}
-                            className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5 "
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="flex-1">
-                  <FormField
-                    control={form.control}
-                    name="last_name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Last Name</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Enter Your Last Name"
-                            {...field}
-                            className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5 "
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-
               <FormField
                 control={form.control}
                 name="user_name"
@@ -236,33 +172,13 @@ const SignUpForm = () => {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="contact_number"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Contact Number</FormLabel>
-                    <FormControl>
-                      <PhoneInput
-                        // @ts-ignore
-                        value={field.value}
-                        onChange={field.onChange}
-                        international
-                        defaultCountry="US"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               {userRole === "Seller" && (
                 <FormField
                   control={form.control}
                   name="store_name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Store Name (Optional)</FormLabel>
+                      <FormLabel>Store Name</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Enter your store name"
@@ -275,16 +191,6 @@ const SignUpForm = () => {
                   )}
                 />
               )}
-
-              {/* Country, State, City Selector */}
-              <div className="grid w-full  items-center gap-1.5">
-                <Label>Location</Label>
-                <CountryStateCitySelector
-                  control={control}
-                  setValue={setValue}
-                  register={register}
-                />
-              </div>
 
               <FormField
                 control={form.control}

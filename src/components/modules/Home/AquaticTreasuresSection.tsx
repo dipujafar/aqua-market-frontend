@@ -33,6 +33,8 @@ const AquaticTreasuresSection = () => {
   } = useGetAllFishQuery(undefined);
   // console.log("fishData", fishData);
 
+  // const getKey = fishData?.data
+
   const isLoadingState = isLoading || isFetching;
   return (
     <Container className="lg:space-y-8 space-y-5">
@@ -42,17 +44,12 @@ const AquaticTreasuresSection = () => {
       ></SectionTitle>
       <motion.div
         variants={fadeUpVariants}
-        key={"cars"}
+        key={fishData?.data?.reduce((acc, fish) => acc + fish._id, "")}
         initial="initial"
         whileInView="animate"
         viewport={{ once: true }}
         className="grid xl:grid-cols-4 lg:grid-cols-3  md:grid-cols-2 gap-4 "
       >
-        {/* {fishData?.data?.slice(0, 8).map((product: IFish) => (
-          <motion.div variants={fadeUpVariants} key={product?._id}>
-            <ProductCard data={product}></ProductCard>
-          </motion.div>
-        ))} */}
         {isLoadingState
           ? Array.from({ length: fishData?.meta?.total }).map((_, idx) => (
               <motion.div key={idx}>

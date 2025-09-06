@@ -9,7 +9,6 @@ import { useAppSelector } from "@/redux/hooks";
 const TopInfo = () => {
   const userInfo = useAppSelector((state) => state.auth.user);
   const isUserLoggedIn = userInfo !== null;
-  
 
   const quickLink = isUserLoggedIn
     ? [
@@ -25,8 +24,11 @@ const TopInfo = () => {
   return (
     <header className="bg-linear-to-r from-[#533E69] to-[#3D4B68] text-white py-1">
       <Container className="flex md:justify-between justify-center items-center text-sm ">
-        <p className="text-lg ">
-          <span className="text-gradiant">Hello!!</span> Welcome to AquaMarket.
+        <p className="text-lg">
+          <span className="bg-gradient-to-r from-purple-500 via-blue-500 to-teal-500 bg-clip-text text-transparent">
+            Hello!!
+          </span>{" "}
+          Welcome to <a href="https://shrimpswap.com">@shrimpswap.com</a>
         </p>
 
         <div className="xl:space-x-4 space-x-2 hidden   md:flex">

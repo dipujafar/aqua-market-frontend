@@ -14,6 +14,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(to right, #6ee7b7, #3b82f6); /* Green to Blue */
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+}
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

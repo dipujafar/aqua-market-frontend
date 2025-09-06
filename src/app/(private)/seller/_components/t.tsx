@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
-import { Camera, Trash2, Video, X } from "lucide-react";
+import { Camera, X } from "lucide-react";
 import Image from "next/image";
 import {
   Form,
@@ -24,7 +24,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import ChoosePricingType from "./ChoosePricingType";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { useAddFishMutation } from "@/redux/api/sellerApi";
@@ -82,7 +81,6 @@ const pricingInfoSchema = z.object({
 
 const formSchema = z.object({
   image: z.array(z.instanceof(File)).min(1, "At least one image is required"),
-  video: z.instanceof(File).optional(),
   fishType: z.enum(fishTypes, {
     required_error: "Please select a fish type.",
   }),
@@ -106,8 +104,6 @@ const formSchema = z.object({
 export type FormSchemaType = z.infer<typeof formSchema>;
 
 export default function AddProductForm() {
-  const [videoPreview, setVideoPreview] = useState<string | null>(null);
-  const [videoFile, setVideoFile] = useState<File | null>(null);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const router = useRouter();
 
@@ -115,40 +111,18 @@ export default function AddProductForm() {
 
   const form = useForm<FormSchemaType>({});
 
-  // Handle video upload
-  const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      // Create preview URL for video
-      const previewUrl = URL.createObjectURL(file);
-      setVideoFile(file);
-      setVideoPreview(previewUrl); // Store the preview URL for the video
-    }
-  };
-
-  // Remove video
-  const removeVideo = () => {
-    setVideoPreview(null);
-    setVideoFile(null);
-  };
-
-  // Handle image upload
   const handleImageUpload = (files: FileList | null) => {
     if (!files) return;
 
     const fileArray = Array.from(files);
 
+    // Ensure currentImages is always an array
     const currentImages = form.getValues("image") || [];
-    const newImages = fileArray.map((file, index) => ({
-      url: URL.createObjectURL(file),
-      key: `image-${Date.now()}-${index}`,
-      file,
-    }));
+    const newImages = [...currentImages, ...fileArray];
 
-    // @ts-ignore
-    form.setValue("image", [...currentImages, ...newImages]);
+    form.setValue("image", newImages);
 
-    // Create preview URLs for image previews
+    // Create preview URLs
     const newPreviews = fileArray.map((file) => URL.createObjectURL(file));
     setImagePreviews((prev) => [...prev, ...newPreviews]);
   };
@@ -172,17 +146,14 @@ export default function AddProductForm() {
       quantity: Number(data.pricingInfo.quantity) || 0,
     };
 
-    // console.log("fishData", fishData);
+    console.log("fishData", fishData);
 
     const formData = new FormData();
-
     formData.append("data", JSON.stringify(fishData));
-    if (videoFile) {
-      formData.append("video", videoFile);
-    }
+
+    // Append all images
     data.image.forEach((img: File) => {
-      // @ts-ignore
-      formData.append("image", img?.file);
+      formData.append("image", img);
     });
 
     try {
@@ -262,66 +233,6 @@ export default function AddProductForm() {
                               </button>
                             </div>
                           ))}
-                        </div>
-                      )}
-                    </div>
-                  </FormControl>
-                  <FormMessage className="text-red-300" />
-                </FormItem>
-              )}
-            />
-
-            {/* Video Upload Section */}
-            <FormField
-              control={form.control}
-              name="video"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-white text-lg font-medium">
-                    Fish Video
-                  </FormLabel>
-                  <FormControl>
-                    <div className="space-y-4">
-                      {/* Video Upload Area */}
-                      <div
-                        style={{
-                          background:
-                            "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                        }}
-                        className="border-2 border-dashed border-gray-400 rounded-lg p-8 text-center bg-black/20 backdrop-blur-sm"
-                      >
-                        <input
-                          type="file"
-                          accept="video/*"
-                          onChange={handleVideoUpload}
-                          className="hidden"
-                          id="video-upload"
-                        />
-                        <label
-                          htmlFor="video-upload"
-                          className="cursor-pointer"
-                        >
-                          <Video className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                          <p className="text-gray-300">
-                            Click to upload a video
-                          </p>
-                        </label>
-                      </div>
-
-                      {/* Video Preview */}
-                      {videoPreview && (
-                        <div className="mt-4">
-                          <video width="300" controls className="rounded-lg">
-                            <source src={videoPreview} type="video/mp4" />
-                            Your browser does not support the video tag.
-                          </video>
-                          <button
-                            type="button"
-                            onClick={removeVideo}
-                            className="mt-2 text-red-500 cursor-pointer flex items-center gap-1"
-                          >
-                            <Trash2 className="w-4 h-4" /> Remove
-                          </button>
                         </div>
                       )}
                     </div>

@@ -15,6 +15,12 @@ import { toast } from "sonner";
 import BidNowModal from "./BidNowModal";
 import { getTimeRemaining } from "@/utils/getTimeRemaining";
 import { useRef } from "react";
+import { Megaphone } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const ProductCard = ({ data }: { data: any }) => {
   // console.log("data", data);
@@ -115,41 +121,63 @@ const ProductCard = ({ data }: { data: any }) => {
               />
             )}
           </div>
-          {data.pricingType == "preOrder" && (
-            <div className="p-2 bg-primary-blue absolute top-0 left-0 text-sm max-w-[130px] rounded-tl">
-              <div className=" flex flex-col">
-                <p>Availability :</p>
-                <p>{AvailabilityDate}</p>
+          <section className=" absolute top-0 w-full">
+            <div className=" flex flex-col space-y-10">
+              <div>
+                {data.pricingType == "preOrder" && (
+                  <div className="p-2 bg-primary-blue absolute top-0 left-0 text-sm max-w-[130px] rounded-tl">
+                    <div className=" flex flex-col">
+                      <p>Availability :</p>
+                      <p>{AvailabilityDate}</p>
+                    </div>
+                  </div>
+                )}
+
+                {data?.pricingType === "directSale" && (
+                  <div className="p-2 bg-primary-red absolute top-0 left-0 text-sm max-w-[130px] rounded-tl">
+                    <h6> {data?.pricingInfo?.discount} % off</h6>
+                  </div>
+                )}
+
+                {data?.pricingType === "forBids" && (
+                  <div className="absolute top-0 left-0 space-y-1">
+                    <div className="py-1 px-4 bg-primary-sky text-sm max-w-[130px] rounded-tl ">
+                      <h6 className="text-center flex flex-col italic justify-center text-sm font-bold">
+                        <span>{timeRemaining?.days || 0}d </span>
+                        <span>{timeRemaining?.hours || 0}h</span>
+                      </h6>
+                      <h6 className="text-white/80 text-xs">Left</h6>
+                    </div>
+                    <hr className="w-[85%] mx-auto border-gray-400" />
+                    {data?.bids && (
+                      <div className="py-1 px-4 bg-primary-sky text-sm max-w-[130px]  ">
+                        <h6 className="text-center text-lg font-bold">
+                          {data?.bids?.length}
+                        </h6>
+                        <h6 className="text-white/80 text-xs text-center">
+                          Bids
+                        </h6>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+              <div>
+                {data?.advertise?.isActive === true && (
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <div className="p-1 m-1 font-semibold text-lg bg-[#BB2425] rounded-full h-8 w-8 flex justify-center items-center text-center">
+                        <Megaphone className="mr-2 text-white w-6 h-6" />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Add to library</p>
+                    </TooltipContent>
+                  </Tooltip>
+                )}
               </div>
             </div>
-          )}
-
-          {data?.pricingType === "directSale" && (
-            <div className="p-2 bg-primary-red absolute top-0 left-0 text-sm max-w-[130px] rounded-tl">
-              <h6> {data?.pricingInfo?.discount} % off</h6>
-            </div>
-          )}
-
-          {data?.pricingType === "forBids" && (
-            <div className="absolute top-0 left-0 space-y-1">
-              <div className="py-1 px-4 bg-primary-sky text-sm max-w-[130px] rounded-tl ">
-                <h6 className="text-center flex flex-col italic justify-center text-sm font-bold">
-                  <span>{timeRemaining?.days || 0}d </span>
-                  <span>{timeRemaining?.hours || 0}h</span>
-                </h6>
-                <h6 className="text-white/80 text-xs">Left</h6>
-              </div>
-              <hr className="w-[85%] mx-auto border-gray-400" />
-              {data?.bids && (
-                <div className="py-1 px-4 bg-primary-sky text-sm max-w-[130px]  ">
-                  <h6 className="text-center text-lg font-bold">
-                    {data?.bids?.length}
-                  </h6>
-                  <h6 className="text-white/80 text-xs text-center">Bids</h6>
-                </div>
-              )}
-            </div>
-          )}
+          </section>
 
           <div
             className="absolute bottom-0 w-full p-2.5 group-hover:p-3  duration-500 flex justify-center items-center text-xl"
@@ -173,7 +201,7 @@ const ProductCard = ({ data }: { data: any }) => {
           {/* =============== seller profile ================== */}
           <Link
             className="flex justify-between items-center gap-x-2"
-            href="/seller-profile"
+            href={`/listings/${data?.sellerId?._id}`}
           >
             <Image
               src={sellerProfileImage ? sellerProfileImage : "/sellerImage.png"}

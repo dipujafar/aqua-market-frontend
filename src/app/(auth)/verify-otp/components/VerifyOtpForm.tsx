@@ -45,11 +45,11 @@ const VerifyOtpForm = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log("Submitted Data:", data);
+    // console.log("Submitted Data:", data);
 
     try {
       const res = await verifyOtp(data).unwrap();
-      console.log("res______", res);
+      // console.log("res______", res);
 
       if (res.data.accessToken) {
         toast.success("OTP verified successfully! Please login.");

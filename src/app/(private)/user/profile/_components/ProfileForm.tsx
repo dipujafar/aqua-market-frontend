@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import CommonButton from "@/components/ui/common-button";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { Label } from "@/components/ui/label";
@@ -42,19 +42,8 @@ const formSchema = z.object({
   last_name: z
     .string({ required_error: "Last Name is required" })
     .min(1, { message: "Last Name is required" }),
-    profile_image: z
-      .object({
-        url: z.string().url('Invalid URL format'),
-        key: z.string(),
-      })
-      .optional(),
-    banner: z
-      .object({
-        url: z.string().url('Invalid URL format'),
-        key: z.string(),
-      })
-      .optional(),
-
+  profile_image: z.any().optional(),
+  banner: z.any().optional(),
   user_name: z
     .string({ required_error: "User Name is required" })
     .min(1, { message: "User Name is required" }),
@@ -68,16 +57,15 @@ const formSchema = z.object({
   address: addressSchema,
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 const ProfileForm = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
-
-  const { data: userData } = useGetUserProfileQuery(undefined);
+  const { data: userData, refetch } = useGetUserProfileQuery(undefined);
   const userInfo = userData?.data || {};
-  // console.log("userInfo", userInfo);
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       first_name: "",
@@ -92,16 +80,14 @@ const ProfileForm = () => {
         city: "",
         state: "",
       },
-      profile_image: {
-        url: "",
-        key: "",
-      },
+      profile_image: null,
     },
   });
-  const { setValue, control, reset } = form;
 
-  // ✅ When userData loads, update form values
-  useEffect(() => {
+  const { setValue, control, reset, watch } = form;
+
+  // Memoized function to set form values from user data
+  const setFormValuesFromUserData = useCallback(() => {
     if (userInfo && Object.keys(userInfo).length > 0) {
       reset({
         first_name: userInfo.first_name ?? "",
@@ -116,34 +102,54 @@ const ProfileForm = () => {
           city: userInfo.address?.city ?? "",
           state: userInfo.address?.state ?? "",
         },
-        profile_image: userInfo?.profile_image?.url ?? "",
+        profile_image: null, // Keep as null, we'll handle preview separately
       });
 
-      // ✅ if user already has an profile_image, set preview
       if (userInfo?.profile_image?.url) {
-        setImagePreview(userInfo?.profile_image?.url);
+        setImagePreview(userInfo.profile_image.url);
       }
     }
   }, [userInfo, reset]);
 
+  // Initialize form with user data
+  useEffect(() => {
+    setFormValuesFromUserData();
+  }, [setFormValuesFromUserData]);
+
+  // Clean up object URLs
   useEffect(() => {
     return () => {
-      if (imagePreview) URL.revokeObjectURL(imagePreview);
+      if (imagePreview && imagePreview.startsWith("blob:")) {
+        URL.revokeObjectURL(imagePreview);
+      }
     };
   }, [imagePreview]);
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    const fieldValues = { ...data };
-
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(fieldValues));
-    // formData.append("profile_image", data.profile_image);
-
+  const onSubmit = async (data: FormValues) => {
     try {
+      const formData = new FormData();
+
+      // Separate files from other data
+      const { profile_image, banner, ...otherData } = data;
+
+      // Append JSON data
+      formData.append("data", JSON.stringify(otherData));
+
+      // Append files only if they are File objects (new uploads)
+      if (profile_image instanceof File) {
+        formData.append("profile_image", profile_image);
+      }
+
+      if (banner instanceof File) {
+        formData.append("banner", banner);
+      }
+
       const res = await updateProfile(formData).unwrap();
 
       if (res?.success) {
         toast.success(res?.message);
+        // Refetch user data to get updated information
+        refetch();
       }
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -177,7 +183,7 @@ const ProfileForm = () => {
                       <CustomAvatar
                         className="size-44 object-cover mx-auto"
                         img={imagePreview || "/profile_placeholder.png"}
-                        name={userInfo.first_name || "User"}
+                        name={userInfo.user_name || "User"}
                         fallbackClass="lg:text-5xl"
                       />
 
@@ -226,7 +232,7 @@ const ProfileForm = () => {
                 )}
               />
 
-              <div className=" flex flex-col md:flex-row md:items-center  gap-4 ">
+              <div className="flex flex-col md:flex-row md:items-center gap-4">
                 <div className="flex-1">
                   <FormField
                     control={form.control}
@@ -238,7 +244,7 @@ const ProfileForm = () => {
                           <Input
                             placeholder="Enter Your First Name"
                             {...field}
-                            className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5 "
+                            className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded md:py-5"
                           />
                         </FormControl>
                         <FormMessage />
@@ -257,7 +263,7 @@ const ProfileForm = () => {
                           <Input
                             placeholder="Enter Your Last Name"
                             {...field}
-                            className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5 "
+                            className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded md:py-5"
                           />
                         </FormControl>
                         <FormMessage />
@@ -277,7 +283,7 @@ const ProfileForm = () => {
                       <Input
                         placeholder="Enter Your User Name"
                         {...field}
-                        className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5 "
+                        className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded md:py-5"
                       />
                     </FormControl>
                     <FormMessage />
@@ -297,13 +303,14 @@ const ProfileForm = () => {
                         readOnly
                         placeholder="Enter Your Email"
                         {...field}
-                        className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5"
+                        className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded md:py-5 bg-muted"
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="contact_number"
@@ -325,7 +332,7 @@ const ProfileForm = () => {
               />
 
               {/* Country, State, City Selector */}
-              <div className="grid w-full  items-center gap-1.5">
+              <div className="grid w-full items-center gap-1.5">
                 <Label>Location</Label>
                 <CountryStateCitySelector
                   control={control}
@@ -350,7 +357,7 @@ const ProfileForm = () => {
                           <Input
                             placeholder="Enter Your Street Address"
                             {...field}
-                            className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5"
+                            className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded md:py-5"
                           />
                         </FormControl>
                         <FormMessage />
@@ -370,7 +377,7 @@ const ProfileForm = () => {
                           <Input
                             placeholder="Enter Your Zip Code"
                             {...field}
-                            className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5"
+                            className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded md:py-5"
                           />
                         </FormControl>
                         <FormMessage />
@@ -379,8 +386,13 @@ const ProfileForm = () => {
                   />
                 </div>
               </div>
-              <CommonButton className="w-full">
-                {isLoading ? "Updating..." : "Update"}
+
+              <CommonButton
+                type="submit"
+                className="w-full"
+                disabled={isLoading}
+              >
+                {isLoading ? "Updating..." : "Update Profile"}
               </CommonButton>
             </form>
           </Form>

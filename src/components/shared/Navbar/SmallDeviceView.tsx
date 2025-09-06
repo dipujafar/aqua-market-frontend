@@ -3,7 +3,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { TableOfContents } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "@/assets/images/logo.png";
+import logo from "@/assets/logos/blue.png";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -25,7 +25,7 @@ const SmallDeviceView = () => {
           <TableOfContents size={24} />
         </SheetTrigger>
         <SheetContent className="pt-10 px-3  bg-linear-to-r from-[#2E1345] to-[#0A2943] text-white border-none">
-          <Image src={logo} alt="logo" className="mx-auto"></Image>
+          <Image src={logo} alt="logo" height={180} width={180} className="mx-auto"></Image>
 
           <motion.div
             initial={{ opacity: 0, y: "-10%" }}
