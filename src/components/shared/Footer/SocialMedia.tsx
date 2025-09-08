@@ -1,5 +1,5 @@
 "use client";
-import facebook from "@/assets/icons/facebook.png";
+import reddit from "@/assets/icons/reddit.png";
 import instagram from "@/assets/icons/instagram.png";
 import discord from "@/assets/icons/discord.png";
 import XIcon from "@/assets/icons/x-icon.png";
@@ -47,12 +47,12 @@ const SocialMedia = () => {
           className="flex justify-center items-center gap-x-8  w-full md:w-fit "
         >
           <motion.li variants={childrenVariants}>
-            <Link target="_blank" href={"https://www.facebook.com/shrimpswap"}>
+            <Link target="_blank" href={"https://www.reddit.com/u/Shrimpswap/s/pk3fHSMTW9"}>
               <Image
                 width={50}
                 height={50}
-                src={facebook}
-                alt="facebook"
+                src={reddit}
+                alt="reddit"
               ></Image>
             </Link>
           </motion.li>
