@@ -1,7 +1,6 @@
 "use client";
-import hero_image from "@/assets/images/hero_image.png";
+
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import { TextAnimation2 } from "@/animation/TextAnimation2";
@@ -10,11 +9,14 @@ import Link from "next/link";
 const Hero = () => {
   return (
     <div className="relative font-montserrat">
-      <Image
-        src={hero_image}
-        alt="hero_image"
+      <video
+        src="/hero.mp4"
+        autoPlay
+        loop
+        muted
         className="w-full brightness-100 object-cover origin-center max-h-[calc(100vh-80px)]"
-      ></Image>
+      ></video>
+      <div className="absolute inset-0 bg-black/40"></div>
 
       <div className="text-white absolute inset-0 flex flex-col md:gap-y-2 justify-center items-center gap-y-1">
         <motion.h6
@@ -27,18 +29,6 @@ const Hero = () => {
         >
           Buy, Bid, and Sell Rare Fish and More with Confidence.
         </motion.h6>
-        {/* <motion.h2
-          initial={{ opacity: 0, y: "10%" }}
-          whileInView={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: "10%" }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          viewport={{ once: true }}
-          className="text-transparent bg-clip-text bg-gradient-to-b from-[#4DA8DA] to-[#78C0A8] xl:text-[140px] md:text-7xl text-5xl font-extrabold"
-        >
-          <TextAnimation delay={0.1} duration={0.3}>
-            AquaMarket
-          </TextAnimation>
-        </motion.h2> */}
 
         <TextAnimation2
           text="Shrimp Swap"

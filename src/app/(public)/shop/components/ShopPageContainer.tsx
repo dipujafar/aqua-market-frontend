@@ -123,12 +123,12 @@ const ShopPageContainer = () => {
             setValues={setPriceRange}
             maxPrice={maxPrice}
           />
-          <DiscountCategories
+          {/* <DiscountCategories
             title="Discount"
             data={discountData}
             values={discountRange}
             setValues={setDiscountRange}
-          />
+          /> */}
 
           <div className="space-y-4">
             <Button

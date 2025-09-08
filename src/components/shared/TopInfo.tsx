@@ -26,9 +26,9 @@ const TopInfo = () => {
       <Container className="flex md:justify-between justify-center items-center text-sm ">
         <p className="text-lg">
           <span className="bg-gradient-to-r from-purple-500 via-blue-500 to-teal-500 bg-clip-text text-transparent">
-            Hello!!
+            {/* Hello!! */}
           </span>{" "}
-          Welcome to <a href="https://shrimpswap.com">@shrimpswap.com</a>
+          {/* Welcome to <a href="https://shrimpswap.com">@shrimpswap.com</a> */}
         </p>
 
         <div className="xl:space-x-4 space-x-2 hidden   md:flex">

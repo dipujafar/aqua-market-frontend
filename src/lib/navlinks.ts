@@ -6,12 +6,7 @@ export const navLinks = [
   },
   {
     id: 2,
-    label: "Shop Live Fish",
-    href: "/shop",
-  },
-  {
-    id: 3,
-    label: "On Sale",
+    label: "Fresh Water Shop",
     href: "/shop",
   },
 ];
