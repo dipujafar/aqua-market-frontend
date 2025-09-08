@@ -19,7 +19,7 @@ const SmallDeviceView = () => {
   const currentPath = usePathname();
 
   return (
-    <div className="md:hidden block ">
+    <div className="xl:hidden block ">
       <Sheet>
         <SheetTrigger asChild>
           <TableOfContents size={24} />

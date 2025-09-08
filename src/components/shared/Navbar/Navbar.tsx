@@ -20,7 +20,7 @@ const Navbar = () => {
         {/* ======= Small Screen view ========== */}
         <SmallDeviceView></SmallDeviceView>
         {/* ======= category ========== */}
-        <div className="md:flex lg:gap-x-2 gap-x-1 hidden">
+        <div className="xl:flex lg:gap-x-2 gap-x-1 hidden">
           {navLinks.map((item) => (
             <div key={item.id} className="relative group">
               {/* Navigation Link */}
@@ -55,8 +55,7 @@ const Navbar = () => {
             />
             {/* Logo Text */}
             <h1 className=" text-sm lg:text-2xl font-semibold lg:font-bold text-white tracking-widest">
-              S H R I M P{" "}
-              <span className="text-gradient text-sm">S W A P</span>
+              S H R I M P <span className="text-gradient">S W A P</span>
             </h1>
           </Link>
         </div>
