@@ -16,5 +16,5 @@ export default function middleware(req: any) {
 }
 
 export const config = {
-  matcher: ["/user/:path*", "/seller/:path*"],
+  matcher: ["/user/:path*"],
 };

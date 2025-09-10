@@ -5,17 +5,33 @@ import { motion } from "framer-motion";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import { TextAnimation2 } from "@/animation/TextAnimation2";
 import Link from "next/link";
+import { useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Hero = () => {
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+
+  // Handle video load completion
+  const handleVideoLoad = () => {
+    setIsVideoLoaded(true);
+  };
+
   return (
     <div className="relative font-montserrat">
+      {/* Skeleton UI as fallback while video is loading or if it fails */}
+      {!isVideoLoaded && (
+        <Skeleton className="w-full h-[calc(100vh-80px)] bg-gray-200 animate-pulse" />
+      )}
       <video
         src="/hero.mp4"
         autoPlay
         loop
         muted
-        className="w-full brightness-100 object-cover origin-center max-h-[calc(100vh-80px)]"
-      ></video>
+        onLoadedData={handleVideoLoad} // Trigger when video loads
+        className={`w-full brightness-100 object-cover origin-center max-h-[calc(100vh-80px)] ${
+          isVideoLoaded ? "block" : "hidden"
+        }`}
+      />
       <div className="absolute inset-0 bg-black/40"></div>
 
       <div className="text-white absolute inset-0 flex flex-col md:gap-y-2 justify-center items-center gap-y-1">
@@ -46,9 +62,9 @@ const Hero = () => {
             <Button
               style={{
                 background:
-                  " linear-gradient(180deg, rgba(77, 168, 218, 0.30) 0%, rgba(120, 192, 168, 0.30) 85.08%)",
+                  "linear-gradient(180deg, rgba(77, 168, 218, 0.30) 0%, rgba(120, 192, 168, 0.30) 85.08%)",
               }}
-              className="backdrop-blur-md  border-b-2 border-r-2 border-white text-white w-[260px]  flex items-center justify-center gap-2 hover:bg-white/20 transition-all rounded lg:py-6 group cursor-pointer"
+              className="backdrop-blur-md border-b-2 border-r-2 border-white text-white w-[260px] flex items-center justify-center gap-2 hover:bg-white/20 transition-all rounded lg:py-6 group cursor-pointer"
             >
               SHOP NOW
               <AnimatedArrow />

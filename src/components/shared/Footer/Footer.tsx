@@ -21,11 +21,12 @@ const Footer = () => {
           className=""
         ></Image>
         <p className="md:text-center lg:text-xl text-white/90 ">
-          At Shrimp Swap, discover a thriving community where aquarium
-          enthusiasts buy and sell fish with ease. Whether you're shopping,
-          selling, or joining live bidding, every interaction supports
-          responsible fishkeeping. Dive into a vibrant marketplace designed to
-          connect hobbyists and help aquatic life thrive in new, caring homes
+          At ShrimpSwap, you’ll find a thriving community where aquarium
+          enthusiasts connect, buy, and sell with ease. Whether you’re shopping,
+          selling, or joining a live auction, every interaction supports
+          responsible shrimp keeping. Dive into a vibrant marketplace built to
+          connect hobbyists and ensure aquatic life thrives in new, caring
+          homes.
         </p>
         <SocialMedia></SocialMedia>
         <QuickLinks></QuickLinks>
