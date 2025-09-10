@@ -41,9 +41,10 @@ const Hero = () => {
           exit={{ opacity: 0, y: "10%" }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
           viewport={{ once: true }}
-          className="md:text-2xl text font-semibold max-w-[400px] text-center"
+          className="md:text-2xl text font-semibold max-w-[600px] text-center"
         >
-          Buy, Bid, and Sell Rare Fish and More with Confidence.
+          Buy, Bid, and Sell Rare Aquatics and More with Confidence. Shrimp
+          Swap to "Keepin it Shrimple"
         </motion.h6>
 
         <TextAnimation2

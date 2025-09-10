@@ -51,12 +51,11 @@ const containerVariants = {
 // Define available pricing types (this could come from an API or config)
 const pricingTypes = [
   { id: "preOrder", label: "Pre Orders" },
-  { id: "forBids", label: "For Bids" },
   { id: "newListed", label: "New Listed" },
   { id: "liveAuctions", label: "Live Auctions" },
   { id: "algaeEaters", label: "Algae Eaters" },
-  { id: "cardinal", label: "Cardinal" },
-  { id: "neoCardinal", label: "Neo Cardinal" },
+  { id: "caridina", label: "Caridina" },
+  { id: "neocaridina", label: "Neocaridina" },
   { id: "sulawesi", label: "Sulawesi" },
 ];
 

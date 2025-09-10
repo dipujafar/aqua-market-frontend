@@ -1,8 +1,7 @@
 import React from "react";
 import ContactForm from "./ContactForm";
 import Container from "@/components/shared/Container";
-import { LocationMap } from "./LocationMap";
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { Clock, Mail, } from "lucide-react";
 import Link from "next/link";
 
 const ContactPageContainer = () => {
@@ -12,18 +11,10 @@ const ContactPageContainer = () => {
         <h2 className="xl:text-4xl md:text-3xl text-2xl font-bold text-center">
           Get in touch
         </h2>
-        <div className="text-white/80 flex justify-between xl:px-16 md:px-8 px-2 mt-4 flex-wrap">
-          <div className="flex items-center gap-x-1">
-            <MapPin size={20} />
-            <p>123/A, Washington, UK</p>
-          </div>
-          <div className="flex items-center gap-x-1">
-            <Phone size={20} />
-            <Link href="tel:1234567890"> 1234567890</Link>
-          </div>
+        <div className="text-white/80 flex items-center justify-center gap-2 xl:gap-6 xl:px-16 md:px-8 px-2 mt-4 flex-wrap">
           <div className="flex items-center gap-x-1">
             <Mail size={20} />
-            <Link href="mailto:aquamarket@gmail.com">cantedservices713@gmail.com</Link>
+            <Link href="mailto:aquamarket@gmail.com">shrimpswap@gmail.com</Link>
           </div>
           <div className="flex items-center gap-x-1">
             <Clock size={20} />
@@ -34,9 +25,6 @@ const ContactPageContainer = () => {
       <div>
         <ContactForm />
       </div>
-      {/* <div>
-        <LocationMap></LocationMap>
-      </div> */}
     </Container>
   );
 };

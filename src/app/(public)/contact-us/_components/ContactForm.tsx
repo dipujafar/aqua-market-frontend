@@ -28,9 +28,6 @@ const formSchema = z.object({
   email: z.string().email({
     message: "Please enter a valid email address.",
   }),
-  phoneNumber: z.string().min(10, {
-    message: "Phone number must be at least 10 digits.",
-  }),
   message: z.string().min(5, {
     message: "Message must be at least 5 characters.",
   }),
@@ -47,7 +44,6 @@ export default function ContactForm() {
       firstName: "",
       lastName: "",
       email: "",
-      phoneNumber: "",
       message: "",
     },
   });
@@ -124,26 +120,6 @@ export default function ContactForm() {
                     className="py-5 focus-visible:ring-0"
                     placeholder="Enter your email"
                     {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="phoneNumber"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Phone number</FormLabel>
-                <FormControl>
-                  <PhoneInput
-                    // @ts-ignore
-                    value={field.value}
-                    onChange={field.onChange}
-                    international
-                    defaultCountry="US"
                   />
                 </FormControl>
                 <FormMessage />

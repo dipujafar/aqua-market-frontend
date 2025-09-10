@@ -14,9 +14,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState, useEffect, useCallback } from "react";
 import CommonButton from "@/components/ui/common-button";
-import { PhoneInput } from "@/components/ui/phone-input";
-import { Label } from "@/components/ui/label";
-import CountryStateCitySelector from "@/components/ui/country-state-city-selector";
 import { ImageUp, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CustomAvatar from "@/components/shared/CustomAvatar";
@@ -26,14 +23,6 @@ import {
 } from "@/redux/api/userProfileApi";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/utils/getErrorMessage";
-
-const addressSchema = z.object({
-  country: z.string().min(2).max(100).optional(),
-  streetAddress: z.string().min(2).max(100).optional(),
-  city: z.string().min(2).max(100).optional(),
-  state: z.string().min(2).max(100).optional(),
-  zipCode: z.string().min(2).max(100).optional(),
-});
 
 const formSchema = z.object({
   first_name: z
@@ -47,14 +36,7 @@ const formSchema = z.object({
   user_name: z
     .string({ required_error: "User Name is required" })
     .min(1, { message: "User Name is required" }),
-  contact_number: z
-    .string({ required_error: "Phone Number is required" })
-    .min(1, { message: "Phone Number is required" }),
-  email: z
-    .string({ required_error: "Email is required" })
-    .min(1, { message: "Email is required" })
-    .email({ message: "Please enter a valid email address" }),
-  address: addressSchema,
+  about: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -64,6 +46,7 @@ const ProfileForm = () => {
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   const { data: userData, refetch } = useGetUserProfileQuery(undefined);
   const userInfo = userData?.data || {};
+  // console.log("userInfo", userInfo);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -71,38 +54,22 @@ const ProfileForm = () => {
       first_name: "",
       last_name: "",
       user_name: "",
-      email: "",
-      contact_number: "",
-      address: {
-        streetAddress: "",
-        zipCode: "",
-        country: "",
-        city: "",
-        state: "",
-      },
       profile_image: null,
+      about: "",
     },
   });
 
-  const { setValue, control, reset, watch } = form;
+  const { reset } = form;
 
   // Memoized function to set form values from user data
   const setFormValuesFromUserData = useCallback(() => {
-    if (userInfo && Object.keys(userInfo).length > 0) {
+    if (userInfo && Object.keys(userInfo)?.length > 0) {
       reset({
         first_name: userInfo.first_name ?? "",
         last_name: userInfo.last_name ?? "",
         user_name: userInfo.user_name ?? "",
-        email: userInfo.email ?? "",
-        contact_number: userInfo.contact_number ?? "",
-        address: {
-          streetAddress: userInfo.address?.streetAddress ?? "",
-          zipCode: userInfo.address?.zipCode ?? "",
-          country: userInfo.address?.country ?? "",
-          city: userInfo.address?.city ?? "",
-          state: userInfo.address?.state ?? "",
-        },
-        profile_image: null, // Keep as null, we'll handle preview separately
+        profile_image: null,
+        about: userInfo.about ?? "",
       });
 
       if (userInfo?.profile_image?.url) {
@@ -119,7 +86,7 @@ const ProfileForm = () => {
   // Clean up object URLs
   useEffect(() => {
     return () => {
-      if (imagePreview && imagePreview.startsWith("blob:")) {
+      if (imagePreview && imagePreview?.startsWith("blob:")) {
         URL.revokeObjectURL(imagePreview);
       }
     };
@@ -145,10 +112,10 @@ const ProfileForm = () => {
       }
 
       const res = await updateProfile(formData).unwrap();
+      // console.log("res", res);
 
       if (res?.success) {
         toast.success(res?.message);
-        // Refetch user data to get updated information
         refetch();
       }
     } catch (error) {
@@ -293,99 +260,21 @@ const ProfileForm = () => {
 
               <FormField
                 control={form.control}
-                name="email"
+                name="about"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email Address</FormLabel>
+                    <FormLabel>Bio</FormLabel>
                     <FormControl>
                       <Input
-                        disabled
-                        readOnly
-                        placeholder="Enter Your Email"
+                        placeholder="Update Your Bio"
                         {...field}
-                        className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded md:py-5 bg-muted"
+                        className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded md:py-5"
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
-              <FormField
-                control={form.control}
-                name="contact_number"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Contact Number</FormLabel>
-                    <FormControl>
-                      <PhoneInput
-                        // @ts-ignore
-                        value={field.value}
-                        onChange={field.onChange}
-                        international
-                        defaultCountry="US"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Country, State, City Selector */}
-              <div className="grid w-full items-center gap-1.5">
-                <Label>Location</Label>
-                <CountryStateCitySelector
-                  control={control}
-                  setValue={setValue}
-                  userAddress={{
-                    country: form.getValues("address.country"),
-                    state: form.getValues("address.state"),
-                    city: form.getValues("address.city"),
-                  }}
-                />
-              </div>
-
-              <div className="grid w-full grid-cols-2 gap-x-3 gap-y-3 lg:grid-cols-3">
-                <div className="col-span-2">
-                  <FormField
-                    control={form.control}
-                    name="address.streetAddress"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Street Address</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Enter Your Street Address"
-                            {...field}
-                            className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded md:py-5"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div>
-                  <FormField
-                    control={form.control}
-                    name="address.zipCode"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Zip Code</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Enter Your Zip Code"
-                            {...field}
-                            className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded md:py-5"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
 
               <CommonButton
                 type="submit"

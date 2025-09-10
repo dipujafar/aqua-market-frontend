@@ -36,7 +36,9 @@ const SellerListings = ({ id }: { id: string }) => {
         <div className=" py-4 md:py-6 2xl:py-8">
           <SellerProfileInfo id={id} />
         </div>
-        <h2 className="md:text-3xl text-xl font-semibold my-3">Listed Products</h2>
+        <h2 className="md:text-3xl text-xl font-semibold my-3">
+          Listed Products
+        </h2>
         <motion.div
           variants={fadeUpVariants}
           key="products"
