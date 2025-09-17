@@ -50,7 +50,7 @@ const DiscordHelpSection = () => {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="https://discord.gg/He6t3Ecc"
+                  href="https://discord.com/invite/cfxPAYuHsd"
                 >
                   JOIN ON DISCORD
                 </a>

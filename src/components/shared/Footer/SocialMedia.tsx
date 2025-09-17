@@ -34,12 +34,14 @@ const SocialMedia = () => {
         whileInView={{
           opacity: 1,
           y: "0%",
+          // @ts-ignore
           transition: { duration: 0.5, easing: "easeIn" },
         }}
         viewport={{ once: true }}
         exit={{ opacity: 0, y: "10%" }}
       >
         <motion.ul
+          // @ts-ignore
           variants={parentVariants}
           initial="initial"
           whileInView="animate"
@@ -47,13 +49,11 @@ const SocialMedia = () => {
           className="flex justify-center items-center gap-x-8  w-full md:w-fit "
         >
           <motion.li variants={childrenVariants}>
-            <Link target="_blank" href={"https://www.reddit.com/u/Shrimpswap/s/pk3fHSMTW9"}>
-              <Image
-                width={50}
-                height={50}
-                src={reddit}
-                alt="reddit"
-              ></Image>
+            <Link
+              target="_blank"
+              href={"https://www.reddit.com/u/Shrimpswap/s/pk3fHSMTW9"}
+            >
+              <Image width={50} height={50} src={reddit} alt="reddit"></Image>
             </Link>
           </motion.li>
           <motion.li variants={childrenVariants}>
@@ -78,7 +78,10 @@ const SocialMedia = () => {
             </Link>
           </motion.li>
           <motion.li variants={childrenVariants}>
-            <Link target="_blank" href={"https://discord.gg/He6t3Ecc"}>
+            <Link
+              target="_blank"
+              href={"https://discord.com/invite/cfxPAYuHsd"}
+            >
               <Image width={50} height={50} src={discord} alt="Discord"></Image>
             </Link>
           </motion.li>

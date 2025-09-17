@@ -37,17 +37,21 @@ import { clearCart } from "@/redux/features/cartSlice";
 
 // ✅ Validation schema
 export const formSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
+  firstName: z.string({ required_error: "First name is required" }),
+  lastName: z.string({ required_error: "Last name is required" }),
   companyName: z.string().optional(),
-  country: z.string().min(1, "Country is required"),
-  streetAddress: z.string().min(1, "Street address is required"),
-  city: z.string().min(1, "City is required"),
-  state: z.string().min(1, "State is required"),
-  zipCode: z.string().min(1, "ZIP code is required"),
-  phoneNumber: z.string().min(1, "Phone number is required"),
-  email: z.string().email("Invalid email"),
-  shippingMethod: z.string().min(1, "Shipping method is required"),
+  country: z.string({ required_error: "Country is required" }).optional(),
+  streetAddress: z
+    .string({ required_error: "Street address is required" })
+    .optional(),
+  city: z.string({ required_error: "City is required" }).optional(),
+  state: z.string({ required_error: "State is required" }).optional(),
+  zipCode: z.string({ required_error: "ZIP code is required" }).optional(),
+  phoneNumber: z.string({ required_error: "Phone number is required" }),
+  email: z
+    .string({ required_error: "Email is required" })
+    .email("Invalid email format"),
+  shippingMethod: z.string({ required_error: "Shipping method is required" }),
   isDefault: z.boolean().optional(),
   isActive: z.boolean().optional(),
   rememberMe: z.boolean().optional(),
@@ -81,6 +85,8 @@ export default function ShippingAddressForm() {
       shippingMethod: "",
       rememberMe: false,
     },
+    mode: "onChange",
+    reValidateMode: "onSubmit",
   });
 
   const { control, register, reset, handleSubmit } = form;
@@ -100,6 +106,7 @@ export default function ShippingAddressForm() {
       paymentMethod: shippingMethod,
       quantity: cartData?.totalQuantity,
     };
+    // console.log("orderData", orderData);
 
     try {
       const orderResp = await createOrder(orderData).unwrap();
@@ -124,6 +131,7 @@ export default function ShippingAddressForm() {
 
   // ✅ Handle form submit
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // console.log("values", values);
     try {
       const res = await updateShippingAddress(values).unwrap();
       if (!res.success) {
@@ -259,7 +267,7 @@ export default function ShippingAddressForm() {
             render={({ field }) => (
               <Select onValueChange={field.onChange} value={field.value}>
                 <SelectTrigger className="py-5 border-[#fff]/80 text-white w-full">
-                  <SelectValue placeholder="Select Payment Method" />
+                  <SelectValue placeholder="Card" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="card">Card</SelectItem>

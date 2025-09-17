@@ -9,7 +9,7 @@ const quickLink = [
   },
   {
     id: 2,
-    label: "Shop Live Fish",
+    label: "Fresh Water Shop",
     href: "/shop",
   },
   {

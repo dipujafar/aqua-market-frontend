@@ -13,15 +13,12 @@ export default function CountryStateCitySelector({
   userAddress,
   setValue,
 }: any) {
-  // console.log("userAddress", userAddress);
-
   const [allData, setAllData] = useState([]);
-
-  const [selectedCountry, setSelectedCountry] = useState<any>(
-    userAddress?.country
+  const [selectedCountry, setSelectedCountry] = useState<string>(
+    userAddress?.country || "United States" // Default country set to "United States"
   );
-  const [selectedState, setSelectedState] = useState<any>(userAddress?.state);
-  const [selectedCity, setSelectedCity] = useState<any>(userAddress?.city);
+  const [selectedState, setSelectedState] = useState<string>(userAddress?.state || "");
+  const [selectedCity, setSelectedCity] = useState<string>(userAddress?.city || "");
 
   const [statesOfCountry, setStatesOfCountry] = useState<any>([]);
   const [citiesOfState, setCitiesOfState] = useState<any>([]);
@@ -38,13 +35,12 @@ export default function CountryStateCitySelector({
   // -------- Sync default values when userAddress is available -------- //
   useEffect(() => {
     if (userAddress) {
-      setSelectedCountry(userAddress.country || "");
+      setSelectedCountry(userAddress.country || "United States");
       setSelectedState(userAddress.state || "");
       setSelectedCity(userAddress.city || "");
-
-      setValue("address.country", userAddress.country || "");
-      setValue("address.state", userAddress.state || "");
-      setValue("address.city", userAddress.city || "");
+      setValue("country", userAddress.country || "United States");
+      setValue("state", userAddress.state || "");
+      setValue("city", userAddress.city || "");
     }
   }, [userAddress, setValue]);
 
@@ -55,14 +51,13 @@ export default function CountryStateCitySelector({
   useEffect(() => {
     if (selectedCountry) {
       const countryData = memoizedAllCountries?.find((country: any) => {
-        if (selectedCountry === country.name) {
-          return country;
-        }
+        return selectedCountry === country.name;
       });
-
-      setStatesOfCountry(countryData?.states);
+      setStatesOfCountry(countryData?.states || []);
+      setSelectedState(""); // Reset state when country changes
+      setSelectedCity(""); // Reset city when country changes
     }
-  }, [memoizedAllCountries, selectedCountry]);
+  }, [selectedCountry, memoizedAllCountries]);
 
   // ----------- Load cities of selected state ------- //
   useEffect(() => {
@@ -70,28 +65,17 @@ export default function CountryStateCitySelector({
       const stateData = statesOfCountry?.find(
         (state: any) => state.name === selectedState
       );
-      setCitiesOfState(stateData?.cities);
+      setCitiesOfState(stateData?.cities || []);
+      setSelectedCity(""); // Reset city when state changes
     }
-  }, [memoizedAllCountries, selectedState, statesOfCountry]);
-
-  useEffect(() => {
-    if (userAddress?.country) {
-      setSelectedCountry(userAddress.country);
-      setSelectedState(userAddress.state);
-      setSelectedCity(userAddress.city);
-
-      setValue("address.country", userAddress.country);
-      setValue("address.state", userAddress.state);
-      setValue("address.city", userAddress.city);
-    }
-  }, [userAddress?.country]);
+  }, [selectedState, statesOfCountry]);
 
   return (
     <div className="space-y-3">
       <div className="grid w-full grid-cols-2 gap-x-3 gap-y-3 lg:grid-cols-3">
         <div>
           <Controller
-            name="address.country"
+            name="country"
             control={control}
             render={({ field }) => (
               <Select
@@ -99,9 +83,9 @@ export default function CountryStateCitySelector({
                   field.onChange(countryName);
                   setSelectedCountry(countryName);
                 }}
-                value={selectedCountry || ""}
+                value={selectedCountry || "United States"} // Default to "United States"
               >
-                <SelectTrigger className="  py-5 bg-primary-light-gray w-full">
+                <SelectTrigger className="py-5 bg-primary-light-gray w-full">
                   <SelectValue placeholder="Select country" />
                 </SelectTrigger>
                 <SelectContent>
@@ -121,9 +105,8 @@ export default function CountryStateCitySelector({
             <>
               {statesOfCountry?.length ? (
                 <Controller
-                  name="address.state"
+                  name="state"
                   control={control}
-                  defaultValue={userAddress?.state || ""}
                   render={({ field }) => (
                     <Select
                       onValueChange={(stateName) => {
@@ -151,22 +134,16 @@ export default function CountryStateCitySelector({
                     <SelectValue placeholder="Select State" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="no state found">
-                      No state found!
-                    </SelectItem>
+                    <SelectItem value="no state found">No state found!</SelectItem>
                   </SelectContent>
                 </Select>
               )}
             </>
           ) : (
             <Select>
-              <SelectTrigger
-                disabled
-                className="py-5 bg-primary-light-gray w-full"
-              >
+              <SelectTrigger disabled className="py-5 bg-primary-light-gray w-full">
                 <SelectValue placeholder="Select a country first" />
               </SelectTrigger>
-              <SelectContent></SelectContent>
             </Select>
           )}
         </div>
@@ -175,9 +152,8 @@ export default function CountryStateCitySelector({
           {selectedState ? (
             <>
               <Controller
-                name="address.city"
+                name="city"
                 control={control}
-                defaultValue={userAddress?.city || ""}
                 render={({ field }) => (
                   <>
                     {citiesOfState?.length ? (
@@ -205,9 +181,7 @@ export default function CountryStateCitySelector({
                           <SelectValue placeholder="Select City" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="No city found">
-                            No city found
-                          </SelectItem>
+                          <SelectItem value="No city found">No city found</SelectItem>
                         </SelectContent>
                       </Select>
                     )}
@@ -217,13 +191,9 @@ export default function CountryStateCitySelector({
             </>
           ) : (
             <Select>
-              <SelectTrigger
-                disabled
-                className="py-5 bg-primary-light-gray w-full"
-              >
+              <SelectTrigger disabled className="py-5 bg-primary-light-gray w-full">
                 <SelectValue placeholder="Select a state first" />
               </SelectTrigger>
-              <SelectContent></SelectContent>
             </Select>
           )}
         </div>
