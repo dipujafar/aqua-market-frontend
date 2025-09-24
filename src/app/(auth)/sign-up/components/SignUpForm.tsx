@@ -18,7 +18,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import CommonButton from "@/components/ui/common-button";
 import PageTopSection from "@/components/shared/PageTopSection";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useCreateUserMutation } from "@/redux/api/authApi";
 import { useAppDispatch } from "@/redux/hooks";
 import { setUser } from "@/redux/features/authSlice";
@@ -34,19 +34,11 @@ const formSchema = z.object({
     .min(1, { message: "Email is required" })
     .email({ message: "Please enter a valid email address" }),
 
-  store_name: z.string(),
+  store_name: z.string().optional(),
   password: z
     .string({ required_error: "Password is required" })
-    .min(1, { message: "Password is required" })
-    .min(8, { message: " passwords must be at least 8 characters long" })
-    .max(64, { message: " passwords must be at most 64 characters long" })
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      {
-        message:
-          "password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character",
-      }
-    ),
+    .min(6, { message: "Password is required" })
+    .max(32, { message: " passwords must be at most 32 characters long" }),
   confirmPassword: z
     .string({ required_error: "Confirm Password is required" })
     .min(1, { message: "Confirm Password is required" }),
@@ -56,7 +48,6 @@ const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agree, setAgree] = useState(false);
-  const userRole = useSearchParams().get("role");
 
   const [createUser, { isLoading }] = useCreateUserMutation();
   const dispatch = useAppDispatch();
@@ -67,11 +58,12 @@ const SignUpForm = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    // console.log(data);
+    // console.log("onSubmit", data);
 
     try {
       const res = await createUser(data).unwrap();
       // console.log("res______", res);
+
       if (res?.data?.otpToken?.token) {
         dispatch(
           setUser({
@@ -107,7 +99,7 @@ const SignUpForm = () => {
 
   return (
     <div className="lg:space-y-12 space-y-7">
-      <PageTopSection title={`Join as a ${userRole}`}></PageTopSection>
+      <PageTopSection title="Sign up to Shrimp Swap"></PageTopSection>
       <Card
         className="max-w-[742px] mx-auto shadow-none border-none text-white"
         style={{
@@ -172,7 +164,7 @@ const SignUpForm = () => {
                 )}
               />
 
-              {userRole === "Seller" && (
+              {/* {userRole === "Seller" && (
                 <FormField
                   control={form.control}
                   name="store_name"
@@ -190,7 +182,7 @@ const SignUpForm = () => {
                     </FormItem>
                   )}
                 />
-              )}
+              )} */}
 
               <FormField
                 control={form.control}

@@ -11,10 +11,7 @@ const TopInfo = () => {
   const isUserLoggedIn = userInfo !== null;
 
   const quickLink = isUserLoggedIn
-    ? [
-        { label: "LOGIN", href: "/sign-in" },
-        { label: "CONTACT US", href: "/contact-us" },
-      ]
+    ? [{ label: "CONTACT US", href: "/contact-us" }]
     : [
         { label: "Sign In", href: "/sign-in" },
         { label: "Sign Up", href: "/sign-up" },

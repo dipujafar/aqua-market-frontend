@@ -7,9 +7,11 @@ import { Button } from "@/components/ui/button";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { logout } from "@/redux/features/authSlice";
 import { toast } from "sonner";
+import { useToggleUserRoleMutation } from "@/redux/api/userApi";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 const navLinks = [
   {
@@ -35,10 +37,13 @@ const navLinks = [
 ];
 
 const UserPagesTopSection = () => {
+  const [toggleRole] = useToggleUserRoleMutation();
+
   const pathName = usePathname();
   const currentPath = pathName?.split("/")[2];
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const userRole = useAppSelector((state) => state?.auth?.user?.role);
 
   const handleLogout = () => {
     const res = dispatch(logout());
@@ -48,6 +53,23 @@ const UserPagesTopSection = () => {
       router.push("/sign-in");
     }
   };
+
+  const handleToggleRole = async () => {
+    try {
+      const res = await toggleRole({}).unwrap();
+      // console.log("res______", res);
+
+      if (res?.success) {
+        toast.success(res?.message);
+        router.refresh();
+        router.push("/sign-in");
+      }
+    } catch (error) {
+      console.log("error______", error);
+      toast.error(getErrorMessage(error));
+    }
+  };
+
   return (
     <div className="max-h-[240px] relative">
       <Image
@@ -94,6 +116,16 @@ const UserPagesTopSection = () => {
             )}
           >
             Logout
+            <AnimatedArrow className="md:size-4 size-3" />
+          </Button>
+          <Button
+            onClick={handleToggleRole}
+            className={cn(
+              "rounded border-r-3 border-b-3  uppercase md:min-w-40 md:py-5 cursor-pointer group bg-white text-black  sm:m-2 m-1 text-[10px] md:text-sm px-2 md:px-3 py-0 md:h-9 h-7  mx-2 hover:bg-white/30  hover:text-white",
+              "border-[#78C0A8]"
+            )}
+          >
+            {userRole === "user" ? "Switch to Seller" : "Switch to User"}
             <AnimatedArrow className="md:size-4 size-3" />
           </Button>
         </div>

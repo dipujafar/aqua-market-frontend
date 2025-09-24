@@ -109,7 +109,7 @@ const SIgnInForm = () => {
             Sign In
           </div>
           <Link
-            href={"/choose-user-role"}
+            href={"/sign-up"}
             className="flex-1 flex justify-center items-center px-2.5 py-3"
           >
             Sign Up
@@ -199,7 +199,7 @@ const SIgnInForm = () => {
 
             <div className="flex justify-center gap-x-2">
               <p className="text-secondary-gray">Don&apos;t have an account?</p>
-              <Link href={"/choose-user-role"}>
+              <Link href={"/sign-up"}>
                 <span className="text-lg font-medium text-gradiant underline">
                   Sign Up
                 </span>

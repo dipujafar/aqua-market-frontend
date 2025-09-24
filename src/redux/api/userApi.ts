@@ -161,6 +161,15 @@ const userApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+
+    toggleUserRole: builder.mutation({
+      query: (data) => ({
+        url: `/user/toggle-user-role`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: [tagTypes.user],
+    }),
   }),
 });
 
@@ -182,4 +191,7 @@ export const {
   useDeleteManyNotificationsMutation,
   useClaimReportMutation,
   useNotificationMarkAsReadMutation,
+
+  useCheckoutMutation,
+  useToggleUserRoleMutation,
 } = userApi;
