@@ -1,7 +1,6 @@
 import { IUser } from "@/types/fish.type";
-import { Calendar, Mail, MapPin, Phone } from "lucide-react";
+import { Calendar } from "lucide-react";
 import moment from "moment";
-import Link from "next/link";
 
 interface ProfileDetailsProps {
   userInfo: IUser;
@@ -25,51 +24,6 @@ const SellerDetails = ({ userInfo }: ProfileDetailsProps) => {
                     ? moment(userInfo.createdAt).format("MMMM Do, YYYY, h:mm A")
                     : "N/A"}
                 </span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <MapPin className="w-5 h-5 text-slate-300 flex-shrink-0" />
-              <div>
-                <span className="text-slate-300 text-sm block">Location:</span>
-                <span className="text-white font-medium">
-                  {userInfo?.address?.city},{userInfo?.address?.country}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Contact information section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            <div className="flex items-center gap-3">
-              <Mail className="w-5 h-5 text-slate-300 flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <span className="text-slate-300 text-sm block">Email:</span>
-                <div className="flex items-center gap-2">
-                  <Link
-                    href={`mailto:${userInfo?.email}`}
-                    className="text-white font-medium truncate"
-                  >
-                    {userInfo?.email}
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <Phone className="w-5 h-5 text-slate-300 flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <span className="text-slate-300 text-sm block">
-                  Contact Number:
-                </span>
-                <div className="flex items-center gap-2">
-                  <Link
-                    href={`tel:${userInfo?.contact_number}`}
-                    className="text-white font-medium"
-                  >
-                    {userInfo?.contact_number}
-                  </Link>
-                </div>
               </div>
             </div>
           </div>

@@ -16,36 +16,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import CommonButton from "@/components/ui/common-button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import ChoosePricingType from "./ChoosePricingType";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { useAddFishMutation } from "@/redux/api/sellerApi";
 import { useRouter } from "next/navigation";
-
-const fishTypes = [
-  "Betta Fish",
-  "Guppies",
-  "Neon Tetras",
-  "Discus",
-  "Yellow Watchman",
-  "Clown fish",
-  "Blue Tang",
-  "Mandarin Goby",
-  "Spotted Puffer fish",
-  "Archer fish",
-  "Flowerhorn",
-  "Arowana",
-  "Corydoras Catfish",
-  "Other",
-] as const;
 
 const pricingInfoSchema = z.object({
   style: z.string({
@@ -83,19 +58,14 @@ const pricingInfoSchema = z.object({
 const formSchema = z.object({
   image: z.array(z.instanceof(File)).min(1, "At least one image is required"),
   video: z.instanceof(File).optional(),
-  fishType: z.enum(fishTypes, {
-    required_error: "Please select a fish type.",
-  }),
   fishName: z.string().min(2, "Fish name must be at least 2 characters"),
-  commonName: z.string().min(2, "Common name must be at least 2 characters"),
   size: z.string().min(5, "Size information is required"),
-  careLevel: z.string().min(5, "Care level information is required"),
-  tankRequirements: z.string().min(10, "Tank requirement details are required"),
-  foodRequirements: z.string().min(10, "Food requirement details are required"),
-  behavior: z.string().min(10, "Behavior description is required"),
+  tankRequirements: z.string().optional(),
+  foodRequirements: z.string().optional(),
+  behavior: z.string().optional(),
   description: z.string().min(20, "Description must be at least 20 characters"),
   paymentSystem: z.string().optional(),
-  shippingAddress: z.string().min(1, "Shipping address is required"),
+  shippingAddress: z.string().optional(),
   doaPolicy: z.string().min(1, "DOA policy is required"),
   pricingType: z.enum(["directSale", "forBids", "preOrder"], {
     required_error: "Please select a pricing type",
@@ -210,7 +180,7 @@ export default function AddProductForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-white text-lg font-medium">
-                    Fish Images
+                    Images
                   </FormLabel>
                   <FormControl>
                     <div className="space-y-4">
@@ -236,7 +206,7 @@ export default function AddProductForm() {
                         >
                           <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                           <p className="text-gray-300">
-                            Click to upload fish images
+                            Click to upload images
                           </p>
                         </label>
                       </div>
@@ -278,7 +248,7 @@ export default function AddProductForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-white text-lg font-medium">
-                    Fish Video
+                    Video
                   </FormLabel>
                   <FormControl>
                     <div className="space-y-4">
@@ -331,47 +301,6 @@ export default function AddProductForm() {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="fishType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Fish Type</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger
-                        style={{
-                          background:
-                            "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                        }}
-                        className="w-full md:py-5 border-gray-600"
-                      >
-                        <SelectValue placeholder="Enter Fish Type" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent
-                      style={{
-                        background:
-                          "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                      }}
-                      className="text-white border-none"
-                    >
-                      {fishTypes.map((fish) => (
-                        <SelectItem key={fish} value={fish}>
-                          {fish}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             {/* Fish Name and Common Name */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
@@ -379,14 +308,14 @@ export default function AddProductForm() {
                 name="fishName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-white">Fish Name</FormLabel>
+                    <FormLabel className="text-white">Name</FormLabel>
                     <FormControl>
                       <Input
                         style={{
                           background:
                             "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
                         }}
-                        placeholder="Enter Fish Name"
+                        placeholder="Enter Name"
                         {...field}
                         className=" border-gray-600 text-white placeholder:text-gray-400 md:py-5"
                       />
@@ -395,32 +324,6 @@ export default function AddProductForm() {
                   </FormItem>
                 )}
               />
-
-              <FormField
-                control={form.control}
-                name="commonName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-white">Common Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        style={{
-                          background:
-                            "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                        }}
-                        placeholder="Enter Fish Common Name"
-                        {...field}
-                        className="bg-black/30 border-gray-600 text-white placeholder:text-gray-400 md:py-5"
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-300" />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* Size and Care Level */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
                 name="size"
@@ -428,36 +331,14 @@ export default function AddProductForm() {
                   <FormItem>
                     <FormLabel className="text-white">Size</FormLabel>
                     <FormControl>
-                      <Textarea
+                      <Input
                         style={{
                           background:
                             "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
                         }}
-                        placeholder="Enter minimum fish size"
+                        placeholder="Enter minimum size"
                         {...field}
-                        className="bg-black/30 border-gray-600 text-white placeholder:text-gray-400 min-h-[100px]"
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-300" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="careLevel"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-white">Care Level</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        style={{
-                          background:
-                            "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                        }}
-                        placeholder="Enter Care Level"
-                        {...field}
-                        className="bg-black/30 border-gray-600 text-white placeholder:text-gray-400 min-h-[100px]"
+                        className=" border-gray-600 text-white placeholder:text-gray-400 md:py-5"
                       />
                     </FormControl>
                     <FormMessage className="text-red-300" />
@@ -465,82 +346,8 @@ export default function AddProductForm() {
                 )}
               />
             </div>
-
-            {/* Tank Requirement and Food Requirement */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField
-                control={form.control}
-                name="tankRequirements"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-white">
-                      Tank Requirement
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        style={{
-                          background:
-                            "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                        }}
-                        placeholder="Enter minimum tank requirement"
-                        {...field}
-                        className="bg-black/30 border-gray-600 text-white placeholder:text-gray-400 min-h-[100px]"
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-300" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="foodRequirements"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-white">
-                      Food Requirement
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        style={{
-                          background:
-                            "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                        }}
-                        placeholder="Enter food habit"
-                        {...field}
-                        className="bg-black/30 border-gray-600 text-white placeholder:text-gray-400 min-h-[100px]"
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-300" />
-                  </FormItem>
-                )}
-              />
-            </div>
-
             {/* Behavior and Description */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField
-                control={form.control}
-                name="behavior"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-white">Behavior</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        style={{
-                          background:
-                            "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                        }}
-                        placeholder="Enter some common behavior"
-                        {...field}
-                        className="bg-black/30 border-gray-600 text-white placeholder:text-gray-400 min-h-[100px]"
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-300" />
-                  </FormItem>
-                )}
-              />
-
+            <div className="grid grid-cols-1">
               <FormField
                 control={form.control}
                 name="description"
@@ -566,31 +373,6 @@ export default function AddProductForm() {
 
             {/* Pricing Type */}
             <ChoosePricingType form={form} />
-
-            {/* ---------- Shipping Address --------------- */}
-            <FormField
-              control={form.control}
-              name="shippingAddress"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-white">
-                    Shipping to your address
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      style={{
-                        background:
-                          "linear-gradient(104deg, #2E1345 16.28%, #0A2943 100%)",
-                      }}
-                      placeholder="Enter some description"
-                      {...field}
-                      className="bg-black/30 border-gray-600 text-white placeholder:text-gray-400 min-h-[100px]"
-                    />
-                  </FormControl>
-                  <FormMessage className="text-red-300" />
-                </FormItem>
-              )}
-            />
 
             {/* ---------- DOA Policy --------------- */}
             <FormField

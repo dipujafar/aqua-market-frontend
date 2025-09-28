@@ -62,13 +62,6 @@ const SellerProfileInfo = ({ id }: { id: string }) => {
               className=" xl:size-48 md:size-36 size-28 md:top-[-100px] top-[-80px] mx-auto object-cover"
             ></CustomAvatar>
             <div className="relative md:top-[-90px] top-[-80px]">
-              <div className="flex justify-between bg-[#ffffff33] px-2 py-3 border-b border-white">
-                <h1>Name</h1>
-                <p className=" font-semibold">
-                  {/* @ts-ignore */}
-                  {user?.data?.first_name} {user?.data?.last_name}
-                </p>
-              </div>
               <div className="flex justify-between px-2 py-3 border-b border-white">
                 <h1>Store Name</h1>
                 <p className=" font-semibold">

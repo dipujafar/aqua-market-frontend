@@ -124,7 +124,7 @@ export default function FishInventoryList() {
           >
             <TableRow>
               <TableHead className="text-white py-5">
-                Fishes Item List ({allFish?.meta?.total || 0})
+                Item List ({allFish?.meta?.total || 0})
               </TableHead>
               <TableHead className="text-white py-5">Item Number</TableHead>
               <TableHead className="text-white py-5">Price</TableHead>

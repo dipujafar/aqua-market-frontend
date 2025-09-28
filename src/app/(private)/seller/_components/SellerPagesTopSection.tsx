@@ -21,21 +21,11 @@ const navLinks = [
   },
   {
     _id: 2,
-    title: "Add Fish",
+    title: "Add Listings",
     href: "/seller/item-list-direct-sale",
   },
-  // {
-  //   _id: 3,
-  //   title: "Item List for Bid",
-  //   href: "/seller/item-list-bid",
-  // },
-  // {
-  //   _id: 4,
-  //   title: "Item List for Pre Order",
-  //   href: "/seller/item-list-pre-order",
-  // },
   {
-    _id: 5,
+    _id: 3,
     title: "Earning",
     href: "/seller/earning",
   },
@@ -51,7 +41,7 @@ const SellerPagesTopSection = () => {
 
   const dispatch = useAppDispatch();
   const pathName = usePathname();
-  const currentPath = pathName?.split("/")[2];  
+  const currentPath = pathName?.split("/")[2];
   const router = useRouter();
   const userRole = useAppSelector((state) => state?.auth?.user?.role);
 

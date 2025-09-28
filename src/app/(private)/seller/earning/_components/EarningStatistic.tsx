@@ -110,9 +110,6 @@ export default function EarningStatistic() {
         }}
         className="relative  p-4 rounded-lg border "
       >
-        <h5 className="text-center mb-4 lg:text-2xl text-xl">
-          Enter New Fish Item For Sale
-        </h5>
         {/* Year Selector */}
         <div className="flex justify-between items-center">
           <h4 className="md:text-xl text-sm">Sales Revenue</h4>

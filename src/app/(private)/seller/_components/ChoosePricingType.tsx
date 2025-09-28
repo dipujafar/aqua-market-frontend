@@ -8,7 +8,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { FormSchemaType } from "./AddProductForm";
 import { Input } from "@/components/ui/input";
@@ -46,7 +45,7 @@ const ChoosePricingType = ({ form }: ChoosePricingTypeProps) => {
                     htmlFor="directSale"
                     className="text-white/80 lg:text-base text-sm cursor-pointer"
                   >
-                    Direct Sale (Set a fixed price for immediate purchase)
+                    Buy It Now
                   </FormLabel>
                 </FormItem>
 
@@ -70,7 +69,7 @@ const ChoosePricingType = ({ form }: ChoosePricingTypeProps) => {
                     htmlFor="preOrder"
                     className="text-white/80 lg:text-base text-sm cursor-pointer"
                   >
-                    Pre Order Now for this fish
+                    Pre Order
                   </FormLabel>
                 </FormItem>
               </RadioGroup>
@@ -466,7 +465,9 @@ const ChoosePricingType = ({ form }: ChoosePricingTypeProps) => {
                 name="pricingInfo.discount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-white">Any Discount Offer</FormLabel>
+                    <FormLabel className="text-white">
+                      Any Discount Offer
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="number"
