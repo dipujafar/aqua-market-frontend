@@ -121,7 +121,7 @@ const OwnProductCard = ({ data }: { data: IFish }) => {
             ${data?.pricingInfo?.price?.toFixed(2)}
           </h3>
           {/* ====================== Add Advertise ======================== */}
-          {data?.pricingType !== "forBids" && (
+          {/* {data?.pricingType !== "forBids" && (
             <Link
               href={{
                 pathname: "/seller/profile/advertise",
@@ -140,7 +140,7 @@ const OwnProductCard = ({ data }: { data: IFish }) => {
                 <AnimatedArrow />
               </Button>
             </Link>
-          )}
+          )} */}
         </div>
       </CardContent>
     </Card>
