@@ -34,9 +34,9 @@ const ActionButtons = () => {
       <div className="lg:space-y-3 space-y-2 ">
         <div className="flex flex-col sm:flex-row gap-x-2 gap-y-2">
           <CommonButton className="md:min-w-fit sm:w-1/3">Single</CommonButton>
-          <CommonButton className=" md:min-w-fit sm:w-2/3">
+          {/* <CommonButton className=" md:min-w-fit sm:w-2/3">
             Breeding group of 8(mixed female+male)
-          </CommonButton>
+          </CommonButton> */}
         </div>
         {/* =============== buy now  button ================ */}
 

@@ -60,7 +60,7 @@ const ProductDetails = () => {
       {/* --------- product details data ---------- */}
       <div className="mt-4">
         <div className="flex justify-between items-center gap-x-3 xl:mb-4 mb-2 border-b pb-1 border-b-white/80">
-          <h5 className="uppercase  text-primary-gray">Fish Details</h5>
+          <h5 className="uppercase  text-primary-gray font-semibold">Details</h5>
 
           <button
             className="size-11 rounded-full flex justify-center items-center cursor-pointer hover:bg-primary-gray/10  transition-all duration-300"
@@ -71,7 +71,7 @@ const ProductDetails = () => {
           </button>
         </div>
         {/* --------- product details data ---------- */}
-        <div className="flex md:gap-x-8 gap-x-4 items-center justify-between p-3 bg-[#2D4259] border-b">
+        {/* <div className="flex md:gap-x-8 gap-x-4 items-center justify-between p-3 bg-[#2D4259] border-b">
           <h2>Common Name</h2>
           <p className="max-w-[300px]">{productDetails?.commonName}%</p>
         </div>
@@ -96,7 +96,7 @@ const ProductDetails = () => {
         <div className="flex md:gap-x-8 gap-x-4 items-center justify-between p-3  border-b">
           <h2>Behavior</h2>
           <p className="max-w-[300px]">{productDetails?.behavior}</p>
-        </div>
+        </div> */}
 
         <div className="flex md:gap-x-8 gap-x-4 items-center justify-between p-3 bg-[#2D4259] border-b">
           <h2>Payment</h2>

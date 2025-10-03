@@ -65,7 +65,7 @@ const ProductDetails = ({ productDetails, fishAverageRating }: ProductDetailsPro
       {/* --------- product details data ---------- */}
       <div className="mt-4">
         <div className="flex justify-between items-center gap-x-3 xl:mb-4 mb-2 border-b pb-1 border-b-white/80">
-          <h5 className="uppercase  text-primary-gray">Fish Details</h5>
+          <h5 className="uppercase  text-primary-gray">Details</h5>
         </div>
         {/* --------- product details data ---------- */}
         <div className="flex md:gap-x-8 gap-x-4 items-center justify-between p-3 bg-[#2D4259] border-b">

@@ -39,12 +39,11 @@ const SellerDetails = ({ sellerDetails }: { sellerDetails: any }) => {
     <div>
       <div className=" flex justify-between gap-x-2 items-center border-b border-white/50 pb-2 ">
         <h4 className="uppercase  text-primary-gray">SELLER INFORMATION</h4>
-        <p className="font-light text-gray-200">VIEW DETAILS</p>
       </div>
 
       <div className="bg-primary-light-pink/5 mt-4  rounded-lg ">
         <div className="space-y-2 flex justify-between border-b pb-2 ">
-          <div className="flex  gap-x-2  flex-1 ">
+          <div className="flex  gap-x-2  flex-1 items-center">
             <div className="relative size-12 rounded-full">
               <Link href="/seller-profile">
                 <Image
@@ -63,20 +62,8 @@ const SellerDetails = ({ sellerDetails }: { sellerDetails: any }) => {
                   {sellerDetails?.sellerId?.last_name}
                 </h5>{" "}
               </Link>
-              <p className="text-sm text-white/80">
-                {sellerDetails?.sellerId?.email}
-              </p>
             </div>
           </div>
-
-          <div className="flex gap-x-2  items-center h-fit  ">
-            <MapIcon></MapIcon>
-            <h6>
-              {sellerDetails?.sellerId?.address?.city},
-              <span>{sellerDetails?.sellerId?.address?.country}</span>
-            </h6>
-          </div>
-          <hr />
         </div>
 
         <CommonButton
