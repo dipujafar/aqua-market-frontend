@@ -35,7 +35,7 @@ const ChoosePricingType = ({ form }: ChoosePricingTypeProps) => {
               <RadioGroup
                 value={field.value}
                 onValueChange={field.onChange}
-                className="grid grid-cols-1 md:grid-cols-2 justify-center gap-4 "
+                className=" flex flex-col lg:flex-row justify-between"
               >
                 <FormItem className="flex items-center space-x-2">
                   <FormControl>
@@ -49,7 +49,7 @@ const ChoosePricingType = ({ form }: ChoosePricingTypeProps) => {
                   </FormLabel>
                 </FormItem>
 
-                <FormItem className="flex items-center space-x-2 md:ml-auto">
+                <FormItem className="flex items-center space-x-2">
                   <FormControl>
                     <RadioGroupItem value="forBids" id="forBids" />
                   </FormControl>
@@ -61,7 +61,7 @@ const ChoosePricingType = ({ form }: ChoosePricingTypeProps) => {
                   </FormLabel>
                 </FormItem>
 
-                <FormItem className="flex items-center space-x-2 md:col-span-2 mx-auto">
+                <FormItem className="flex items-center space-x-2">
                   <FormControl>
                     <RadioGroupItem value="preOrder" id="preOrder" />
                   </FormControl>

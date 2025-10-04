@@ -1,4 +1,5 @@
-import { ArrowIcon } from "@/components/icons/Icons";
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -30,7 +31,7 @@ const RelatedProduct = () => {
     <div>
       {/* ======================================= section header ========================================== */}
 
-      <div className="flex items-center gap-x-1.5">
+      <div className="flex items-center gap-x-1.5 mb-4">
         <h4 className="lg:text-3xl sm:text-xl text-lg font-medium uppercase">
           You may also like
         </h4>
@@ -39,7 +40,7 @@ const RelatedProduct = () => {
       {/* ========================================= preview images and data ==================================== */}
       <div className="grid lg:grid-cols-4 grid-cols-2 md:gap-5 gap-2">
         {charitySupportData?.map((charitySupport) => (
-          <Link href={"/shop/1"} key={charitySupport?._id}>
+          // <Link href={"/shop/1"} key={charitySupport?._id}>
             <div className="relative group">
               <Image
                 src={charitySupport?.image}
@@ -52,7 +53,7 @@ const RelatedProduct = () => {
                 <p>{charitySupport?.title}</p>
               </div>
             </div>
-          </Link>
+          // </Link>
         ))}
       </div>
     </div>

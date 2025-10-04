@@ -52,15 +52,15 @@ const SingleProductPageContainer = ({ productId }: { productId: string }) => {
       <RelatedProduct />
       {/* <RecentlyViewed></RecentlyViewed> */}
 
-      <div className="flex flex-col lg:flex-row gap-x-4  gap-y-4">
+      {/* <div className="flex flex-col lg:flex-row gap-x-4  gap-y-4">
         <AverageRating
           fishAverageRating={fishAverageRating}
           className="lg:w-2/5"
         ></AverageRating>
         <SubmitYourReview fishId={id} className="lg:w-3/5"></SubmitYourReview>
-      </div>
+      </div> */}
 
-      <CustomerFeedbacks fishReviews={fishReviews}></CustomerFeedbacks>
+      {/* <CustomerFeedbacks fishReviews={fishReviews}></CustomerFeedbacks> */}
     </Container>
   );
 };

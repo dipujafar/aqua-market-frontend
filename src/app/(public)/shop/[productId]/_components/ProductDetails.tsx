@@ -34,8 +34,8 @@ const fishDetails = ({ fishDetails, fishAverageRating }: fishDetailsProps) => {
   return (
     <div className=" space-y-5">
       {/* --------- product header ---------- */}
-      <div className="space-y-2">
-        <div>
+      <div className="">
+        {/* <div>
           <div className="flex items-center  gap-x-2 text-white/80">
             <Rating rating={fishAverageRating?.averageRating}></Rating>
             <p>
@@ -44,7 +44,7 @@ const fishDetails = ({ fishDetails, fishAverageRating }: fishDetailsProps) => {
             </p>
           </div>
           <h4 className="md:text-3xl text-xl">{}</h4>
-        </div>
+        </div> */}
         {discount > 0 && (
           <div className="flex gap-x-6 items-center">
             {/* original price (crossed out) */}
@@ -64,7 +64,9 @@ const fishDetails = ({ fishDetails, fishAverageRating }: fishDetailsProps) => {
       {/* --------- product details data ---------- */}
       <div>
         <div className="flex justify-between items-center gap-x-3 xl:mb-4 mb-2 border-b pb-1 border-b-white/80">
-          <h5 className="uppercase  text-primary-gray font-semibold">Details</h5>
+          <h5 className="uppercase  text-primary-gray font-semibold">
+            Details
+          </h5>
 
           <button
             className="size-11 rounded-full flex justify-center items-center cursor-pointer hover:bg-primary-gray/10  transition-all duration-300"
