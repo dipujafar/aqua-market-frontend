@@ -1,6 +1,5 @@
 "use client";
 
-import { MapIcon } from "@/components/icons/Icons";
 import CommonButton from "@/components/ui/common-button";
 import {
   useFollowSellerMutation,
@@ -45,14 +44,18 @@ const SellerDetails = ({ sellerDetails }: { sellerDetails: any }) => {
         <div className="space-y-2 flex justify-between border-b pb-2 ">
           <div className="flex  gap-x-2  flex-1 items-center">
             <div className="relative size-12 rounded-full">
-              <Link href="/seller-profile">
+              <Link href={`/listings/${sellerDetails?.sellerId?._id}`}>
                 <Image
-                  src={"/sellerImage.png"}
+                  src={
+                    sellerDetails?.sellerId?.profile_image?.url
+                      ? sellerDetails.sellerId.profile_image.url
+                      : "/sellerImage.png"
+                  }
                   alt="user_image"
                   width={1200}
                   height={1200}
-                  className="size-12 rounded-full  "
-                ></Image>
+                  className="size-12 rounded-full"
+                />
               </Link>
             </div>
             <div>

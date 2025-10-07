@@ -81,7 +81,7 @@ const ActionButtons = ({ fishDetails }: IActionButtonsProps) => {
   return (
     <div className="lg:space-y-4 space-y-3 lg:mt-6 mt-4">
       <div className="flex items-center justify-between border-b pb-1 border-white/50">
-        <h6 className="uppercase">style</h6>
+        <h6 className="uppercase">Quantity</h6>
         {/* =============== quantity &  add to cart  button ================ */}
 
         <div className="border border-primary-gray/40 rounded-2xl flex w-fit   gap-x-2">
@@ -103,12 +103,6 @@ const ActionButtons = ({ fishDetails }: IActionButtonsProps) => {
       </div>
       {/* =============== action buttons ================ */}
       <div className="lg:space-y-3 space-y-2 ">
-        <div className="flex flex-col sm:flex-row gap-x-2 gap-y-2">
-          <CommonButton className=" w-full">Single</CommonButton>
-          {/* <CommonButton className=" md:min-w-fit sm:w-2/3">
-            Breeding group of 8(mixed female+male)
-          </CommonButton> */}
-        </div>
         {/* =============== buy now  button ================ */}
         <div className="flex items-center gap-x-4">
           <Button
