@@ -59,7 +59,7 @@ const SellerDetails = ({ sellerDetails }: { sellerDetails: any }) => {
               </Link>
             </div>
             <div>
-              <Link href="/seller-profile">
+              <Link href={`/listings/${sellerDetails?.sellerId?._id}`}>
                 <h5 className="font-medium">
                   {sellerDetails?.sellerId?.first_name}{" "}
                   {sellerDetails?.sellerId?.last_name}

@@ -1,7 +1,6 @@
 "use client";
 import { ArrowIcon, ShoppingCartIcon } from "@/components/icons/Icons";
 import { Button } from "@/components/ui/button";
-import CommonButton from "@/components/ui/common-button";
 import { Minus, Plus } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
