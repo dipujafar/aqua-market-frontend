@@ -226,8 +226,8 @@ export default function NotificationContainer() {
             ))}
           </div>
         ) : items.length === 0 ? (
-          <Card className="border-dashed">
-            <CardContent className="p-8 text-center text-muted-foreground">
+          <Card className="bg-transparent border-none shadow-none">
+            <CardContent className="p-8 text-center text-white/80">
               No notifications yet.
             </CardContent>
           </Card>

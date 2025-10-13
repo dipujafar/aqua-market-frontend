@@ -13,9 +13,10 @@ import CommonButton from "@/components/ui/common-button";
 
 const SellerProfileInfo = ({ id }: { id: string }) => {
   const { data: followers } = useGetMyFollowersQuery(id);
+  // console.log("followers", followers);
   const { data: user } = useGetProfileDetailsQuery(id);
   const userInfo = user?.data;
-  console.log("userInfo", userInfo);
+  // console.log("userInfo", userInfo);
 
   const [followUnfollow] = useFollowSellerMutation();
   const { data: followingData } = useGetSellerBaseFollowingQuery(id);
@@ -69,19 +70,11 @@ const SellerProfileInfo = ({ id }: { id: string }) => {
                   {user?.data?.store_name}
                 </p>
               </div>
-              <div className="flex justify-between bg-[#ffffff33] px-2 py-3 border-b border-white">
+              <div className="flex justify-between px-2 py-3 border-b border-white">
                 <h1>Followers</h1>
                 <p className=" font-semibold">
                   {followers?.data?.meta?.total || 0}
                 </p>
-              </div>
-              <div className="flex justify-between  px-2 py-3 border-b border-white">
-                <h1>Following</h1>
-                <p className=" font-semibold">5</p>
-              </div>
-              <div className="flex justify-between bg-[#ffffff33] px-2 py-3 border-b border-white">
-                <h1>Total Sold</h1>
-                <p className=" font-semibold">100+</p>
               </div>
               <div>
                 <CommonButton

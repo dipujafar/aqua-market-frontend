@@ -6,12 +6,13 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import { cn } from "@/lib/utils";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { logout } from "@/redux/features/authSlice";
+import { logout, setUser } from "@/redux/features/authSlice";
 import { toast } from "sonner";
 import { useToggleUserRoleMutation } from "@/redux/api/userApi";
 import { getErrorMessage } from "@/utils/getErrorMessage";
+import { jwtDecode } from "jwt-decode";
 
 const navLinks = [
   {
@@ -44,6 +45,7 @@ const UserPagesTopSection = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const userRole = useAppSelector((state) => state?.auth?.user?.role);
+  const redirectUrl = useSearchParams()?.get("redirect");
 
   const handleLogout = () => {
     const res = dispatch(logout());
@@ -57,12 +59,35 @@ const UserPagesTopSection = () => {
   const handleToggleRole = async () => {
     try {
       const res = await toggleRole({}).unwrap();
-      // console.log("res______", res);
+      const decodedUser = jwtDecode(res?.data?.accessToken) as {
+        role?: string;
+      };
 
       if (res?.success) {
+        // ✅ persist token
+        localStorage.setItem("accessToken", res?.data?.accessToken);
+
+        // ✅ update Redux
+        dispatch(
+          setUser({
+            user: decodedUser,
+            token: res?.data?.accessToken,
+          })
+        );
+
         toast.success(res?.message);
-        router.refresh();
-        router.push("/sign-in");
+
+        // ✅ wait for Redux to sync
+        await new Promise((r) => setTimeout(r, 100));
+
+        // ✅ redirect logic
+        if (redirectUrl) {
+          router.push(decodeURIComponent(redirectUrl));
+        } else if (decodedUser?.role === "user") {
+          router.push("/user/profile");
+        } else if (decodedUser?.role === "seller") {
+          router.push("/seller/profile");
+        }
       }
     } catch (error) {
       console.log("error______", error);
