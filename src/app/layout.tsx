@@ -7,7 +7,7 @@ import Footer from "@/components/shared/Footer/Footer";
 import "react-pagination-bar/dist/index.css";
 import { Toaster } from "sonner";
 import NextTopLoader from "nextjs-toploader";
-import Providers from "@/provider/ReduxProvider";
+import Providers from "@/lib/provider/ReduxProvider";
 
 // Fonts
 const figtree = Figtree({

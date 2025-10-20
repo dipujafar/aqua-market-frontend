@@ -3,18 +3,20 @@ import { authRoutes } from "./lib/authRoutes";
 
 export default function middleware(req: any) {
   const { nextUrl } = req;
-  const isLoggedIn = req.cookies.get("aqua-access-token")?.value;
+  const token = req.cookies.get("aqua-access-token")?.value;
+  // console.log("----------=====------------+++object", token);
+
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-  if (isAuthRoute && isLoggedIn) {
+  if (isAuthRoute && token) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  if (!isLoggedIn && !isAuthRoute) {
+  if (!token && !isAuthRoute) {
     return NextResponse.redirect(new URL("/sign-in", req.url));
   }
 }
 
 export const config = {
-  matcher: ["/user/:path*"],
+  matcher: ["/user/:path*", "/seller/:path*"],
 };

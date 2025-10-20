@@ -16,13 +16,14 @@ const baseQuery = fetchBaseQuery({
   baseUrl: envConfig.baseUrl,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.token;
-    // console.log("base api ----- token", token);
+    const token =
+      (getState() as RootState).auth.token ||
+      document?.cookie
+        ?.split("; ")
+        .find((row) => row.startsWith("aqua-access-token="))
+        ?.split("=")[1];
 
-    if (token) {
-      headers.set("authorization", `${token}`);
-    }
-
+    if (token) headers.set("authorization", token);
     return headers;
   },
 });
@@ -33,7 +34,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   DefinitionType
 > = async (args, api, extraOptions): Promise<any> => {
   let result = await baseQuery(args, api, extraOptions);
-  // console.log('result', result);
+  // console.log("result", result);
 
   if (result?.error?.status == 404) {
     toast.error((result?.error.data as { message: string }).message);
@@ -52,6 +53,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 
       api.dispatch(
         setUser({
+          // @ts-ignore
           user,
           token: data?.data?.token,
         })

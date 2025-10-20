@@ -8,10 +8,12 @@ import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { logout } from "@/redux/features/authSlice";
+import { logout, switchRoleSuccess } from "@/redux/features/authSlice";
 import { toast } from "sonner";
 import { useToggleUserRoleMutation } from "@/redux/api/userApi";
 import { getErrorMessage } from "@/utils/getErrorMessage";
+import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
 
 const navLinks = [
   {
@@ -43,6 +45,10 @@ const SellerPagesTopSection = () => {
   const pathName = usePathname();
   const currentPath = pathName?.split("/")[2];
   const router = useRouter();
+
+  const userByCookie = Cookies.get("aqua-access-token");
+  const cookieUser = userByCookie ? jwtDecode<any>(userByCookie) : null;
+
   const userRole = useAppSelector((state) => state?.auth?.user?.role);
 
   const handleLogout = async () => {
@@ -60,15 +66,37 @@ const SellerPagesTopSection = () => {
   const handleToggleRole = async () => {
     try {
       const res = await toggleRole({}).unwrap();
-      // console.log("res______", res);
 
-      if (res?.success) {
-        toast.success(res?.message);
-        router.refresh();
-        router.push("/sign-in");
+      const token = res?.data?.accessToken;
+      if (!token) {
+        throw new Error("No access token returned from server");
       }
+
+      // Decode token to get updated role
+      const decodedUser = jwtDecode<{ role?: string }>(token);
+
+      // Update redux + cookies
+      dispatch(
+        switchRoleSuccess({
+          // @ts-ignore
+          user: decodedUser,
+          token,
+        })
+      );
+
+      // Redirect based on new role
+      if (decodedUser?.role === "user") {
+        router.push("/user/profile");
+      } else if (decodedUser?.role === "seller") {
+        router.push("/seller/profile/seller-profile");
+      } else {
+        toast.warning("Unknown role, redirecting to home");
+        router.push("/");
+      }
+
+      toast.success("Role switched successfully!");
     } catch (error) {
-      console.log("error______", error);
+      console.error("error in handleToggleRole:", error);
       toast.error(getErrorMessage(error));
     }
   };
@@ -129,7 +157,9 @@ const SellerPagesTopSection = () => {
               "border-[#78C0A8]"
             )}
           >
-            {userRole === "user" ? "Switch to Seller" : "Switch to User"}
+            {userRole === "user" || cookieUser?.role === "user"
+              ? "Switch to Seller"
+              : "Switch to User"}
             <AnimatedArrow className="md:size-4 size-3" />
           </Button>
         </div>

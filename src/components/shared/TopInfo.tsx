@@ -5,10 +5,16 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import Container from "./Container";
 import { useAppSelector } from "@/redux/hooks";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const TopInfo = () => {
+  const userByCookie = Cookies.get("aqua-access-token");
+  const cookieUser = userByCookie ? jwtDecode<any>(userByCookie) : null;
+  // console.log("cookieUser", cookieUser);
+
   const userInfo = useAppSelector((state) => state.auth.user);
-  const isUserLoggedIn = userInfo !== null;
+  const isUserLoggedIn = userInfo !== null || cookieUser !== null;
 
   const quickLink = isUserLoggedIn
     ? [{ label: "CONTACT US", href: "/contact-us" }]
