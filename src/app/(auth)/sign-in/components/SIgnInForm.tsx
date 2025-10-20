@@ -68,6 +68,7 @@ const SIgnInForm = () => {
       if (res.success) {
         dispatch(
           setUser({
+            // @ts-ignore
             user: decodedUser,
             token: res?.data?.accessToken,
           })

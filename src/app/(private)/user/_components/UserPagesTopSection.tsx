@@ -63,6 +63,7 @@ const UserPagesTopSection = () => {
   const handleToggleRole = async () => {
     try {
       const res = await toggleRole({}).unwrap();
+      console.log('UserPagesTopSection__res', res);
 
       const token = res?.data?.accessToken;
       if (!token) {
@@ -71,6 +72,7 @@ const UserPagesTopSection = () => {
 
       // Decode token to get updated role
       const decodedUser = jwtDecode<{ role?: string }>(token);
+      console.log('UserPagesTopSection__decodedUser', decodedUser);
 
       // Update redux + cookies
       dispatch(
