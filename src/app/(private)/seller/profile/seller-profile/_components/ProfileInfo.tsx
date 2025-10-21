@@ -24,7 +24,6 @@ const ProfileInfo = () => {
   const { data: followers } = useGetMyFollowersQuery(user?.data?._id, {
     skip: !userInfo,
   });
-  // console.log("followers", followers?.data?.meta?.total);
 
   const handleConnectAccount = async () => {
     try {

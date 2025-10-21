@@ -47,11 +47,9 @@ const SellerPagesTopSection = () => {
   const router = useRouter();
 
   const userByCookie = Cookies.get("aqua-access-token");
-  console.log("userByCookie___", userByCookie);
   const cookieUser = userByCookie ? jwtDecode<any>(userByCookie) : null;
 
   const userRole = useAppSelector((state) => state?.auth?.user?.role);
-  console.log("userRole", userRole);
 
   const handleLogout = async () => {
     const toastId = toast.loading("Logging out...");
@@ -70,12 +68,10 @@ const SellerPagesTopSection = () => {
       const res = await toggleRole({}).unwrap();
 
       const token = res?.data?.accessToken;
-      console.log(" handleToggleRole__token", token);
       if (!token) throw new Error("No access token returned from server");
 
       // Decode role from token (optional)
       const decodedUser = jwtDecode<any>(token);
-      console.log("decodedUser", decodedUser);
 
       // Update Redux only — do NOT set cookies manually anymore
       dispatch(

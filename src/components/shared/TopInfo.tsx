@@ -10,14 +10,8 @@ import { jwtDecode } from "jwt-decode";
 
 const TopInfo = () => {
   const userByCookie = Cookies.get("aqua-access-token");
-  console.log('userByCookie__', userByCookie);
-  
   const cookieUser = userByCookie ? jwtDecode<any>(userByCookie) : null;
-  console.log("cookieUser", cookieUser);
-
   const userInfo = useAppSelector((state) => state.auth.user);
-  console.log("userInfo", userInfo);
-  
   const isUserLoggedIn = userInfo !== null || cookieUser !== null;
 
   const quickLink = isUserLoggedIn

@@ -48,7 +48,6 @@ const UserPagesTopSection = () => {
 
   const userByCookie = Cookies.get("aqua-access-token");
   const cookieUser = userByCookie ? jwtDecode<any>(userByCookie) : null;
-
   const userRole = useAppSelector((state) => state?.auth?.user?.role);
 
   const handleLogout = () => {
