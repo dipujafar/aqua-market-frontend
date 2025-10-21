@@ -13,12 +13,17 @@ import {
 import { useGetUserProfileQuery } from "@/redux/api/userProfileApi";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/utils/getErrorMessage";
+import { useAppSelector } from "@/redux/hooks";
 
 const ProfileInfo = () => {
+  const userInfo = useAppSelector((state) => state.auth.user);
+
   const [connectAccount, { isLoading }] = useConnectAccountMutation();
   const { data: user } = useGetUserProfileQuery(undefined);
 
-  const { data: followers } = useGetMyFollowersQuery(user?.data?._id);
+  const { data: followers } = useGetMyFollowersQuery(user?.data?._id, {
+    skip: !userInfo,
+  });
   // console.log("followers", followers?.data?.meta?.total);
 
   const handleConnectAccount = async () => {

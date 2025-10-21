@@ -125,7 +125,7 @@ const userApi = baseApi.injectEndpoints({
         method: "GET",
         params,
       }),
-      providesTags: [tagTypes.user],
+      providesTags: [tagTypes.user, tagTypes.seller],
     }),
 
     deleteMyNotification: builder.mutation({

@@ -47,9 +47,11 @@ const SellerPagesTopSection = () => {
   const router = useRouter();
 
   const userByCookie = Cookies.get("aqua-access-token");
+  console.log("userByCookie___", userByCookie);
   const cookieUser = userByCookie ? jwtDecode<any>(userByCookie) : null;
 
   const userRole = useAppSelector((state) => state?.auth?.user?.role);
+  console.log("userRole", userRole);
 
   const handleLogout = async () => {
     const toastId = toast.loading("Logging out...");
@@ -68,14 +70,14 @@ const SellerPagesTopSection = () => {
       const res = await toggleRole({}).unwrap();
 
       const token = res?.data?.accessToken;
-      if (!token) {
-        throw new Error("No access token returned from server");
-      }
+      console.log(" handleToggleRole__token", token);
+      if (!token) throw new Error("No access token returned from server");
 
-      // Decode token to get updated role
-      const decodedUser = jwtDecode<{ role?: string }>(token);
+      // Decode role from token (optional)
+      const decodedUser = jwtDecode<any>(token);
+      console.log("decodedUser", decodedUser);
 
-      // Update redux + cookies
+      // Update Redux only — do NOT set cookies manually anymore
       dispatch(
         switchRoleSuccess({
           // @ts-ignore
@@ -84,17 +86,17 @@ const SellerPagesTopSection = () => {
         })
       );
 
-      // Redirect based on new role
+      toast.success("Role switched successfully!");
+
+      // Small delay to let cookie persist (not always required)
+      await new Promise((r) => setTimeout(r, 200));
+
+      // Redirect based on role
       if (decodedUser?.role === "user") {
         router.push("/user/profile");
-      } else if (decodedUser?.role === "seller") {
-        router.push("/seller/profile/seller-profile");
       } else {
-        toast.warning("Unknown role, redirecting to home");
-        router.push("/");
+        router.push("/seller/profile/seller-profile");
       }
-
-      toast.success("Role switched successfully!");
     } catch (error) {
       console.error("error in handleToggleRole:", error);
       toast.error(getErrorMessage(error));

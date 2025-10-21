@@ -17,7 +17,7 @@ const SearchAndNavIcon = ({ color = "white" }: { color?: string }) => {
   const [limit, setLimit] = useState<number>(999);
   const user: any = useAppSelector((state) => state.auth.user);
   const cartData = useAppSelector((state) => state.cart);
-  const { data: myNotifications } = useGetMyNotificationsQuery({ limit });
+  const { data: myNotifications } = useGetMyNotificationsQuery({ limit }, { skip: !user });
 
   useEffect(() => {
     if (

@@ -30,6 +30,7 @@ import { toast } from "sonner";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import PaginationSection from "@/components/shared/PaginationSection";
 import { useSearchParams } from "next/navigation";
+import { useAppSelector } from "@/redux/hooks";
 
 // -------------------------------------------------------------
 // Utilities
@@ -59,14 +60,19 @@ function coalesceLink(n: UINotification) {
 // Component
 // -------------------------------------------------------------
 export default function NotificationContainer() {
+  const user = useAppSelector((state) => state.auth.user);
+
   const searchParams = useSearchParams();
   const limit = searchParams.get("limit") || 10;
   const page = searchParams.get("page") || 1;
 
-  const { data, isLoading } = useGetMyNotificationsQuery({
-    page,
-    limit,
-  });
+  const { data, isLoading } = useGetMyNotificationsQuery(
+    {
+      page,
+      limit,
+    },
+    { skip: !user }
+  );
   // console.log("data", data);
 
   const [deleteNotification, { isLoading: isDeleting }] =

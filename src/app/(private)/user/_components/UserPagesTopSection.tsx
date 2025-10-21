@@ -60,45 +60,42 @@ const UserPagesTopSection = () => {
     }
   };
 
-  const handleToggleRole = async () => {
-    try {
-      const res = await toggleRole({}).unwrap();
-      console.log('UserPagesTopSection__res', res);
+ const handleToggleRole = async () => {
+  try {
+    const res = await toggleRole({}).unwrap();
 
-      const token = res?.data?.accessToken;
-      if (!token) {
-        throw new Error("No access token returned from server");
-      }
+    const token = res?.data?.accessToken;
+    if (!token) throw new Error("No access token returned from server");
 
-      // Decode token to get updated role
-      const decodedUser = jwtDecode<{ role?: string }>(token);
-      console.log('UserPagesTopSection__decodedUser', decodedUser);
+    // Decode role from token (optional)
+    const decodedUser = jwtDecode<{ role?: string }>(token);
 
-      // Update redux + cookies
-      dispatch(
-        switchRoleSuccess({
-          // @ts-ignore
-          user: decodedUser,
-          token,
-        })
-      );
+    // Update Redux only — do NOT set cookies manually anymore
+    dispatch(
+      switchRoleSuccess({
+        // @ts-ignore
+        user: decodedUser,
+        token,
+      })
+    );
 
-      // Redirect based on new role
-      if (decodedUser?.role === "user") {
-        router.push("/user/profile");
-      } else if (decodedUser?.role === "seller") {
-        router.push("/seller/profile/seller-profile");
-      } else {
-        toast.warning("Unknown role, redirecting to home");
-        router.push("/");
-      }
+    toast.success("Role switched successfully!");
 
-      toast.success("Role switched successfully!");
-    } catch (error) {
-      console.error("error in handleToggleRole:", error);
-      toast.error(getErrorMessage(error));
+    // Small delay to let cookie persist (not always required)
+    await new Promise((r) => setTimeout(r, 200));
+
+    // Redirect based on role
+    if (decodedUser?.role === "user") {
+      router.push("/user/profile");
+    } else {
+      router.push("/seller/profile/seller-profile");
     }
-  };
+  } catch (error) {
+    console.error("error in handleToggleRole:", error);
+    toast.error(getErrorMessage(error));
+  }
+};
+
 
   return (
     <div className="max-h-[240px] relative">
