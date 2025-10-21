@@ -64,39 +64,40 @@ const SellerPagesTopSection = () => {
   };
 
   const handleToggleRole = async () => {
-    try {
-      const res = await toggleRole({}).unwrap();
+    router.push("/user/profile");
+    // try {
+    //   const res = await toggleRole({}).unwrap();
 
-      const token = res?.data?.accessToken;
-      if (!token) throw new Error("No access token returned from server");
+    //   const token = res?.data?.accessToken;
+    //   if (!token) throw new Error("No access token returned from server");
 
-      // Decode role from token (optional)
-      const decodedUser = jwtDecode<any>(token);
+    //   // Decode role from token (optional)
+    //   const decodedUser = jwtDecode<any>(token);
 
-      // Update Redux only — do NOT set cookies manually anymore
-      dispatch(
-        switchRoleSuccess({
-          // @ts-ignore
-          user: decodedUser,
-          token,
-        })
-      );
+    //   // Update Redux only — do NOT set cookies manually anymore
+    //   dispatch(
+    //     switchRoleSuccess({
+    //       // @ts-ignore
+    //       user: decodedUser,
+    //       token,
+    //     })
+    //   );
 
-      toast.success("Role switched successfully!");
+    //   toast.success("Role switched successfully!");
 
-      // Small delay to let cookie persist (not always required)
-      await new Promise((r) => setTimeout(r, 200));
+    //   // Small delay to let cookie persist (not always required)
+    //   await new Promise((r) => setTimeout(r, 200));
 
-      // Redirect based on role
-      if (decodedUser?.role === "user") {
-        router.push("/user/profile");
-      } else {
-        router.push("/seller/profile/seller-profile");
-      }
-    } catch (error) {
-      console.error("error in handleToggleRole:", error);
-      toast.error(getErrorMessage(error));
-    }
+    //   // Redirect based on role
+    //   if (decodedUser?.role === "user") {
+    //     router.push("/user/profile");
+    //   } else {
+    //     router.push("/seller/profile/seller-profile");
+    //   }
+    // } catch (error) {
+    //   console.error("error in handleToggleRole:", error);
+    //   toast.error(getErrorMessage(error));
+    // }
   };
 
   return (
@@ -148,18 +149,21 @@ const SellerPagesTopSection = () => {
             <AnimatedArrow className="md:size-4 size-3" />
           </Button>
 
-          <Button
-            onClick={handleToggleRole}
-            className={cn(
-              "rounded border-r-3 border-b-3  uppercase md:min-w-40 md:py-5 cursor-pointer group bg-white text-black  sm:m-2 m-1 text-[10px] md:text-sm px-2 md:px-3 py-0 md:h-9 h-7  mx-2 hover:bg-white/30  hover:text-white",
-              "border-[#78C0A8]"
-            )}
-          >
-            {userRole === "user" || cookieUser?.role === "user"
-              ? "Switch to Seller"
-              : "Switch to User"}
-            <AnimatedArrow className="md:size-4 size-3" />
-          </Button>
+          <Link href="/user/profile">
+            <Button
+              // onClick={handleToggleRole}
+              className={cn(
+                "rounded border-r-3 border-b-3  uppercase md:min-w-40 md:py-5 cursor-pointer group bg-white text-black  sm:m-2 m-1 text-[10px] md:text-sm px-2 md:px-3 py-0 md:h-9 h-7  mx-2 hover:bg-white/30  hover:text-white",
+                "border-[#78C0A8]"
+              )}
+            >
+              {/* {userRole === "user" || cookieUser?.role === "user"
+                ? "Switch to Seller"
+                : "Switch to User"} */}
+              Switch to User
+              <AnimatedArrow className="md:size-4 size-3" />
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
