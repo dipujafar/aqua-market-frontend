@@ -147,7 +147,7 @@ const UserPagesTopSection = () => {
           </Button>
           <Link href="/seller/profile">
             <Button
-              onClick={handleToggleRole}
+              // onClick={handleToggleRole}
               className={cn(
                 "rounded border-r-3 border-b-3  uppercase md:min-w-40 md:py-5 cursor-pointer group bg-white text-black  sm:m-2 m-1 text-[10px] md:text-sm px-2 md:px-3 py-0 md:h-9 h-7  mx-2 hover:bg-white/30  hover:text-white",
                 "border-[#78C0A8]"

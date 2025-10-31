@@ -22,6 +22,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+
 const ProductCard = ({ data }: { data: any }) => {
   // console.log("data", data);
 
@@ -201,7 +207,9 @@ const ProductCard = ({ data }: { data: any }) => {
           {/* =============== seller profile ================== */}
           <Link
             className="flex justify-between items-center gap-x-2"
-            href={`/listings/${data?.sellerId?._id}`}
+            href={`/listings/${slugify(data?.sellerId?.store_name)}-${
+              data?.sellerId?._id
+            }`}
           >
             <Image
               src={sellerProfileImage ? sellerProfileImage : "/sellerImage.png"}

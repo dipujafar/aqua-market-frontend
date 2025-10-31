@@ -34,6 +34,12 @@ const SellerDetails = ({ sellerDetails }: { sellerDetails: any }) => {
     }
   };
 
+  const slugify = (text: string) =>
+    text
+      ?.toLowerCase()
+      ?.replace(/\s+/g, "-")
+      ?.replace(/[^a-z0-9-]/g, "");
+
   return (
     <div>
       <div className=" flex justify-between gap-x-2 items-center border-b border-white/50 pb-2 ">
@@ -44,7 +50,11 @@ const SellerDetails = ({ sellerDetails }: { sellerDetails: any }) => {
         <div className="space-y-2 flex justify-between border-b pb-2 ">
           <div className="flex  gap-x-2  flex-1 items-center">
             <div className="relative size-12 rounded-full">
-              <Link href={`/listings/${sellerDetails?.sellerId?._id}`}>
+              <Link
+                href={`/listings/${slugify(
+                  sellerDetails?.sellerId?.store_name
+                )}-${sellerDetails?.sellerId?._id}`}
+              >
                 <Image
                   src={
                     sellerDetails?.sellerId?.profile_image?.url
@@ -59,7 +69,11 @@ const SellerDetails = ({ sellerDetails }: { sellerDetails: any }) => {
               </Link>
             </div>
             <div>
-              <Link href={`/listings/${sellerDetails?.sellerId?._id}`}>
+              <Link
+                href={`/listings/${slugify(
+                  sellerDetails?.sellerId?.store_name
+                )}-${sellerDetails?.sellerId?._id}`}
+              >
                 <h5 className="font-medium">
                   {sellerDetails?.sellerId?.first_name}{" "}
                   {sellerDetails?.sellerId?.last_name}
