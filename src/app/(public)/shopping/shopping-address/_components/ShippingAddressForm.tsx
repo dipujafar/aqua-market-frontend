@@ -55,6 +55,8 @@ export const formSchema = z.object({
   isDefault: z.boolean().optional(),
   isActive: z.boolean().optional(),
   rememberMe: z.boolean().optional(),
+  address: z.string().optional(),
+  addressDetails: z.string().optional(),
 });
 
 export default function ShippingAddressForm() {
@@ -84,6 +86,8 @@ export default function ShippingAddressForm() {
       state: "",
       shippingMethod: "",
       rememberMe: false,
+      address: "",
+      addressDetails: "",
     },
     mode: "onChange",
     reValidateMode: "onSubmit",
@@ -191,23 +195,79 @@ export default function ShippingAddressForm() {
           </div>
 
           {/* Company */}
-          <FormField
-            control={control}
-            name="companyName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Company Name (Optional)</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter your company name"
-                    {...field}
-                    className="py-5 border-[#fff]/80 text-white placeholder:text-gray-400"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField
+              control={control}
+              name="companyName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Company Name (Optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your company name"
+                      {...field}
+                      className="py-5 border-[#fff]/80 text-white placeholder:text-gray-400"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name="zipCode"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Zip Code</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your zip code"
+                      {...field}
+                      className="py-5 border-[#fff]/80 text-white placeholder:text-gray-400"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          {/* __ Address __ */}
+          <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField
+              control={control}
+              name="address"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Address</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your address"
+                      {...field}
+                      className="py-5 border-[#fff]/80 text-white placeholder:text-gray-400"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name="addressDetails"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Address Details (Optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Apt, Suite, Unit, Building, Floor, etc."
+                      {...field}
+                      className="py-5 border-[#fff]/80 text-white placeholder:text-gray-400"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           {/* Location */}
           <div className="grid w-full items-center gap-1.5">
