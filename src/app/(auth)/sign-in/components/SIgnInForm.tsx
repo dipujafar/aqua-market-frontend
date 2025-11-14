@@ -83,11 +83,21 @@ const SIgnInForm = () => {
       if (decodedUser?.role === "user") {
         router.refresh();
         router.push("/user/profile");
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+
         return;
       }
       if (decodedUser?.role === "seller") {
         router.refresh();
         router.push("/seller/profile");
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+
         return;
       }
     } catch (error: any) {
