@@ -7,6 +7,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Controller } from "react-hook-form";
+import { FormControl, FormField, FormItem, FormMessage } from "./form";
+import { Input } from "./input";
 
 export default function CountryStateCitySelector({
   control,
@@ -17,8 +19,12 @@ export default function CountryStateCitySelector({
   const [selectedCountry, setSelectedCountry] = useState<string>(
     userAddress?.country || "United States" // Default country set to "United States"
   );
-  const [selectedState, setSelectedState] = useState<string>(userAddress?.state || "");
-  const [selectedCity, setSelectedCity] = useState<string>(userAddress?.city || "");
+  const [selectedState, setSelectedState] = useState<string>(
+    userAddress?.state || ""
+  );
+  const [selectedCity, setSelectedCity] = useState<string>(
+    userAddress?.city || ""
+  );
 
   const [statesOfCountry, setStatesOfCountry] = useState<any>([]);
   const [citiesOfState, setCitiesOfState] = useState<any>([]);
@@ -72,7 +78,7 @@ export default function CountryStateCitySelector({
 
   return (
     <div className="space-y-3">
-      <div className="grid w-full grid-cols-2 gap-x-3 gap-y-3 lg:grid-cols-3">
+      <div className="grid w-full grid-cols-2 gap-x-3 gap-y-3 lg:grid-cols-4">
         <div>
           <Controller
             name="country"
@@ -134,14 +140,19 @@ export default function CountryStateCitySelector({
                     <SelectValue placeholder="Select State" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="no state found">No state found!</SelectItem>
+                    <SelectItem value="no state found">
+                      No state found!
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               )}
             </>
           ) : (
             <Select>
-              <SelectTrigger disabled className="py-5 bg-primary-light-gray w-full">
+              <SelectTrigger
+                disabled
+                className="py-5 bg-primary-light-gray w-full"
+              >
                 <SelectValue placeholder="Select a country first" />
               </SelectTrigger>
             </Select>
@@ -181,7 +192,9 @@ export default function CountryStateCitySelector({
                           <SelectValue placeholder="Select City" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="No city found">No city found</SelectItem>
+                          <SelectItem value="No city found">
+                            No city found
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     )}
@@ -191,11 +204,33 @@ export default function CountryStateCitySelector({
             </>
           ) : (
             <Select>
-              <SelectTrigger disabled className="py-5 bg-primary-light-gray w-full">
+              <SelectTrigger
+                disabled
+                className="py-5 bg-primary-light-gray w-full"
+              >
                 <SelectValue placeholder="Select a state first" />
               </SelectTrigger>
             </Select>
           )}
+        </div>
+
+        <div>
+          <FormField
+            control={control}
+            name="zipCode"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    placeholder="Enter your zip code"
+                    {...field}
+                    className="py-5 border-[#fff]/80 text-white placeholder:text-gray-400"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
       </div>
     </div>

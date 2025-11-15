@@ -193,44 +193,24 @@ export default function ShippingAddressForm() {
               )}
             />
           </div>
+          <FormField
+            control={control}
+            name="companyName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Company Name (Optional)</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter your company name"
+                    {...field}
+                    className="py-5 border-[#fff]/80 text-white placeholder:text-gray-400"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-          {/* Company */}
-          <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormField
-              control={control}
-              name="companyName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Company Name (Optional)</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter your company name"
-                      {...field}
-                      className="py-5 border-[#fff]/80 text-white placeholder:text-gray-400"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={control}
-              name="zipCode"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Zip Code</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter your zip code"
-                      {...field}
-                      className="py-5 border-[#fff]/80 text-white placeholder:text-gray-400"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
           {/* __ Address __ */}
           <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
