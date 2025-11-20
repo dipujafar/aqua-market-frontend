@@ -9,7 +9,11 @@ import { motion } from "framer-motion";
 import SellerProfileInfo from "./SellerProfileInfo";
 
 const SellerListings = ({ id }: { id: string }) => {
-  const { data: sellerFish, isLoading, isFetching } = useSellerFishQuery(id);
+const sellerId = id.split("-").pop() as string;
+// console.log("sellerId_____", sellerId); 
+
+
+  const { data: sellerFish, isLoading, isFetching } = useSellerFishQuery(sellerId);
   // console.log("sellerFish", sellerFish?.data.data);
 
   const fadeUpVariants = {
@@ -34,7 +38,7 @@ const SellerListings = ({ id }: { id: string }) => {
     <>
       <Container className="md:pt-10 md:pb-16 pt-5 pb-8">
         <div className=" py-4 md:py-6 2xl:py-8">
-          <SellerProfileInfo id={id} />
+          <SellerProfileInfo id={sellerId} />
         </div>
         <h2 className="md:text-3xl text-xl font-semibold my-3">
           Listed Products
