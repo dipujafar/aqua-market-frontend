@@ -9,6 +9,7 @@ import { getErrorMessage } from "@/utils/getErrorMessage";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
+import Cookie from "js-cookie";
 
 const SellerDetails = ({ sellerDetails }: { sellerDetails: any }) => {
   // console.log("sellerDetails", sellerDetails);
@@ -40,6 +41,13 @@ const SellerDetails = ({ sellerDetails }: { sellerDetails: any }) => {
       ?.replace(/\s+/g, "-")
       ?.replace(/[^a-z0-9-]/g, "");
 
+  const handleClick = (id: string) => {
+    Cookie.set("sellerId", id || "", {
+      path: "/",
+      expires: 1,
+    });
+  };
+
   return (
     <div>
       <div className=" flex justify-between gap-x-2 items-center border-b border-white/50 pb-2 ">
@@ -53,7 +61,10 @@ const SellerDetails = ({ sellerDetails }: { sellerDetails: any }) => {
               <Link
                 href={`/listings/${slugify(
                   sellerDetails?.sellerId?.store_name
-                )}-${sellerDetails?.sellerId?._id}`}
+                )}`}
+                onClick={() =>
+                  handleClick(sellerDetails?.sellerId?._id as string)
+                }
               >
                 <Image
                   src={
@@ -72,7 +83,10 @@ const SellerDetails = ({ sellerDetails }: { sellerDetails: any }) => {
               <Link
                 href={`/listings/${slugify(
                   sellerDetails?.sellerId?.store_name
-                )}-${sellerDetails?.sellerId?._id}`}
+                )}`}
+                onClick={() =>
+                  handleClick(sellerDetails?.sellerId?._id as string)
+                }
               >
                 <h5 className="font-medium">
                   {sellerDetails?.sellerId?.first_name}{" "}

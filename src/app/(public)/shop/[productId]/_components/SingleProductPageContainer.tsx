@@ -5,10 +5,6 @@ import ProductImages from "./ProductImages";
 import ProductDetails from "./ProductDetails";
 import ProductDescription from "./ProductDescription";
 import RelatedProduct from "./RelatedProduct";
-
-import SubmitYourReview from "./SubmitYourReview";
-import CustomerFeedbacks from "./CustomerFeedbacks";
-import AverageRating from "./AverageRating";
 import {
   useGetFishBaseAverageReviewQuery,
   useGetFishBaseReviewQuery,

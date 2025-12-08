@@ -21,6 +21,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import Cookie from "js-cookie";
 
 const slugify = (text: string) =>
   text
@@ -80,6 +81,13 @@ const ProductCard = ({ data }: { data: any }) => {
       videoRef.current.pause();
       videoRef.current.currentTime = 0; // reset to start
     }
+  };
+
+  const handleClick = (id: string) => {
+    Cookie.set("sellerId", id || "", {
+      path: "/",
+      expires: 1,
+    });
   };
 
   return (
@@ -207,9 +215,8 @@ const ProductCard = ({ data }: { data: any }) => {
           {/* =============== seller profile ================== */}
           <Link
             className="flex justify-between items-center gap-x-2"
-            href={`/listings/${slugify(data?.sellerId?.store_name)}-${
-              data?.sellerId?._id
-            }`}
+            href={`/listings/${slugify(data?.sellerId?.store_name)}`}
+            onClick={() => handleClick(data?.sellerId?._id)}
           >
             <Image
               src={sellerProfileImage ? sellerProfileImage : "/sellerImage.png"}

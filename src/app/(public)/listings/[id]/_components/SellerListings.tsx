@@ -7,13 +7,18 @@ import { SkeletonFishCard } from "@/skeletons/SkeletonFishCard";
 import { IFish } from "@/types/fish.type";
 import { motion } from "framer-motion";
 import SellerProfileInfo from "./SellerProfileInfo";
+import Cookie from "js-cookie";
 
 const SellerListings = ({ id }: { id: string }) => {
-const sellerId = id.split("-").pop() as string;
-// console.log("sellerId_____", sellerId); 
+  // const sellerId = id.split("-").pop() as string;
+  // console.log("sellerId_____", sellerId);
+  const sellerId = Cookie.get("sellerId");
 
-
-  const { data: sellerFish, isLoading, isFetching } = useSellerFishQuery(sellerId);
+  const {
+    data: sellerFish,
+    isLoading,
+    isFetching,
+  } = useSellerFishQuery(sellerId as string);
   // console.log("sellerFish", sellerFish?.data.data);
 
   const fadeUpVariants = {
@@ -38,12 +43,13 @@ const sellerId = id.split("-").pop() as string;
     <>
       <Container className="md:pt-10 md:pb-16 pt-5 pb-8">
         <div className=" py-4 md:py-6 2xl:py-8">
-          <SellerProfileInfo id={sellerId} />
+          <SellerProfileInfo id={sellerId as string} />
         </div>
         <h2 className="md:text-3xl text-xl font-semibold my-3">
           Listed Products
         </h2>
         <motion.div
+          // @ts-ignore
           variants={fadeUpVariants}
           key="products"
           initial="initial"

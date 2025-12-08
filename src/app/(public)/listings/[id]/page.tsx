@@ -6,7 +6,7 @@ const SellerProductListingsPage = async ({
   params: { id: string };
 }) => {
   const { id } = await params;
-  // console.log('id___', id);
+  console.log('id___', id);
 
   return (
     <>
