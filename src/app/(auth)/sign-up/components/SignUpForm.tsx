@@ -67,11 +67,12 @@ const SignUpForm = () => {
       if (res?.data?.otpToken?.token) {
         dispatch(
           setUser({
+            // @ts-ignore
             token: res?.data?.otpToken?.token,
-          })
+          }),
         );
         toast.success(
-          "You are registered successfully! Please verify your email."
+          "You are registered successfully! Please verify your email.",
         );
         router.push("/verify-otp");
       }
