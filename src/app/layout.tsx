@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Figtree, Montserrat, Playfair } from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
 import TopInfo from "@/components/shared/TopInfo";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import Footer from "@/components/shared/Footer/Footer";
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     siteName: "Shrimp Swap",
     images: [
       {
-        url: "https://shrimpswap.com/og-image.jpg", // replace with your OG image
+        url: "https://shrimpswap.com/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Shrimp Swap",

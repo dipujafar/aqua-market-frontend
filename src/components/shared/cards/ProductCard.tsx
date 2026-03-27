@@ -25,9 +25,9 @@ import Cookie from "js-cookie";
 
 const slugify = (text: string) =>
   text
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "");
+    ?.toLowerCase()
+    ?.replace(/\s+/g, "-")
+    ?.replace(/[^a-z0-9-]/g, "");
 
 const ProductCard = ({ data }: { data: any }) => {
   // console.log("data", data);
