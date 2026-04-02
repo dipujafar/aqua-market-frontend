@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: [
+    "www.shrimpswap.com",
+    "shrimpswap.com",
+    "https://www.shrimpswap.com",
+  ],
   productionBrowserSourceMaps: false,
   images: {
     remotePatterns: [
