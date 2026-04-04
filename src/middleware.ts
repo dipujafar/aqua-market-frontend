@@ -4,7 +4,7 @@ import { authRoutes } from "./lib/authRoutes";
 export default function middleware(req: any) {
   const { nextUrl } = req;
   const token = req.cookies.get("aqua-access-token")?.value;
-  // console.log("----------=====------------+++object", token);
+  // console.log("----Cookies______::", token);
 
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 

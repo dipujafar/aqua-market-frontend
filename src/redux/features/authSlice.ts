@@ -7,20 +7,23 @@ export type TUser = {
   role: string;
   iat: number;
   exp: number;
-  _id: string;  
+  _id: string;
 };
 
 type TAuthState = {
   user: TUser | null;
   token: string | null;
+  refreshToken: string | null;
 };
 
 const initialState: TAuthState = {
   user: null,
   token: null,
+  refreshToken: null,
 };
 
 const COOKIE_NAME = "aqua-access-token";
+const REFRESHTOKEN_NAME = "aqua-refresh-token";
 
 const authSlice = createSlice({
   name: "auth",
@@ -28,11 +31,16 @@ const authSlice = createSlice({
   reducers: {
     setUser: (
       state,
-      action: PayloadAction<{ user: TUser; token: string }>
+      action: PayloadAction<{
+        user: TUser;
+        token: string;
+        refreshToken: string;
+      }>,
     ) => {
-      const { user, token } = action.payload;
+      const { user, token, refreshToken } = action.payload;
       state.user = user;
       state.token = token;
+      state.refreshToken = refreshToken;
 
       if (token) {
         Cookies.set(COOKIE_NAME, token, {
@@ -40,21 +48,36 @@ const authSlice = createSlice({
           expires: 7,
           sameSite: "Lax",
         });
+        Cookies.set(REFRESHTOKEN_NAME, refreshToken, {
+          path: "/",
+          expires: 70,
+          sameSite: "Lax",
+        });
       }
     },
 
     switchRoleSuccess: (
       state,
-      action: PayloadAction<{ user: TUser; token: string }>
+      action: PayloadAction<{
+        user: TUser;
+        token: string;
+        refreshToken: string;
+      }>,
     ) => {
-      const { user, token } = action.payload;
+      const { user, token, refreshToken } = action.payload;
       state.user = user;
       state.token = token;
+      state.refreshToken = refreshToken;
 
       if (token) {
         Cookies.set(COOKIE_NAME, token, {
           path: "/",
           expires: 7,
+          sameSite: "Lax",
+        });
+        Cookies.set(REFRESHTOKEN_NAME, refreshToken, {
+          path: "/",
+          expires: 70,
           sameSite: "Lax",
         });
       }

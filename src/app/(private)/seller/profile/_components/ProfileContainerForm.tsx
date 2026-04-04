@@ -40,9 +40,12 @@ const addressSchema = z.object({
 // ✅ Allow string (for existing image URL), File (for new uploads), or null
 const fileSchema = z
   .any()
-  .refine((file) => file instanceof File || file === null, {
-    message: "Must be a file",
-  });
+  .refine(
+    (file) => file instanceof File || typeof file === "string" || file === null,
+    {
+      message: "Must be a file or image URL",
+    },
+  );
 
 const formSchema = z.object({
   first_name: z.string().min(1, { message: "First Name is required" }),
@@ -62,7 +65,7 @@ type ProfileFormType = z.infer<typeof formSchema>;
 const ProfileContainerForm = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [coverImagePreview, setCoverImagePreview] = useState<string | null>(
-    null
+    null,
   );
 
   const router = useRouter();
@@ -70,7 +73,7 @@ const ProfileContainerForm = () => {
   const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
   const { data: userData } = useGetUserProfileQuery(undefined);
   const userInfo = userData?.data || {};
-  // console.log("userInfo", userInfo);
+  // console.log("seller info", userInfo);
 
   const form = useForm<ProfileFormType>({
     resolver: zodResolver(formSchema),
@@ -117,10 +120,12 @@ const ProfileContainerForm = () => {
         banner: userInfo?.banner?.url ?? null,
       });
 
-      if (typeof userInfo.profile_image === "string") {
+      // ✅ profile_image is an object with a .url property
+      if (userInfo?.profile_image?.url) {
         setImagePreview(userInfo.profile_image.url);
       }
-      if (typeof userInfo.banner === "string") {
+
+      if (userInfo?.banner?.url) {
         setCoverImagePreview(userInfo.banner.url);
       }
     }
@@ -257,7 +262,7 @@ const ProfileContainerForm = () => {
                         htmlFor="avatarInput"
                         className={cn(
                           "absolute bottom-4 right-2 bg-[#2E1345] text-white size-[29px] flex-center rounded-full cursor-pointer hover:bg-slate-500",
-                          imagePreview && "hidden"
+                          imagePreview && "hidden",
                         )}
                       >
                         <ImageUp size={20} />
@@ -367,6 +372,7 @@ const ProfileContainerForm = () => {
                       <FormLabel>Contact Number</FormLabel>
                       <FormControl>
                         <PhoneInput
+                          // @ts-ignore
                           value={field.value as string}
                           onChange={field.onChange}
                           international

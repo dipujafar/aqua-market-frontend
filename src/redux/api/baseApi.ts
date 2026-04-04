@@ -11,6 +11,7 @@ import { logout, setUser } from "../features/authSlice";
 import { toast } from "sonner";
 import { envConfig } from "@/config";
 import { RootState } from "../store";
+import Cookies from "js-cookie";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: envConfig.baseUrl,
@@ -20,8 +21,9 @@ const baseQuery = fetchBaseQuery({
       (getState() as RootState).auth.token ||
       document?.cookie
         ?.split("; ")
-        .find((row) => row.startsWith("aqua-access-token="))
+        .find((row) => row.startsWith("aqua-access-token"))
         ?.split("=")[1];
+    // console.log("token", token);
 
     if (token) headers.set("authorization", token);
     return headers;
@@ -41,12 +43,18 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   }
 
   if (result?.error?.status == 401) {
+    const refreshToken = Cookies.get("aqua-refresh-token");
     const res = await fetch(`${envConfig.baseUrl}/auth/refresh-token`, {
       method: "POST",
       credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ refreshToken }),
     });
 
     const data = await res.json();
+    // console.log("refreshToken__data---", data);
 
     if (data?.data?.token) {
       const user = (api.getState() as RootState).auth.user;
@@ -56,7 +64,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
           // @ts-ignore
           user,
           token: data?.data?.token,
-        })
+        }),
       );
 
       result = await baseQuery(args, api, extraOptions);

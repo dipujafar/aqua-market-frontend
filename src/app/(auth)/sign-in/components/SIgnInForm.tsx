@@ -46,8 +46,8 @@ const SIgnInForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "rawok89375@hopesx.com",
+      password: "SecurePass@123",
     },
   });
 
@@ -71,6 +71,7 @@ const SIgnInForm = () => {
             // @ts-ignore
             user: decodedUser,
             token: res?.data?.accessToken,
+            refreshToken: res?.data?.refreshToken,
           }),
         );
         toast.success(res?.message);

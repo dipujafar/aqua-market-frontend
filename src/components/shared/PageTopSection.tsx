@@ -1,7 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import topSectionBg from "@/assets/images/top_section_bg.png"
-
+import topSectionBg from "@/assets/images/top_section_bg.png";
 
 const PageTopSection = ({ title }: { title: string }) => {
   return (
